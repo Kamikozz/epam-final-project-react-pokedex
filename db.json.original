@@ -3796,47 +3796,5 @@
       "name": "magearna-original",
       "id": 10147
     }
-  ],
-  "users": [
-    {
-      "user": "kamikozz",
-      "id": 1
-    },
-    {
-      "user": "swaggaboy",
-      "id": 2
-    }
-  ],
-  "caught_pokemons": [
-    {
-      "pokemonId": 333,
-      "caughtDate": "07.02.2019, 18:20:06",
-      "userId": "1",
-      "id": 1
-    },
-    {
-      "pokemonId": 1,
-      "caughtDate": "07.02.2019, 18:24:06",
-      "userId": "1",
-      "id": 2
-    },
-    {
-      "pokemonId": 2,
-      "caughtDate": "07.02.2019, 18:24:50",
-      "userId": "2",
-      "id": 3
-    },
-    {
-      "pokemonId": 20,
-      "caughtDate": "08.02.2019, 18:24:50",
-      "userId": "2",
-      "id": 4
-    },
-    {
-      "pokemonId": 10,
-      "caughtDate": "08.02.2019, 18:28:50",
-      "userId": "1",
-      "id": 5
-    }
   ]
 }
