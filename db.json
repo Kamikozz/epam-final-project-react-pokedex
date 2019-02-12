@@ -3812,12 +3812,14 @@
       "pokemonId": 333,
       "caughtDate": "07.02.2019, 18:20:06",
       "userId": "1",
+      "name": "swablu",
       "id": 1
     },
     {
       "pokemonId": 1,
       "caughtDate": "07.02.2019, 18:24:06",
       "userId": "1",
+	  "name": "bulbasaur",
       "id": 2
     },
     {
@@ -3836,7 +3838,22 @@
       "pokemonId": 10,
       "caughtDate": "08.02.2019, 18:28:50",
       "userId": "1",
+	  "name": "caterpie",
       "id": 5
+    },
+    {
+      "pokemonId": 20,
+      "caughtDate": "08.02.2019, 18:24:50",
+      "name": "poliwrath",
+      "userId": "2",
+      "id": 6
+    },
+    {
+      "pokemonId": 22,
+      "caughtDate": "08.12.2019, 18:24:50",
+      "name": "fearow",
+      "userId": "1",
+      "id": 7
     }
   ]
 }
