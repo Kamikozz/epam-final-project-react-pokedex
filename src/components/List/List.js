@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -11,6 +11,11 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import {Link} from "react-router-dom";
 import config from '../../config/config.json'
+import './List.css';
+
+// cross-browser-support IE11
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
 
 const styles = theme => ({
 	root: {
@@ -25,12 +30,12 @@ const styles = theme => ({
 		justifyContent: 'center',
 	},
 	media: {
-		height:400,
+		height: 400,
 	},
 });
 
 class List extends React.Component {
-	state= {
+	state = {
 		currentUserId: 1,
 		pokemons: [],
 		caughtPokemons: [],
@@ -51,19 +56,32 @@ class List extends React.Component {
 				this.setState({pokemons: pokemonsArr});
 				console.log(this.state.pokemons);
 				console.log(this.state.caughtPokemons);
-
 			})
 			.catch(err => console.log(err))
 	};
 
 	getCaughtPokemonsList = (page) => {
-		fetch(`${config.hostname}:${config.port}/user/${this.state.currentUserId}/caught_pokemons?pokemonId_gte=${1+page*20-20}&pokemonId_lte=${page*20}`)
+		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/caught_pokemons?pokemonId_gte=${1 + page * 20 - 20}&pokemonId_lte=${page * 20}`)
 			.then(res => res.json())
 			.then(newpokemons => {
 				const caughtPokemonsArr = [].concat(this.state.caughtPokemons, newpokemons);
 				this.setState({caughtPokemons: caughtPokemonsArr});
 			})
 			.catch(err => console.log(err))
+	};
+
+	catchPokemon = (pokemonId, name) => {
+		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/caught_pokemons/`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				"pokemonId": pokemonId,
+				"caughtDate": new Date().toLocaleString(),
+				"name": name,
+			})
+		})
 	};
 
 	componentDidMount() {
@@ -74,61 +92,40 @@ class List extends React.Component {
 	}
 
 	render() {
-		const { classes } = this.props;
+		const {classes} = this.props;
 
 		return (
 			<div className={classes.root}>
 				<Grid container spacing={24}>
-					<Grid item xs={12} md={6} lg={4}>
-						<Card className={classes.card}>
-							<CardActionArea component={Link} to={`/pokemons/2`}>
-								<CardMedia
-									className={classes.media}
-									image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-									title="Contemplative Reptile"
-								/>
-								<CardContent>
-									<Typography gutterBottom variant="h5" component="h2">
-										Lizard
-									</Typography>
-									<Typography component="p">
-										Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-										across all continents except Antarctica
-									</Typography>
-								</CardContent>
-							</CardActionArea>
-							<CardActions className={classes.actions}>
-								<Button variant="outlined" size="medium" color="primary" onClick={console.log}>
-									Поймать
-								</Button>
-							</CardActions>
-						</Card>
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						<Card className={classes.card}>
-							<CardActionArea>
-								<CardMedia
-									className={classes.media}
-									image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-									title="Contemplative Reptile"
-								/>
-								<CardContent>
-									<Typography gutterBottom variant="h5" component="h2">
-										Lizard
-									</Typography>
-									<Typography component="p">
-										Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-										across all continents except Antarctica
-									</Typography>
-								</CardContent>
-							</CardActionArea>
-							<CardActions className={classes.actions}>
-								<Button size="small" color="primary">
-									Поймать
-								</Button>
-							</CardActions>
-						</Card>
-					</Grid>
+					{
+						this.state.pokemons.map((pokemon) => (
+								<Grid key={pokemon.id} item xs={12} md={6} lg={4}>
+									<Card className={classes.card}>
+										<CardActionArea component={Link} to={`/pokemons/${pokemon.id}`}>
+											<CardMedia
+												className={classes.media}
+												image={require('../../assets/pokemons/' + pokemon.id + '.png')}
+												title={pokemon.name}
+											/>
+											<CardContent>
+												<Typography variant="h4" component="h4">
+													{pokemon.name + ' [ID:' + pokemon.id + ']'}
+												</Typography>
+												{/*<Typography component="p">*/}
+												{/*{this.getPokemonDescription(pokemon.name)}*/}
+												{/*</Typography>*/}
+											</CardContent>
+										</CardActionArea>
+										<CardActions className={classes.actions}>
+											<Button variant="outlined" size="medium" color="primary" onClick={this.catchPokemon}>
+												Поймать
+											</Button>
+										</CardActions>
+									</Card>
+								</Grid>
+							)
+						)
+					}
 				</Grid>
 				<div>
 					<Button variant="contained" color="primary" className={'btn'} onClick={this.handleNext}>
