@@ -29,7 +29,6 @@ const styles = {
 class NotFound extends React.Component {
 	render() {
 		const {classes} = this.props;
-		const bull = <span className={classes.bullet}>•</span>;
 
 		return (
 			<div className={'Not-found'}>

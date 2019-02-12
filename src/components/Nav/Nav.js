@@ -23,9 +23,10 @@ const styles = {
 	},
 };
 
-class IconLabelTabs extends React.Component {
+class Nav extends React.Component {
 	state = {
 		value: 0,
+		currentUserId: 1,
 	};
 
 	handleChange = (event, value) => {
@@ -42,23 +43,21 @@ class IconLabelTabs extends React.Component {
 					value={this.state.value}
 					onChange={this.handleChange}
 					variant="fullWidth"
-					// indicatorColor="secondary"
-					// textColor="secondary"
 				>
 					<Tab
 						icon={
 							<img src={pokedexIcon} alt="Home pokedex" width="24px"/>
 						}
 						label="POKEDEX" component={Link} to="/" />
-					<Tab label="GOTCHA!" component={Link} to="/a"  />
+					<Tab label="GOTCHA!" component={Link} to={`/caught_pokemons`}  />
 				</Tabs>
 			</Paper>
 		);
 	}
 }
 
-IconLabelTabs.propTypes = {
+Nav.propTypes = {
 	classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(IconLabelTabs);
+export default withStyles(styles)(Nav);

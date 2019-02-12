@@ -1,6 +1,7 @@
 .Not-found {
   background-color: #282c34 !important;
-  min-height: 100vh !important;
+  /*min-height: 100vh !important;*/
+  height: 100vh !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
