@@ -42,9 +42,25 @@ class CaughtPokemons extends React.Component {
 			.catch(err => console.log(err))
 	};
 
+	// getPokemonDescription = (name) => {
+	// 	fetch(`https://www.pokemon.com/ru/pokedex/${name}`)
+	// 		.then(res => res.text())
+	// 		.then(body => {
+	//
+	// 			const regexp = /<p class="version-y\s.*\s*[\w .\n&#;,:]*<\/p>/;
+	// 			const replaceRegexp = /<p class="version-y\s.*\s*|\s*<\/p>|/g;
+	// 			console.log(body);
+	// 			body = body.match(regexp).toString().replace(replaceRegexp, "").replace(/\n/g, " ");
+	//
+	// 			return body;
+	// 			// var p = document.getElementById('description');
+	// 			// p.innerHTML = body;
+	// 		})
+	// 		.catch(err => console.log(err))
+	// };
+
 	componentDidMount() {
 		this.getCaughtPokemonsList();
-
 	}
 
 	render() {
@@ -64,13 +80,19 @@ class CaughtPokemons extends React.Component {
 												title={pokemon.name}
 											/>
 											<CardContent>
-												<Typography gutterBottom variant="h5" component="h2">
-													{pokemon.name}
+												<Typography variant="h4" component="h4">
+													{
+														pokemon.name + ' [ID:' + pokemon.pokemonId + ']'
+													}
 												</Typography>
-												<Typography component="p">
-													Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-													across all continents except Antarctica
+												<Typography gutterBottom component="p">
+													{
+														'Caught at: ' + pokemon.caughtDate
+													}
 												</Typography>
+												{/*<Typography component="p">*/}
+													{/*{this.getPokemonDescription(pokemon.name)}*/}
+												{/*</Typography>*/}
 											</CardContent>
 										</CardActionArea>
 									</Card>
