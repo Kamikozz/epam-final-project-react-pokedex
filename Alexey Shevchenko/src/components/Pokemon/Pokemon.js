@@ -34,23 +34,18 @@ const styles = theme => ({
 });
 
 class Pokemon extends React.Component {
-	// constructor(props){
-	// 	super(props);
-	// }
-
 	state = {
 		currentUserId: 1,
 		pokemon: {},
 		caughtPokemon: {},
+		caught: false
 	};
 
 	getPokemon = () => {
 		fetch(`${config.hostname}:${config.port}/pokemons/${this.props.match.params.id}`)
 			.then(res => res.json())
 			.then(pokemon => {
-				console.log(pokemon);
-				console.log(this.props.match.params.id);
-				this.setState({pokemon: pokemon});
+					this.setState({pokemon: pokemon});
 				}
 			)
 			.catch(err => console.log(err))
@@ -60,8 +55,10 @@ class Pokemon extends React.Component {
 		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/caught_pokemons?pokemonId=${this.props.match.params.id}`)
 			.then(res => res.json())
 			.then(pokemon => {
-				console.log(pokemon);
-				this.setState({caughtPokemon: pokemon});
+				this.setState({caughtPokemon: pokemon[0]});
+				if (pokemon[0]) {
+					this.setState({caught: true});
+				}
 			})
 			.catch(err => console.log(err))
 	};
@@ -73,83 +70,75 @@ class Pokemon extends React.Component {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				"pokemonId": this.state.pokemon.pokemonId,
+				"pokemonId": +this.props.match.params.id,
 				"caughtDate": new Date().toLocaleString(),
-				"name": this.state.pokemon.name,
+				"name": this.state.pokemon.name
 			})
-		})
+		});
+		this.setState({caught: true});
 	};
 
 	componentDidMount() {
-			this.getPokemon();
-			this.getCaughtPokemon();
-		console.log(this.props.match.params.id);
+		this.getPokemon();
+		this.getCaughtPokemon();
 	}
 
 	render() {
 		const {classes} = this.props;
-
-		let pokemon;
-		if (this.state.pokemon.id == this.state.caughtPokemon.pokemonId) {
-			pokemon = this.state.caughtPokemon;
-		}
-		else {
-			pokemon = this.state.pokemon;
-		}
 		return (
 			<div className={classes.root}>
 				<Grid container spacing={24}>
 					{
-						pokemon.caughtDate ? console.log("Yes") : console.log("No")
+						this.state.caughtPokemon ?
+							<Grid key={this.state.caughtPokemon.id} item xs={12} md={12} lg={12}>
+								<Card className={classes.card}>
+									<CardActionArea>
+										<CardMedia
+											className={classes.media}
+											image={require('../../assets/pokemons/' + this.props.match.params.id + '.png')}
+											title={this.state.caughtPokemon.name}
+										/>
+										<CardContent>
+											<Typography variant="h4" component="h4">
+												{this.state.caughtPokemon.name + ' [ID:' + this.state.caughtPokemon.pokemonId + ']'}
+											</Typography>
+											<Typography component="p">
+												{
+													'Caught at: ' + this.state.caughtPokemon.caughtDate
+												}
+											</Typography>
+										</CardContent>
+									</CardActionArea>
+									<CardActions className={classes.actions}>
+										<Button disabled={ this.state.caught } variant="outlined" size="medium" color="primary">
+											Поймать
+										</Button>
+									</CardActions>
+								</Card>
+							</Grid>
+							:
+							<Grid key={this.state.pokemon.id} item xs={12} md={12} lg={12}>
+								<Card className={classes.card}>
+									<CardActionArea>
+										<CardMedia
+											className={classes.media}
+											image={require('../../assets/pokemons/' + this.props.match.params.id + '.png')}
+											title={this.state.pokemon.name}
+										/>
+										<CardContent>
+											<Typography variant="h4" component="h4">
+												{this.state.pokemon.name + ' [ID:' + this.state.pokemon.id + ']'}
+											</Typography>
+										</CardContent>
+									</CardActionArea>
+									<CardActions className={classes.actions}>
+										<Button disabled={this.state.caught} variant="outlined" size="medium" color="primary" onClick={this.catchPokemon}>
+											Поймать
+										</Button>
+									</CardActions>
+								</Card>
+							</Grid>
 					}
-					{/*{*/}
-						{/*pokemon.caughtDate ?*/}
-							{/*<Grid key={pokemon.pokemonId} item xs={12} md={6} lg={4}>*/}
-								{/*<Card className={classes.card}>*/}
-									{/*<CardActionArea>*/}
-										{/*<CardMedia*/}
-											{/*className={classes.media}*/}
-											{/*image={require('../../assets/pokemons/' + pokemon.pokemonId + '.png')}*/}
-											{/*title={pokemon.name}*/}
-										{/*/>*/}
-										{/*<CardContent>*/}
-											{/*<Typography variant="h4" component="h4">*/}
-												{/*{pokemon.name + ' [ID:' + pokemon.pokemonId + ']'}*/}
-											{/*</Typography>*/}
-										{/*</CardContent>*/}
-									{/*</CardActionArea>*/}
-									{/*<CardActions className={classes.actions}>*/}
-										{/*<Button disabled variant="outlined" size="medium" color="primary">*/}
-											{/*Поймать*/}
-										{/*</Button>*/}
-									{/*</CardActions>*/}
-								{/*</Card>*/}
-							{/*</Grid>*/}
-							{/*:*/}
-							{/*<Grid key={pokemon.id} item xs={12} md={6} lg={4}>*/}
-								{/*<Card className={classes.card}>*/}
-									{/*<CardActionArea>*/}
-										{/*<CardMedia*/}
-											{/*className={classes.media}*/}
-											{/*image={require('../../assets/pokemons/' + this.state.pokemon.id + '.png')}*/}
-											{/*title={pokemon.name}*/}
-										{/*/>*/}
-										{/*<CardContent>*/}
-											{/*<Typography variant="h4" component="h4">*/}
-												{/*{pokemon.name + ' [ID:' + pokemon.id + ']'}*/}
-											{/*</Typography>*/}
-										{/*</CardContent>*/}
-									{/*</CardActionArea>*/}
-									{/*<CardActions className={classes.actions}>*/}
-										{/*<Button variant="outlined" size="medium" color="primary" onClick={this.catchPokemon}>*/}
-											{/*Поймать*/}
-										{/*</Button>*/}
-									{/*</CardActions>*/}
-								{/*</Card>*/}
-							{/*</Grid>*/}
-
-
-					{/*}*/}
 				</Grid>
 			</div>
 		);
