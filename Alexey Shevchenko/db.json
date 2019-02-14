@@ -3819,26 +3819,14 @@
       "pokemonId": 1,
       "caughtDate": "07.02.2019, 18:24:06",
       "userId": "1",
-	  "name": "bulbasaur",
+      "name": "bulbasaur",
       "id": 2
-    },
-    {
-      "pokemonId": 2,
-      "caughtDate": "07.02.2019, 18:24:50",
-      "userId": "2",
-      "id": 3
-    },
-    {
-      "pokemonId": 20,
-      "caughtDate": "08.02.2019, 18:24:50",
-      "userId": "2",
-      "id": 4
     },
     {
       "pokemonId": 10,
       "caughtDate": "08.02.2019, 18:28:50",
       "userId": "1",
-	  "name": "caterpie",
+      "name": "caterpie",
       "id": 5
     },
     {
@@ -3854,6 +3842,83 @@
       "name": "fearow",
       "userId": "1",
       "id": 7
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "14.02.2019, 1:35:53",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 10
+    },
+    {
+      "pokemonId": 45,
+      "caughtDate": "14.02.2019, 1:40:43",
+      "name": "vileplume",
+      "userId": "1",
+      "id": 11
+    },
+    {
+      "pokemonId": 46,
+      "caughtDate": "14.02.2019, 1:51:40",
+      "name": "paras",
+      "userId": "1",
+      "id": 12
+    },
+    {
+      "pokemonId": 15,
+      "caughtDate": "14.02.2019, 13:23:54",
+      "name": "beedrill",
+      "userId": "1",
+      "id": 13
+    },
+    {
+      "pokemonId": 5,
+      "caughtDate": "14.02.2019, 13:27:27",
+      "name": "charmeleon",
+      "userId": "1",
+      "id": 14
+    },
+    {
+      "pokemonId": 100,
+      "caughtDate": "14.02.2019, 13:35:15",
+      "name": "voltorb",
+      "userId": "1",
+      "id": 15
+    },
+    {
+      "pokemonId": 101,
+      "caughtDate": "14.02.2019, 13:35:43",
+      "name": "electrode",
+      "userId": "1",
+      "id": 16
+    },
+    {
+      "pokemonId": 102,
+      "caughtDate": "14.02.2019, 13:48:52",
+      "name": "exeggcute",
+      "userId": "1",
+      "id": 17
+    },
+    {
+      "pokemonId": 103,
+      "caughtDate": "14.02.2019, 13:53:40",
+      "name": "exeggutor",
+      "userId": "1",
+      "id": 18
+    },
+    {
+      "pokemonId": 104,
+      "caughtDate": "14.02.2019, 13:55:39",
+      "name": "cubone",
+      "userId": "1",
+      "id": 19
+    },
+    {
+      "pokemonId": 105,
+      "caughtDate": "14.02.2019, 13:56:13",
+      "name": "marowak",
+      "userId": "1",
+      "id": 20
     }
   ]
 }
