@@ -9,7 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import {Link} from "react-router-dom";
 import config from '../../config/config.json'
 
 // // cross-browser-support IE11
@@ -52,7 +51,8 @@ class Pokemon extends React.Component {
 	};
 
 	getCaughtPokemon = () => {
-		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/caught_pokemons?pokemonId=${this.props.match.params.id}`)
+		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/
+		caught_pokemons?pokemonId=${this.props.match.params.id}`)
 			.then(res => res.json())
 			.then(pokemon => {
 				this.setState({caughtPokemon: pokemon[0]});
@@ -132,7 +132,12 @@ class Pokemon extends React.Component {
 										</CardContent>
 									</CardActionArea>
 									<CardActions className={classes.actions}>
-										<Button disabled={this.state.caught} variant="outlined" size="medium" color="primary" onClick={this.catchPokemon}>
+										<Button
+											disabled={this.state.caught}
+											variant="outlined"
+											size="medium"
+											color="primary"
+											onClick={this.catchPokemon}>
 											Поймать
 										</Button>
 									</CardActions>

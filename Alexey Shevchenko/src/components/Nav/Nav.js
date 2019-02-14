@@ -12,8 +12,7 @@ import {Link} from "react-router-dom";
 
 const styles = {
 	root: {
-		flexGrow: 1,
-		// maxWidth: "200px",
+		flexGrow: 1
 	},
 	tabsIndicator: {
 		backgroundColor: 'red'

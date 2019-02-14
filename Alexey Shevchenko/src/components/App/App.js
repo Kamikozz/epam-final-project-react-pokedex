@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Button from "@material-ui/core/Button";
 import Nav from '../Nav/Nav';
 import List from '../List/List';
 import CaughtPokemons from "../CaughtPokemons/CaughtPokemons";
@@ -18,8 +17,9 @@ class App extends React.Component {
 				<section className="App-section">
 					<Switch>
 						<Route exact path="/" component={List} />
-						<Route path="/pokemons/:id" component={Pokemon} />
-						<Route path="/caught_pokemons/" component={CaughtPokemons} />
+						<Route exact path="/pokemons/:id" component={Pokemon} />
+						<Route exact path="/caught_pokemons/" component={CaughtPokemons} />
+						<Route component={NotFound} />
 					</Switch>
 				</section>
 			</div>

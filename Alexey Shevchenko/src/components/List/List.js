@@ -55,17 +55,18 @@ class List extends React.Component {
 				const pokemonsArr = [].concat(this.state.pokemons, newpokemons);
 				this.setState({pokemons: pokemonsArr});
 				console.log(this.state.pokemons);
-				console.log(this.state.caughtPokemons);
 			})
 			.catch(err => console.log(err))
 	};
 
 	getCaughtPokemonsList = (page) => {
-		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/caught_pokemons?pokemonId_gte=${1 + page * 20 - 20}&pokemonId_lte=${page * 20}`)
+		fetch(`${config.hostname}:${config.port}/users/${this.state.currentUserId}/
+		caught_pokemons?pokemonId_gte=${1 + page * 20 - 20}&pokemonId_lte=${page * 20}`)
 			.then(res => res.json())
 			.then(newpokemons => {
 				const caughtPokemonsArr = [].concat(this.state.caughtPokemons, newpokemons);
 				this.setState({caughtPokemons: caughtPokemonsArr});
+				console.log(this.state.caughtPokemons);
 			})
 			.catch(err => console.log(err))
 	};
@@ -98,37 +99,46 @@ class List extends React.Component {
 			<div className={classes.root}>
 				<Grid container spacing={24}>
 					{
-						this.state.pokemons.map((pokemon) => (
-								<Grid key={pokemon.id} item xs={12} md={6} lg={4}>
-									<Card className={classes.card}>
-										<CardActionArea component={Link} to={`/pokemons/${pokemon.id}`}>
-											<CardMedia
-												className={classes.media}
-												image={require('../../assets/pokemons/' + pokemon.id + '.png')}
-												title={pokemon.name}
-											/>
-											<CardContent>
-												<Typography variant="h4" component="h4">
-													{pokemon.name + ' [ID:' + pokemon.id + ']'}
-												</Typography>
-												{/*<Typography component="p">*/}
-												{/*{this.getPokemonDescription(pokemon.name)}*/}
-												{/*</Typography>*/}
-											</CardContent>
-										</CardActionArea>
-										<CardActions className={classes.actions}>
-											<Button variant="outlined" size="medium" color="primary" onClick={this.catchPokemon}>
-												Поймать
-											</Button>
-										</CardActions>
-									</Card>
-								</Grid>
+						this.state.pokemons.map(pokemon => (
+							<Grid key={pokemon.id} item xs={12} md={6} lg={4}>
+								<Card className={classes.card}>
+									<CardActionArea component={Link} to={`/pokemons/${pokemon.id}`}>
+										<CardMedia
+											className={classes.media}
+											image={require('../../assets/pokemons/' + pokemon.id + '.png')}
+											title={pokemon.name}
+										/>
+										<CardContent>
+											<Typography variant="h4" component="h4">
+												{pokemon.name + ' [ID:' + pokemon.id + ']'}
+											</Typography>
+											{/*<Typography component="p">*/}
+											{/*{this.getPokemonDescription(pokemon.name)}*/}
+											{/*</Typography>*/}
+										</CardContent>
+									</CardActionArea>
+									<CardActions className={classes.actions}>
+										<Button
+											variant="outlined"
+											size="medium"
+											color="primary"
+											onClick={this.catchPokemon.bind(this, pokemon.id, pokemon.name)}>
+											Поймать
+										</Button>
+									</CardActions>
+								</Card>
+							</Grid>
 							)
+
 						)
 					}
 				</Grid>
 				<div>
-					<Button variant="contained" color="primary" className={'btn'} onClick={this.handleNext}>
+					<Button
+						variant="contained"
+						color="primary"
+						className={'btn'}
+						onClick={this.handleNext}>
 						Хочу больше
 					</Button>
 				</div>
