@@ -25,10 +25,6 @@ const styles = {
 class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedTabIndex: 0,
-      currentUserId: 1
-    };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -38,13 +34,12 @@ class Nav extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { selectedTabIndex } = this.state;
 
     return (
       <Paper square className={classes.root}>
         <Tabs
           classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-          value={selectedTabIndex}
+          value={this.props.selected}
           onChange={this.handleChange}
           variant="fullWidth"
         >

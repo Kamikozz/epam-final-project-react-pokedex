@@ -1,19 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 
 import config from "../../config/config.json";
 import "./List.css";
+import CaughtPokemon from "../CaughtPokemons/CaughtPokemon";
 
 const styles = theme => ({
   root: {
@@ -39,12 +34,12 @@ class List extends React.Component {
       currentUserId: 1,
       pokemons: [],
       caughtPokemons: [],
-      page: 1
+      page: 1,
+      pokemonIds: null
     };
     this.handleNext = this.handleNext.bind(this);
     this.getPokemonsList = this.getPokemonsList.bind(this);
     this.getCaughtPokemonsList = this.getCaughtPokemonsList.bind(this);
-    this.catchPokemon = this.catchPokemon.bind(this);
   }
 
   handleNext() {
@@ -55,19 +50,26 @@ class List extends React.Component {
   }
 
   getPokemonsList(page) {
-    fetch(`${config.host}:${config.port}/pokemons?_page=${page}&_limit=20`)
+    const endpoint = "/pokemons";
+    const params = `?_page=${page}&_limit=20`;
+    const url = `${config.host}:${config.port}${endpoint}${params}`;
+    return fetch(url)
       .then(res => res.json())
       .then(newpokemons => {
         const pokemonsArr = [].concat(this.state.pokemons, newpokemons);
         this.setState({ pokemons: pokemonsArr });
-        console.log(this.state.pokemons);
+        // console.log(this.state.pokemons);
       })
       .catch(err => console.log(err));
   }
 
   getCaughtPokemonsList(page) {
-    fetch(`${config.host}:${config.port}/users/${this.state.currentUserId}/
-		caught_pokemons?pokemonId_gte=${1 + page * 20 - 20}&pokemonId_lte=${page * 20}`)
+    const endpoint = `/users/${this.state.currentUserId}/
+		caught_pokemons`;
+    const params = `?pokemonId_gte=${1 + page * 20 - 20}&pokemonId_lte=${page *
+      20}`;
+    const url = `${config.host}:${config.port}${endpoint}${params}`;
+    return fetch(url)
       .then(res => res.json())
       .then(newpokemons => {
         const caughtPokemonsArr = [].concat(
@@ -75,14 +77,17 @@ class List extends React.Component {
           newpokemons
         );
         this.setState({ caughtPokemons: caughtPokemonsArr });
-        console.log(this.state.caughtPokemons);
+        // console.log(this.state.caughtPokemons);
       })
       .catch(err => console.log(err));
   }
 
   catchPokemon(pokemonId, name) {
-    const { currentUserId: userId } = this.state;
-    fetch(`${config.host}:${config.port}/users/${userId}/caught_pokemons/`, {
+    console.log("Пойман покемон из List.jsx");
+    const endpoint = `/users/${this.state.currentUserId}/
+		caught_pokemons`;
+    const url = `${config.host}:${config.port}${endpoint}`;
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -90,62 +95,67 @@ class List extends React.Component {
       body: JSON.stringify({
         pokemonId,
         caughtDate: new Date().toLocaleString(),
-        name,
+        name
       })
+    });
+    this.setState(state => {
+      const pokemonIds = state.pokemonIds.add(pokemonId);
+      return {
+        pokemonIds
+      };
     });
   }
 
-  componentDidMount() {
-    console.log(this.state.pokemons.length === 0);
-    if (this.state.pokemons.length === 0) {
-      this.getPokemonsList(this.state.page);
-      this.getCaughtPokemonsList(this.state.page);
-    }
+  async componentDidMount() {
+    console.log("componentDidMount");
+    await this.getCaughtPokemonsList(this.state.page);
+    await this.getPokemonsList(this.state.page);
+    this.setState({
+      pokemonIds: new Set(
+        this.state.caughtPokemons.map(item => {
+          return item.pokemonId;
+        })
+      )
+    });
   }
 
   render() {
     const { classes } = this.props;
+    const { pokemonIds } = this.state;
+
+    if (!pokemonIds) return <div>LOADING</div>;
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={24}>
-          {this.state.pokemons.map(pokemon => (
-            <Grid key={pokemon.id} item xs={12} md={6} lg={4}>
-              <Card className={classes.card}>
-                <CardActionArea component={Link} to={`/pokemons/${pokemon.id}`}>
-                  <CardMedia
-                    className={classes.media}
-                    image={require("../../assets/pokemons/" +
-                      pokemon.id +
-                      ".png")}
-                    title={pokemon.name}
-                  />
-                  <CardContent>
-                    <Typography variant="h4" component="h4">
-                      {pokemon.name + " [ID:" + pokemon.id + "]"}
-                    </Typography>
-                    {/*<Typography component="p">*/}
-                    {/*{this.getPokemonDescription(pokemon.name)}*/}
-                    {/*</Typography>*/}
-                  </CardContent>
-                </CardActionArea>
-                <CardActions className={classes.actions}>
-                  <Button
-                    variant="outlined"
-                    size="medium"
-                    color="primary"
-                    onClick={this.catchPokemon.bind(
-                      this,
-                      pokemon.id,
-                      pokemon.name
-                    )}
-                  >
-                    Поймать
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
+        <Grid container spacing={24} justify="center">
+          {this.state.pokemons.map(pokemon => {
+            const isAlreadyCaught = pokemonIds.has(pokemon.id);
+            const cardActions = (
+              <CardActions className={classes.actions}>
+                <Button
+                  disabled={isAlreadyCaught}
+                  variant="outlined"
+                  size="medium"
+                  color="primary"
+                  onClick={
+                    isAlreadyCaught
+                      ? null
+                      : this.catchPokemon.bind(this, pokemon.id, pokemon.name)
+                  }
+                >
+                  Поймать
+                </Button>
+              </CardActions>
+            );
+            return (
+              <CaughtPokemon
+                key={pokemon.id}
+                pokemonId={pokemon.id}
+                name={pokemon.name}
+                cardActions={cardActions}
+              />
+            );
+          })}
         </Grid>
         <div>
           <Button

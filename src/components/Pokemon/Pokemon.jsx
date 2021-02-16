@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import config from "../../config/config.json";
+import './Pokemon.css';
 
 const styles = theme => ({
   root: {
@@ -26,7 +27,8 @@ const styles = theme => ({
     justifyContent: "center"
   },
   media: {
-    height: 400
+    height: 400,
+    backgroundSize: "contain"
   }
 });
 
@@ -45,9 +47,11 @@ class Pokemon extends React.Component {
   }
 
   getPokemon() {
-    fetch(
-      `${config.host}:${config.port}/pokemons/${this.props.match.params.id}`
-    )
+    const pokemonId = this.props.match.params.id;
+    console.log(this.props.match);
+    const endpoint = `/pokemons/${pokemonId}`;
+    const url = `${config.host}:${config.port}${endpoint}`;
+    fetch(url)
       .then(res => res.json())
       .then(pokemon => {
         this.setState({ pokemon: pokemon });
@@ -56,12 +60,17 @@ class Pokemon extends React.Component {
   }
 
   getCaughtPokemon() {
-    fetch(`${config.host}:${config.port}/users/${this.state.currentUserId}/
-		caught_pokemons?pokemonId=${this.props.match.params.id}`)
+    const pokemonId = this.props.match.params.id;
+    const endpoint = `/users/${this.state.currentUserId}/
+		caught_pokemons`;
+    const params = `?pokemonId=${pokemonId}`;
+    const url = `${config.host}:${config.port}${endpoint}${params}`;
+    fetch(url)
       .then(res => res.json())
-      .then(pokemon => {
-        this.setState({ caughtPokemon: pokemon[0] });
-        if (pokemon[0]) {
+      .then(data => {
+        const [pokemon] = data;
+        this.setState({ caughtPokemon: pokemon });
+        if (pokemon) {
           this.setState({ caught: true });
         }
       })
@@ -69,6 +78,10 @@ class Pokemon extends React.Component {
   }
 
   catchPokemon() {
+    console.log("CAUGHT NEW POKEMON!");
+    const pokemonId = Number(this.props.match.params.id);
+    const caughtDate = new Date().toLocaleString();
+    const name = this.state.pokemon.name;
     fetch(
       `${config.host}:${config.port}/users/${
         this.state.currentUserId
@@ -79,9 +92,9 @@ class Pokemon extends React.Component {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          pokemonId: +this.props.match.params.id,
-          caughtDate: new Date().toLocaleString(),
-          name: this.state.pokemon.name
+          pokemonId,
+          caughtDate,
+          name
         })
       }
     );
@@ -95,85 +108,52 @@ class Pokemon extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const data = this.state.caughtPokemon
+      ? this.state.caughtPokemon
+      : this.state.pokemon;
+    const matchParamsId = this.props.match.params.id;
+    const pokemonImage = require(`../../assets/pokemons/${matchParamsId}.png`);
+    const key = data.id;
+    const pokemonName = data.name;
+    const pokemonId = this.state.caughtPokemon ? data.pokemonId : key;
+    // const cardTitle = `${pokemonName} [ID: ${pokemonId}]`;
+    const cardDateJsx = this.state.caughtPokemon ? (
+      <Typography component="p">{`Caught at: ${data.caughtDate}`}</Typography>
+    ) : null;
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={24}>
-          {this.state.caughtPokemon ? (
-            <Grid
-              key={this.state.caughtPokemon.id}
-              item
-              xs={12}
-              md={12}
-              lg={12}
-            >
-              <Card className={classes.card}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={require(`../../assets/pokemons/${
-                      this.props.match.params.id
-                    }.png`)}
-                    title={this.state.caughtPokemon.name}
-                  />
-                  <CardContent>
-                    <Typography variant="h4" component="h4">
-                      {this.state.caughtPokemon.name +
-                        " [ID:" +
-                        this.state.caughtPokemon.pokemonId +
-                        "]"}
-                    </Typography>
-                    <Typography component="p">
-                      {"Caught at: " + this.state.caughtPokemon.caughtDate}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions className={classes.actions}>
-                  <Button
-                    disabled={this.state.caught}
-                    variant="outlined"
-                    size="medium"
-                    color="primary"
-                  >
-                    Поймать
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ) : (
-            <Grid key={this.state.pokemon.id} item xs={12} md={12} lg={12}>
-              <Card className={classes.card}>
-                <CardActionArea>
-                  <CardMedia
-                    className={classes.media}
-                    image={require("../../assets/pokemons/" +
-                      this.props.match.params.id +
-                      ".png")}
-                    title={this.state.pokemon.name}
-                  />
-                  <CardContent>
-                    <Typography variant="h4" component="h4">
-                      {this.state.pokemon.name +
-                        " [ID:" +
-                        this.state.pokemon.id +
-                        "]"}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions className={classes.actions}>
-                  <Button
-                    disabled={this.state.caught}
-                    variant="outlined"
-                    size="medium"
-                    color="primary"
-                    onClick={this.catchPokemon}
-                  >
-                    Поймать
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          )}
+        <Grid container spacing={24} justify="center">
+          <Grid key={key} item xs={10} md={6} lg={4}>
+            <Card className={classes.card}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  image={pokemonImage}
+                  title={pokemonName}
+                />
+                <CardContent>
+                  <Typography variant="h4" component="h4">
+                    {/* {cardTitle} */}
+                    <span>{pokemonName} </span>
+                    <span className="Pokemon__id">{`[ID: ${pokemonId}]`}</span>
+                  </Typography>
+                  {cardDateJsx}
+                </CardContent>
+              </CardActionArea>
+              <CardActions className={classes.actions}>
+                <Button
+                  disabled={this.state.caught}
+                  variant="outlined"
+                  size="medium"
+                  color="primary"
+                  onClick={this.state.caughtPokemon ? null : this.catchPokemon}
+                >
+                  Поймать
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
         </Grid>
       </div>
     );

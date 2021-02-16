@@ -4164,6 +4164,342 @@
       "name": "venusaur",
       "userId": "1",
       "id": 55
+    },
+    {
+      "pokemonId": 3,
+      "caughtDate": "16.02.2021, 07:47:40",
+      "name": "venusaur",
+      "userId": "1",
+      "id": 56
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "16.02.2021, 08:01:26",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 57
+    },
+    {
+      "pokemonId": 18,
+      "caughtDate": "16.02.2021, 08:36:00",
+      "name": "pidgeot",
+      "userId": "1",
+      "id": 58
+    },
+    {
+      "pokemonId": 3,
+      "caughtDate": "16.02.2021, 08:36:12",
+      "name": "venusaur",
+      "userId": "1",
+      "id": 59
+    },
+    {
+      "pokemonId": 3,
+      "caughtDate": "16.02.2021, 08:36:12",
+      "name": "venusaur",
+      "userId": "1",
+      "id": 60
+    },
+    {
+      "pokemonId": 3,
+      "caughtDate": "16.02.2021, 08:36:12",
+      "name": "venusaur",
+      "userId": "1",
+      "id": 61
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "16.02.2021, 08:37:12",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 62
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:37:14",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 63
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:37:15",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 64
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:37:15",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 65
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:37:15",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 66
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:37:16",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 67
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:37:16",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 68
+    },
+    {
+      "pokemonId": 3,
+      "caughtDate": "16.02.2021, 08:39:33",
+      "name": "venusaur",
+      "userId": "1",
+      "id": 69
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:39:34",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 70
+    },
+    {
+      "pokemonId": 39,
+      "caughtDate": "16.02.2021, 08:40:01",
+      "name": "jigglypuff",
+      "userId": "1",
+      "id": 71
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "16.02.2021, 08:40:20",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 72
+    },
+    {
+      "pokemonId": 6,
+      "caughtDate": "16.02.2021, 12:17:13",
+      "name": "charizard",
+      "userId": "1",
+      "id": 73
+    },
+    {
+      "pokemonId": 4,
+      "caughtDate": "16.02.2021, 12:17:32",
+      "name": "charmander",
+      "userId": "1",
+      "id": 74
+    },
+    {
+      "pokemonId": 14,
+      "caughtDate": "16.02.2021, 12:25:06",
+      "name": "kakuna",
+      "userId": "1",
+      "id": 75
+    },
+    {
+      "pokemonId": 14,
+      "caughtDate": "16.02.2021, 12:25:07",
+      "name": "kakuna",
+      "userId": "1",
+      "id": 76
+    },
+    {
+      "pokemonId": 14,
+      "caughtDate": "16.02.2021, 12:25:09",
+      "name": "kakuna",
+      "userId": "1",
+      "id": 77
+    },
+    {
+      "pokemonId": 14,
+      "caughtDate": "16.02.2021, 12:25:10",
+      "name": "kakuna",
+      "userId": "1",
+      "id": 78
+    },
+    {
+      "pokemonId": 17,
+      "caughtDate": "16.02.2021, 12:25:26",
+      "name": "pidgeotto",
+      "userId": "1",
+      "id": 79
+    },
+    {
+      "pokemonId": 17,
+      "caughtDate": "16.02.2021, 12:25:27",
+      "name": "pidgeotto",
+      "userId": "1",
+      "id": 80
+    },
+    {
+      "pokemonId": 17,
+      "caughtDate": "16.02.2021, 12:25:28",
+      "name": "pidgeotto",
+      "userId": "1",
+      "id": 81
+    },
+    {
+      "pokemonId": 13,
+      "caughtDate": "16.02.2021, 12:27:07",
+      "name": "weedle",
+      "userId": "1",
+      "id": 82
+    },
+    {
+      "pokemonId": 13,
+      "caughtDate": "16.02.2021, 12:27:08",
+      "name": "weedle",
+      "userId": "1",
+      "id": 83
+    },
+    {
+      "pokemonId": 13,
+      "caughtDate": "16.02.2021, 12:27:09",
+      "name": "weedle",
+      "userId": "1",
+      "id": 84
+    },
+    {
+      "pokemonId": 8,
+      "caughtDate": "16.02.2021, 12:30:05",
+      "name": "wartortle",
+      "userId": "1",
+      "id": 85
+    },
+    {
+      "pokemonId": 8,
+      "caughtDate": "16.02.2021, 12:30:08",
+      "name": "wartortle",
+      "userId": "1",
+      "id": 86
+    },
+    {
+      "pokemonId": 7,
+      "caughtDate": "16.02.2021, 12:30:09",
+      "name": "squirtle",
+      "userId": "1",
+      "id": 87
+    },
+    {
+      "pokemonId": 7,
+      "caughtDate": "16.02.2021, 12:30:09",
+      "name": "squirtle",
+      "userId": "1",
+      "id": 88
+    },
+    {
+      "pokemonId": 12,
+      "caughtDate": "16.02.2021, 12:33:02",
+      "name": "butterfree",
+      "userId": "1",
+      "id": 89
+    },
+    {
+      "pokemonId": 11,
+      "caughtDate": "16.02.2021, 12:33:08",
+      "name": "metapod",
+      "userId": "1",
+      "id": 90
+    },
+    {
+      "pokemonId": 9,
+      "caughtDate": "16.02.2021, 12:34:09",
+      "name": "blastoise",
+      "userId": "1",
+      "id": 91
+    },
+    {
+      "pokemonId": 19,
+      "caughtDate": "16.02.2021, 12:34:33",
+      "name": "rattata",
+      "userId": "1",
+      "id": 92
+    },
+    {
+      "pokemonId": 21,
+      "caughtDate": "16.02.2021, 12:34:36",
+      "name": "spearow",
+      "userId": "1",
+      "id": 93
+    },
+    {
+      "pokemonId": 22,
+      "caughtDate": "16.02.2021, 12:34:37",
+      "name": "fearow",
+      "userId": "1",
+      "id": 94
+    },
+    {
+      "pokemonId": 24,
+      "caughtDate": "16.02.2021, 12:35:11",
+      "name": "arbok",
+      "userId": "1",
+      "id": 95
+    },
+    {
+      "pokemonId": 30,
+      "caughtDate": "16.02.2021, 12:37:29",
+      "name": "nidorina",
+      "userId": "1",
+      "id": 96
+    },
+    {
+      "pokemonId": 28,
+      "caughtDate": "16.02.2021, 12:37:31",
+      "name": "sandslash",
+      "userId": "1",
+      "id": 97
+    },
+    {
+      "pokemonId": 27,
+      "caughtDate": "16.02.2021, 12:37:31",
+      "name": "sandshrew",
+      "userId": "1",
+      "id": 98
+    },
+    {
+      "pokemonId": 29,
+      "caughtDate": "16.02.2021, 12:37:32",
+      "name": "nidoran-f",
+      "userId": "1",
+      "id": 99
+    },
+    {
+      "pokemonId": 38,
+      "caughtDate": "16.02.2021, 12:39:22",
+      "name": "ninetales",
+      "userId": "1",
+      "id": 100
+    },
+    {
+      "pokemonId": 37,
+      "caughtDate": "16.02.2021, 12:39:23",
+      "name": "vulpix",
+      "userId": "1",
+      "id": 101
+    },
+    {
+      "pokemonId": 40,
+      "caughtDate": "16.02.2021, 12:39:26",
+      "name": "wigglytuff",
+      "userId": "1",
+      "id": 102
+    },
+    {
+      "pokemonId": 16,
+      "caughtDate": "16.02.2021, 23:38:11",
+      "name": "pidgey",
+      "userId": "1",
+      "id": 103
     }
   ]
 }

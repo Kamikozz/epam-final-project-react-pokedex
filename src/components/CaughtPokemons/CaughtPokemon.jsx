@@ -1,5 +1,4 @@
 import React from "react";
-// import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
@@ -9,6 +8,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import "./CaughtPokemon.css";
 
 const styles = theme => ({
   card: {
@@ -17,6 +17,7 @@ const styles = theme => ({
   },
   media: {
     height: 400,
+    backgroundSize: "contain"
   }
 });
 
@@ -27,12 +28,15 @@ class CaughtPokemon extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { key, pokemonId, name, date } = this.props;
+    const { key, pokemonId, name, date, cardActions } = this.props;
     const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
-    const cardTitle = `${name} [ID: ${pokemonId}]`;
-    const cardCaughtDate = `Caught at: ${date}`;
+    const cardCaughtDateJsx = date ? (
+      <Typography gutterBottom component="p">
+        {`Caught at: ${date}`}
+      </Typography>
+    ) : null;
     return (
-      <Grid key={key} item xs={12} md={6} lg={4}>
+      <Grid key={key} item xs={10} md={6} lg={4}>
         <Card className={classes.card}>
           <CardActionArea component={Link} to={`/pokemons/${pokemonId}`}>
             <CardMedia
@@ -42,16 +46,16 @@ class CaughtPokemon extends React.Component {
             />
             <CardContent>
               <Typography variant="h4" component="h4">
-                {cardTitle}
+                <span>{name} </span>
+                <span className="CaughtPokemon__id">{`[ID: ${pokemonId}]`}</span>
               </Typography>
-              <Typography gutterBottom component="p">
-                {cardCaughtDate}
-              </Typography>
+              {cardCaughtDateJsx}
               {/*<Typography component="p">*/}
               {/*{this.getPokemonDescription(pokemon.name)}*/}
               {/*</Typography>*/}
             </CardContent>
           </CardActionArea>
+          {cardActions}
         </Card>
       </Grid>
     );

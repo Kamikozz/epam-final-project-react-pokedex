@@ -1,14 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-// import { Link } from "react-router-dom";
 
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-// import Card from "@material-ui/core/Card";
-// import CardActionArea from "@material-ui/core/CardActionArea";
-// import CardContent from "@material-ui/core/CardContent";
-// import CardMedia from "@material-ui/core/CardMedia";
-// import Typography from "@material-ui/core/Typography";
 
 import config from "../../config/config.json";
 import CaughtPokemon from "./CaughtPokemon";
@@ -17,16 +11,6 @@ const styles = theme => ({
   root: {
     margin: "20px",
     flexGrow: 1
-  },
-  card: {
-    textAlign: "center",
-    color: theme.palette.text.secondary
-  },
-  actions: {
-    justifyContent: "center"
-  },
-  media: {
-    height: 400
   }
 });
 
@@ -75,38 +59,11 @@ class CaughtPokemons extends React.Component {
   }
 
   render() {
-    // <Grid key={pokemon.id} item xs={12} md={6} lg={4}>
-    //           <Card className={classes.card}>
-    //             <CardActionArea
-    //               component={Link}
-    //               to={`/pokemons/${pokemon.pokemonId}`}
-    //             >
-    //               <CardMedia
-    //                 className={classes.media}
-    //                 image={require("../../assets/pokemons/" +
-    //                   pokemon.pokemonId +
-    //                   ".png")}
-    //                 title={pokemon.name}
-    //               />
-    //               <CardContent>
-    //                 <Typography variant="h4" component="h4">
-    //                   {pokemon.name + " [ID:" + pokemon.pokemonId + "]"}
-    //                 </Typography>
-    //                 <Typography gutterBottom component="p">
-    //                   {"Caught at: " + pokemon.caughtDate}
-    //                 </Typography>
-    //                 {/*<Typography component="p">*/}
-    //                 {/*{this.getPokemonDescription(pokemon.name)}*/}
-    //                 {/*</Typography>*/}
-    //               </CardContent>
-    //             </CardActionArea>
-    //           </Card>
-    //         </Grid>
     const { classes } = this.props;
 
     return (
       <div className={classes.root}>
-        <Grid container spacing={24}>
+        <Grid container spacing={24} justify="center">
           {this.state.caughtPokemons.map(pokemon => (
             <CaughtPokemon
               key={pokemon.id}
