@@ -3796,5 +3796,374 @@
       "name": "magearna-original",
       "id": 10147
     }
+  ],
+  "users": [
+    {
+      "user": "kamikozz",
+      "id": 1
+    },
+    {
+      "user": "swaggaboy",
+      "id": 2
+    }
+  ],
+  "caught_pokemons": [
+    {
+      "pokemonId": 333,
+      "caughtDate": "07.02.2019, 18:20:06",
+      "userId": "1",
+      "name": "swablu",
+      "id": 1
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "07.02.2019, 18:24:06",
+      "userId": "1",
+      "name": "bulbasaur",
+      "id": 2
+    },
+    {
+      "pokemonId": 10,
+      "caughtDate": "08.02.2019, 18:28:50",
+      "userId": "1",
+      "name": "caterpie",
+      "id": 5
+    },
+    {
+      "pokemonId": 20,
+      "caughtDate": "08.02.2019, 18:24:50",
+      "name": "poliwrath",
+      "userId": "2",
+      "id": 6
+    },
+    {
+      "pokemonId": 22,
+      "caughtDate": "08.12.2019, 18:24:50",
+      "name": "fearow",
+      "userId": "1",
+      "id": 7
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "14.02.2019, 1:35:53",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 10
+    },
+    {
+      "pokemonId": 45,
+      "caughtDate": "14.02.2019, 1:40:43",
+      "name": "vileplume",
+      "userId": "1",
+      "id": 11
+    },
+    {
+      "pokemonId": 46,
+      "caughtDate": "14.02.2019, 1:51:40",
+      "name": "paras",
+      "userId": "1",
+      "id": 12
+    },
+    {
+      "pokemonId": 15,
+      "caughtDate": "14.02.2019, 13:23:54",
+      "name": "beedrill",
+      "userId": "1",
+      "id": 13
+    },
+    {
+      "pokemonId": 5,
+      "caughtDate": "14.02.2019, 13:27:27",
+      "name": "charmeleon",
+      "userId": "1",
+      "id": 14
+    },
+    {
+      "pokemonId": 100,
+      "caughtDate": "14.02.2019, 13:35:15",
+      "name": "voltorb",
+      "userId": "1",
+      "id": 15
+    },
+    {
+      "pokemonId": 101,
+      "caughtDate": "14.02.2019, 13:35:43",
+      "name": "electrode",
+      "userId": "1",
+      "id": 16
+    },
+    {
+      "pokemonId": 102,
+      "caughtDate": "14.02.2019, 13:48:52",
+      "name": "exeggcute",
+      "userId": "1",
+      "id": 17
+    },
+    {
+      "pokemonId": 103,
+      "caughtDate": "14.02.2019, 13:53:40",
+      "name": "exeggutor",
+      "userId": "1",
+      "id": 18
+    },
+    {
+      "pokemonId": 104,
+      "caughtDate": "14.02.2019, 13:55:39",
+      "name": "cubone",
+      "userId": "1",
+      "id": 19
+    },
+    {
+      "pokemonId": 105,
+      "caughtDate": "14.02.2019, 13:56:13",
+      "name": "marowak",
+      "userId": "1",
+      "id": 20
+    },
+    {
+      "pokemonId": 108,
+      "caughtDate": "14.02.2019, 14:12:44",
+      "name": "lickitung",
+      "userId": "1",
+      "id": 21
+    },
+    {
+      "pokemonId": 700,
+      "caughtDate": "14.02.2019, 14:21:16",
+      "name": "sylveon",
+      "userId": "1",
+      "id": 22
+    },
+    {
+      "pokemonId": 140,
+      "caughtDate": "05.03.2020, 18:30:33",
+      "name": "kabuto",
+      "userId": "1",
+      "id": 23
+    },
+    {
+      "pokemonId": 139,
+      "caughtDate": "05.03.2020, 18:30:41",
+      "name": "omastar",
+      "userId": "1",
+      "id": 24
+    },
+    {
+      "pokemonId": 138,
+      "caughtDate": "05.03.2020, 18:30:43",
+      "name": "omanyte",
+      "userId": "1",
+      "id": 25
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:33:08",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 26
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:33:10",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 27
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:33:18",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 28
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:33:19",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 29
+    },
+    {
+      "pokemonId": 2,
+      "caughtDate": "05.03.2020, 18:33:25",
+      "name": "ivysaur",
+      "userId": "1",
+      "id": 30
+    },
+    {
+      "pokemonId": 40,
+      "caughtDate": "05.03.2020, 18:34:34",
+      "name": "wigglytuff",
+      "userId": "1",
+      "id": 31
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:57",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 32
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:58",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 33
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:58",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 34
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:58",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 35
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:58",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 36
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:58",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 37
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 38
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 39
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 40
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 41
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 42
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 43
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 44
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 45
+    },
+    {
+      "pokemonId": 1,
+      "caughtDate": "05.03.2020, 18:34:59",
+      "name": "bulbasaur",
+      "userId": "1",
+      "id": 46
+    },
+    {
+      "pokemonId": 20,
+      "caughtDate": "05.03.2020, 18:35:23",
+      "name": "raticate",
+      "userId": "1",
+      "id": 47
+    },
+    {
+      "pokemonId": 40,
+      "caughtDate": "05.03.2020, 18:36:30",
+      "name": "wigglytuff",
+      "userId": "1",
+      "id": 48
+    },
+    {
+      "pokemonId": 56,
+      "caughtDate": "05.03.2020, 18:36:35",
+      "name": "mankey",
+      "userId": "1",
+      "id": 49
+    },
+    {
+      "pokemonId": 55,
+      "caughtDate": "05.03.2020, 18:36:35",
+      "name": "golduck",
+      "userId": "1",
+      "id": 50
+    },
+    {
+      "pokemonId": 60,
+      "caughtDate": "05.03.2020, 18:36:44",
+      "name": "poliwag",
+      "userId": "1",
+      "id": 51
+    },
+    {
+      "pokemonId": 59,
+      "caughtDate": "05.03.2020, 18:36:45",
+      "name": "arcanine",
+      "userId": "1",
+      "id": 52
+    },
+    {
+      "pokemonId": 56,
+      "caughtDate": "14.04.2020, 18:55:24",
+      "name": "mankey",
+      "userId": "1",
+      "id": 53
+    },
+    {
+      "pokemonId": 57,
+      "caughtDate": "14.04.2020, 18:55:28",
+      "name": "primeape",
+      "userId": "1",
+      "id": 54
+    },
+    {
+      "pokemonId": 3,
+      "caughtDate": "14.04.2020, 18:55:43",
+      "name": "venusaur",
+      "userId": "1",
+      "id": 55
+    }
   ]
 }
