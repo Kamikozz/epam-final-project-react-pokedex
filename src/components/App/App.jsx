@@ -7,12 +7,7 @@ import CaughtPokemons from "../CaughtPokemons/CaughtPokemons";
 import NotFound from "../NotFound/NotFound";
 import Pokemon from "../Pokemon/Pokemon";
 import "./App.css";
-
-const routes = {
-  pokemonsList: "/",
-  pokemon: "/pokemons/:id",
-  caughtPokemonsList: "/caught_pokemons/"
-};
+import routes from "../../routes";
 
 class App extends React.Component {
   render() {

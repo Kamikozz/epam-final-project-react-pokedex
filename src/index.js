@@ -1,15 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import './index.css';
-import App from './components/App/App';
-import * as serviceWorker from './serviceWorker';
+
 import './polyfills';
+import * as serviceWorker from './serviceWorker';
+
+import App from './components/App/App';
+import './index.css';
+import routes from "./routes";
 
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route path="/" component={App} />
+      <Route path={routes.pokemonsList} component={App} />
     </Switch>
   </Router>,
   document.getElementById('root')

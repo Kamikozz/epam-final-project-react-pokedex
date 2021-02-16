@@ -1,24 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { withStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
-import './NotFound.css';
+import "./NotFound.css";
+import routes from "../../routes";
 
 const styles = {
   card: {
-    minWidth: 275,
+    minWidth: 275
   },
   errNum: {
-    color: 'red'
+    color: "red"
   },
   errText: {
-    marginBottom: 12,
+    marginBottom: 12
   }
 };
 
@@ -27,27 +28,24 @@ class NotFound extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={'Not-found'}>
+      <div className={"Not-found"}>
         <Card className={classes.card}>
-          <CardContent className={'Card'}>
-            <Typography
-              variant="h2"
-              className={classes.errNum}
-            >
+          <CardContent className={"Card"}>
+            <Typography variant="h2" className={classes.errNum}>
               404
-						</Typography>
-            <Typography
-              className={classes.errText}>
+            </Typography>
+            <Typography className={classes.errText}>
               А это что за покемон? 😅
-						</Typography>
+            </Typography>
             <Button
               variant="contained"
               color="primary"
-              className={'btn'}
+              className={"btn"}
               component={Link}
-              to="/">
+              to={routes.pokemonsList}
+            >
               Go to home page
-						</Button>
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -56,7 +54,7 @@ class NotFound extends React.Component {
 }
 
 NotFound.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(NotFound);

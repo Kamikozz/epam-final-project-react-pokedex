@@ -8,7 +8,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
 import pokedexIcon from "../../assets/pokeball.png";
+import caughtPokemonsIcon from "../../assets/pokeball3.png";
 import "./Nav.css";
+import routes from "../../routes";
 
 const styles = {
   root: {
@@ -47,9 +49,20 @@ class Nav extends React.Component {
             icon={<img src={pokedexIcon} alt="Home pokedex" width="24px" />}
             label="POKEDEX"
             component={Link}
-            to="/"
+            to={routes.pokemonsList}
           />
-          <Tab label="GOTCHA!" component={Link} to={"/caught_pokemons"} />
+          <Tab
+            icon={
+              <img
+                src={caughtPokemonsIcon}
+                alt="Caught pokemons"
+                width="24px"
+              />
+            }
+            label="GOTCHA!"
+            component={Link}
+            to={routes.caughtPokemonsList}
+          />
         </Tabs>
       </Paper>
     );
