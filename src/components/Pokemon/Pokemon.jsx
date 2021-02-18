@@ -40,9 +40,8 @@ class Pokemon extends React.Component {
     super(props);
     this.state = {
       currentUserId: 1,
-      pokemon: {},
-      caughtPokemon: {},
-      caught: false
+      pokemon: null,
+      caughtPokemon: null
     };
     this.getPokemon = this.getPokemon.bind(this);
     this.getCaughtPokemon = this.getCaughtPokemon.bind(this);
@@ -72,11 +71,8 @@ class Pokemon extends React.Component {
       .then(data => {
         const [pokemon] = data;
         this.setState({ caughtPokemon: pokemon });
-        if (pokemon) {
-          this.setState({ caught: true });
-        }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   catchPokemon() {
@@ -84,23 +80,22 @@ class Pokemon extends React.Component {
     const pokemonId = Number(this.props.match.params.id);
     const caughtDate = new Date().toLocaleString();
     const name = this.state.pokemon.name;
-    fetch(
-      `${config.host}:${config.port}/users/${
-        this.state.currentUserId
-      }/caught_pokemons/`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          pokemonId,
-          caughtDate,
-          name
-        })
-      }
-    );
-    this.setState({ caught: true });
+    const data = {
+      pokemonId,
+      caughtDate,
+      name
+    };
+    const endpoint = `/users/${this.state.currentUserId}/
+		caught_pokemons`;
+    const url = `${config.host}:${config.port}${endpoint}`;
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+    this.setState({ caughtPokemon: data });
   }
 
   componentDidMount() {
@@ -110,20 +105,34 @@ class Pokemon extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const data = this.state.caughtPokemon
+    const isCaughtPokemon = Boolean(this.state.caughtPokemon);
+    const data = isCaughtPokemon
       ? this.state.caughtPokemon
       : this.state.pokemon;
-    const matchParamsId = this.props.match.params.id;
-    const pokemonImage = require(`../../assets/pokemons/${matchParamsId}.png`);
-    const key = data.id;
-    const pokemonName = data.name;
-    const pokemonId = this.state.caughtPokemon ? data.pokemonId : key;
-    // const cardTitle = `${pokemonName} [ID: ${pokemonId}]`;
-    const cardDateJsx = this.state.caughtPokemon ? (
-      <Typography component="p">{`Caught at: ${data.caughtDate}`}</Typography>
 
     if (!data) return <Loader />;
+
+    const pokemonIdFromUrl = this.props.match.params.id;
+    const pokemonImage = require(`../../assets/pokemons/${pokemonIdFromUrl}.png`);
+
+    const { id: key, name: pokemonName, caughtDate } = data;
+    const pokemonId = isCaughtPokemon ? data.pokemonId : key;
+    const cardDateJsx = isCaughtPokemon ? (
+      <Typography component="p">{`Caught at: ${caughtDate}`}</Typography>
     ) : null;
+
+    const cardActionsJsx = isCaughtPokemon ? null : (
+      <CardActions className={classes.actions}>
+        <Button
+          variant="outlined"
+          size="medium"
+          color="primary"
+          onClick={this.catchPokemon}
+        >
+          Поймать
+        </Button>
+      </CardActions>
+    );
 
     return (
       <div className={classes.root}>
@@ -146,17 +155,7 @@ class Pokemon extends React.Component {
                   {cardDateJsx}
                 </CardContent>
               </CardActionArea>
-              <CardActions className={classes.actions}>
-                <Button
-                  disabled={this.state.caught}
-                  variant="outlined"
-                  size="medium"
-                  color="primary"
-                  onClick={this.state.caughtPokemon ? null : this.catchPokemon}
-                >
-                  Поймать
-                </Button>
-              </CardActions>
+              {cardActionsJsx}
             </Card>
           </Grid>
         </Grid>
