@@ -5,7 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
 import config from "../../config/config.json";
-import CaughtPokemon from "./CaughtPokemon";
+import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
+import Loader from "../Loader/Loader";
 
 const styles = theme => ({
   root: {
@@ -14,7 +15,7 @@ const styles = theme => ({
   }
 });
 
-class CaughtPokemons extends React.Component {
+class CaughtPokemonsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -25,16 +26,15 @@ class CaughtPokemons extends React.Component {
   }
 
   getCaughtPokemonsList() {
-    fetch(
-      `${config.host}:${config.port}/user/${
-        this.state.currentUserId
-      }/caught_pokemons`
-    )
+    const endpoint = `/user/${this.state.currentUserId}/
+		caught_pokemons`;
+    const url = `${config.host}:${config.port}${endpoint}`;
+    fetch(url)
       .then(res => res.json())
       .then(pokemons => {
         this.setState({ caughtPokemons: pokemons });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   // getPokemonDescription = (name) => {
@@ -61,6 +61,10 @@ class CaughtPokemons extends React.Component {
   render() {
     const { classes } = this.props;
 
+    console.log(this.state.caughtPokemons);
+
+    if (!this.state.caughtPokemons.length) return <Loader />;
+
     return (
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
@@ -78,8 +82,8 @@ class CaughtPokemons extends React.Component {
   }
 }
 
-CaughtPokemons.propTypes = {
+CaughtPokemonsList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CaughtPokemons);
+export default withStyles(styles)(CaughtPokemonsList);

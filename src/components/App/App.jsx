@@ -4,8 +4,8 @@ import { Route, Switch } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
 import Nav from "../Nav/Nav";
-import List from "../List/List";
-import CaughtPokemons from "../CaughtPokemons/CaughtPokemons";
+import PokemonsList from "../PokemonsList/PokemonsList";
+import CaughtPokemonsList from "../CaughtPokemonsList/CaughtPokemonsList";
 import NotFound from "../NotFound/NotFound";
 import Pokemon from "../Pokemon/Pokemon";
 import routes from "../../routes";
@@ -37,12 +37,12 @@ class App extends React.Component {
         <Nav selected={selectedTab} />
         <section className={classes.main}>
           <Switch>
-            <Route exact path={routes.pokemonsList} component={List} />
+            <Route exact path={routes.pokemonsList} component={PokemonsList} />
             <Route exact path={routes.pokemon} component={Pokemon} />
             <Route
               exact
               path={routes.caughtPokemonsList}
-              component={CaughtPokemons}
+              component={CaughtPokemonsList}
             />
             <Route component={NotFound} />
           </Switch>

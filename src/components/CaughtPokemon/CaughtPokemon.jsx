@@ -8,7 +8,6 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-import "./CaughtPokemon.css";
 
 const styles = theme => ({
   card: {
@@ -18,6 +17,9 @@ const styles = theme => ({
   media: {
     height: 400,
     backgroundSize: "contain"
+  },
+  caughtPokemonId: {
+    display: "inline-block"
   }
 });
 
@@ -47,7 +49,9 @@ class CaughtPokemon extends React.Component {
             <CardContent>
               <Typography variant="h4" component="h4">
                 <span>{name} </span>
-                <span className="CaughtPokemon__id">{`[ID: ${pokemonId}]`}</span>
+                <span
+                  className={classes.caughtPokemonId}
+                >{`[ID: ${pokemonId}]`}</span>
               </Typography>
               {cardCaughtDateJsx}
               {/*<Typography component="p">*/}

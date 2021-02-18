@@ -7,8 +7,8 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
 import config from "../../config/config.json";
-import "./List.css";
-import CaughtPokemon from "../CaughtPokemons/CaughtPokemon";
+import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
+import Loader from "../Loader/Loader";
 
 const styles = theme => ({
   root: {
@@ -24,10 +24,17 @@ const styles = theme => ({
   },
   media: {
     height: 400
+  },
+  nextPageButton: {
+    margin: "10px 0 10px 0",
+    backgroundColor: "red",
+    "&:hover": {
+      backgroundColor: "red"
+    }
   }
 });
 
-class List extends React.Component {
+class PokemonsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -55,12 +62,11 @@ class List extends React.Component {
     const url = `${config.host}:${config.port}${endpoint}${params}`;
     return fetch(url)
       .then(res => res.json())
-      .then(newpokemons => {
-        const pokemonsArr = [].concat(this.state.pokemons, newpokemons);
+      .then(newPokemons => {
+        const pokemonsArr = [].concat(this.state.pokemons, newPokemons);
         this.setState({ pokemons: pokemonsArr });
-        // console.log(this.state.pokemons);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   getCaughtPokemonsList(page) {
@@ -71,21 +77,19 @@ class List extends React.Component {
     const url = `${config.host}:${config.port}${endpoint}${params}`;
     return fetch(url)
       .then(res => res.json())
-      .then(newpokemons => {
+      .then(newPokemons => {
         const caughtPokemonsArr = [].concat(
           this.state.caughtPokemons,
-          newpokemons
+          newPokemons
         );
         this.setState({ caughtPokemons: caughtPokemonsArr });
-        // console.log(this.state.caughtPokemons);
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   catchPokemon(pokemonId, name) {
-    console.log("Пойман покемон из List.jsx");
-    const endpoint = `/users/${this.state.currentUserId}/
-		caught_pokemons`;
+    console.log("Пойман покемон из PokemonsList.jsx");
+    const endpoint = `/users/${this.state.currentUserId}/caught_pokemons`;
     const url = `${config.host}:${config.port}${endpoint}`;
     fetch(url, {
       method: "POST",
@@ -107,7 +111,6 @@ class List extends React.Component {
   }
 
   async componentDidMount() {
-    console.log("componentDidMount");
     await this.getCaughtPokemonsList(this.state.page);
     await this.getPokemonsList(this.state.page);
     this.setState({
@@ -123,7 +126,7 @@ class List extends React.Component {
     const { classes } = this.props;
     const { pokemonIds } = this.state;
 
-    if (!pokemonIds) return <div>LOADING</div>;
+    if (!pokemonIds) return <Loader />;
 
     return (
       <div className={classes.root}>
@@ -161,7 +164,7 @@ class List extends React.Component {
           <Button
             variant="contained"
             color="primary"
-            className={"btn"}
+            className={classes.nextPageButton}
             onClick={this.handleNext}
           >
             Хочу больше
@@ -172,8 +175,8 @@ class List extends React.Component {
   }
 }
 
-List.propTypes = {
+PokemonsList.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(List);
+export default withStyles(styles)(PokemonsList);
