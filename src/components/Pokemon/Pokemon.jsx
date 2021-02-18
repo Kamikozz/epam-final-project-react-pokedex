@@ -124,7 +124,7 @@ class Pokemon extends React.Component {
       ? this.state.caughtPokemon
       : this.state.pokemon;
 
-    if (!data) return <Loader />;
+    if (!data) return <Loader text />;
 
     const pokemonIdFromUrl = this.props.match.params.id;
     const pokemonImage = require(`../../assets/pokemons/${pokemonIdFromUrl}.png`);
@@ -157,6 +157,7 @@ class Pokemon extends React.Component {
               classes={{ badge: classes.badge }}
               color="primary"
               badgeContent={pokemonId}
+              max={99999} // max pokemonId found in db.json
             >
               <Card className={classes.card}>
                 <CardActionArea>

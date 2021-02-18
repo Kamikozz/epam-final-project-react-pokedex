@@ -14,14 +14,14 @@ const styles = theme => ({
 });
 
 function Loader(props) {
-  const { classes } = props;
+  const { classes, className, text, size = 70 } = props;
   return (
-    <div className={classes.progressColor}>
-      <div>LOADING</div>
+    <div className={[classes.progressColor, className].join(" ")}>
+      {text && <div>LOADING</div>}
       <CircularProgress
         className={classes.progress}
         color="inherit"
-        size={70}
+        size={size}
         thickness={1}
       />
     </div>

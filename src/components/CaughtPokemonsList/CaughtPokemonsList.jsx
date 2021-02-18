@@ -37,23 +37,6 @@ class CaughtPokemonsList extends React.Component {
       .catch(err => console.error(err));
   }
 
-  // getPokemonDescription = (name) => {
-  // 	fetch(`https://www.pokemon.com/ru/pokedex/${name}`)
-  // 		.then(res => res.text())
-  // 		.then(body => {
-  //
-  // 			const regexp = /<p class="version-y\s.*\s*[\w .\n&#;,:]*<\/p>/;
-  // 			const replaceRegexp = /<p class="version-y\s.*\s*|\s*<\/p>|/g;
-  // 			console.log(body);
-  // 			body = body.match(regexp).toString().replace(replaceRegexp, "").replace(/\n/g, " ");
-  //
-  // 			return body;
-  // 			// var p = document.getElementById('description');
-  // 			// p.innerHTML = body;
-  // 		})
-  // 		.catch(err => console.log(err))
-  // };
-
   componentDidMount() {
     this.getCaughtPokemonsList();
   }
@@ -63,7 +46,7 @@ class CaughtPokemonsList extends React.Component {
 
     console.log(this.state.caughtPokemons);
 
-    if (!this.state.caughtPokemons.length) return <Loader />;
+    if (!this.state.caughtPokemons.length) return <Loader text />;
 
     return (
       <div className={classes.root}>

@@ -25,14 +25,27 @@ const styles = theme => ({
   media: {
     height: 400
   },
+  nextPageButtonWrapper: {
+    position: "relative"
+  },
   nextPageButton: {
     margin: "10px 0 10px 0",
     backgroundColor: "red",
     "&:hover": {
       backgroundColor: "red"
     }
+  },
+  nextPageButtonLoader: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)"
   }
 });
+
+function scrollToBottom(el) {
+  el.scrollIntoView({ behavior: "smooth" });
+}
 
 class PokemonsList extends React.Component {
   constructor(props) {
@@ -42,7 +55,9 @@ class PokemonsList extends React.Component {
       pokemons: [],
       caughtPokemons: [],
       page: 1,
-      pokemonIds: null
+      caughtPokemonIds: null,
+      isNextPageLoading: false,
+      endOfPage: null
     };
     this.handleNext = this.handleNext.bind(this);
     this.getPokemonsList = this.getPokemonsList.bind(this);
@@ -51,9 +66,10 @@ class PokemonsList extends React.Component {
 
   handleNext() {
     const nextPageNo = this.state.page + 1;
-    this.getPokemonsList(nextPageNo);
-    this.getCaughtPokemonsList(nextPageNo);
-    this.setState({ page: nextPageNo });
+    this.setState({ page: nextPageNo, isNextPageLoading: true }, async () => {
+      await this.getPokemons();
+      scrollToBottom(this.endOfPage);
+    });
   }
 
   getPokemonsList(page) {
@@ -87,6 +103,17 @@ class PokemonsList extends React.Component {
       .catch(err => console.error(err));
   }
 
+  async getPokemons() {
+    await this.getCaughtPokemonsList(this.state.page);
+    await this.getPokemonsList(this.state.page);
+    this.setState({
+      caughtPokemonIds: new Set(
+        this.state.caughtPokemons.map(({ pokemonId }) => pokemonId)
+      ),
+      isNextPageLoading: false
+    });
+  }
+
   catchPokemon(pokemonId, name) {
     console.log("Пойман покемон из PokemonsList.jsx");
     const endpoint = `/users/${this.state.currentUserId}/caught_pokemons`;
@@ -103,36 +130,28 @@ class PokemonsList extends React.Component {
       })
     });
     this.setState(state => {
-      const pokemonIds = state.pokemonIds.add(pokemonId);
+      const caughtPokemonIds = state.caughtPokemonIds.add(pokemonId);
       return {
-        pokemonIds
+        caughtPokemonIds
       };
     });
   }
 
-  async componentDidMount() {
-    await this.getCaughtPokemonsList(this.state.page);
-    await this.getPokemonsList(this.state.page);
-    this.setState({
-      pokemonIds: new Set(
-        this.state.caughtPokemons.map(item => {
-          return item.pokemonId;
-        })
-      )
-    });
+  componentDidMount() {
+    this.getPokemons();
   }
 
   render() {
     const { classes } = this.props;
-    const { pokemonIds } = this.state;
+    const { caughtPokemonIds } = this.state;
 
-    if (!pokemonIds) return <Loader />;
+    if (!caughtPokemonIds) return <Loader text />;
 
     return (
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
           {this.state.pokemons.map(pokemon => {
-            const isAlreadyCaught = pokemonIds.has(pokemon.id);
+            const isAlreadyCaught = caughtPokemonIds.has(pokemon.id);
             const cardActions = (
               <CardActions className={classes.actions}>
                 <Button
@@ -160,8 +179,12 @@ class PokemonsList extends React.Component {
             );
           })}
         </Grid>
-        <div>
+        <div
+          className={classes.nextPageButtonWrapper}
+          ref={el => (this.endOfPage = el)}
+        >
           <Button
+            disabled={this.state.isNextPageLoading}
             variant="contained"
             color="primary"
             className={classes.nextPageButton}
@@ -169,6 +192,9 @@ class PokemonsList extends React.Component {
           >
             Хочу больше
           </Button>
+          {this.state.isNextPageLoading && (
+            <Loader className={classes.nextPageButtonLoader} size={24} />
+          )}
         </div>
       </div>
     );

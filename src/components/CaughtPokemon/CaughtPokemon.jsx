@@ -58,6 +58,7 @@ class CaughtPokemon extends React.Component {
           classes={{ badge: classes.badge }}
           color="primary"
           badgeContent={pokemonId}
+          max={99999} // max pokemonId found in db.json
         >
           <Card className={classes.card}>
             <CardActionArea component={Link} to={`/pokemons/${pokemonId}`}>
