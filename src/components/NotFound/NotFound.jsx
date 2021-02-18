@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import routes from "../../routes";
+import notFoundImage from "../../assets/pokemon-meme.gif";
 
 const styles = {
   root: {
@@ -21,14 +22,18 @@ const styles = {
     minWidth: 275
   },
   cardContent: {
-    textAlign: "center",
-    justifyContent: "center"
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center"
   },
-  errNum: {
+  errorStatus: {
     color: "red"
   },
-  errText: {
-    marginBottom: 12
+  notFoundImage: {
+    margin: "12px 0 12px 0",
+    width: "80%",
+    borderRadius: "4px"
   },
   button: {
     backgroundColor: "red",
@@ -46,12 +51,17 @@ class NotFound extends React.Component {
       <div className={classes.root}>
         <Card className={classes.card}>
           <CardContent className={classes.cardContent}>
-            <Typography variant="h2" className={classes.errNum}>
+            <Typography variant="h2" className={classes.errorStatus}>
               404
             </Typography>
-            <Typography className={classes.errText}>
+            <Typography className={classes.errorText}>
               А это что за покемон? 😅
             </Typography>
+            <img
+              className={classes.notFoundImage}
+              src={notFoundImage}
+              alt="who is this pokemon meme"
+            />
             <Button
               variant="contained"
               color="primary"
