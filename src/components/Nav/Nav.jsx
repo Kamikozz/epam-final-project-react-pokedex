@@ -9,7 +9,6 @@ import Tab from "@material-ui/core/Tab";
 
 import pokedexIcon from "../../assets/pokeball.png";
 import caughtPokemonsIcon from "../../assets/pokeball3.png";
-import "./Nav.css";
 import routes from "../../routes";
 
 const styles = {

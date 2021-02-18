@@ -12,7 +12,6 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import config from "../../config/config.json";
-import './Pokemon.css';
 import Loader from "../Loader/Loader";
 
 const styles = theme => ({
@@ -30,6 +29,9 @@ const styles = theme => ({
   media: {
     height: 400,
     backgroundSize: "contain"
+  },
+  pokemonId: {
+    display: "inline-block"
   }
 });
 
@@ -49,7 +51,6 @@ class Pokemon extends React.Component {
 
   getPokemon() {
     const pokemonId = this.props.match.params.id;
-    console.log(this.props.match);
     const endpoint = `/pokemons/${pokemonId}`;
     const url = `${config.host}:${config.port}${endpoint}`;
     fetch(url)
@@ -57,7 +58,7 @@ class Pokemon extends React.Component {
       .then(pokemon => {
         this.setState({ pokemon: pokemon });
       })
-      .catch(err => console.log(err));
+      .catch(err => console.error(err));
   }
 
   getCaughtPokemon() {
@@ -137,9 +138,10 @@ class Pokemon extends React.Component {
                 />
                 <CardContent>
                   <Typography variant="h4" component="h4">
-                    {/* {cardTitle} */}
                     <span>{pokemonName} </span>
-                    <span className="Pokemon__id">{`[ID: ${pokemonId}]`}</span>
+                    <span
+                      className={classes.pokemonId}
+                    >{`[ID: ${pokemonId}]`}</span>
                   </Typography>
                   {cardDateJsx}
                 </CardContent>

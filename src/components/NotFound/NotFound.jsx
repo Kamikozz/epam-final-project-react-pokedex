@@ -8,18 +8,33 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
-import "./NotFound.css";
 import routes from "../../routes";
 
 const styles = {
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center"
+  },
   card: {
     minWidth: 275
+  },
+  cardContent: {
+    textAlign: "center",
+    justifyContent: "center"
   },
   errNum: {
     color: "red"
   },
   errText: {
     marginBottom: 12
+  },
+  button: {
+    backgroundColor: "red",
+    "&:hover": {
+      backgroundColor: "red"
+    }
   }
 };
 
@@ -28,9 +43,9 @@ class NotFound extends React.Component {
     const { classes } = this.props;
 
     return (
-      <div className={"Not-found"}>
+      <div className={classes.root}>
         <Card className={classes.card}>
-          <CardContent className={"Card"}>
+          <CardContent className={classes.cardContent}>
             <Typography variant="h2" className={classes.errNum}>
               404
             </Typography>
@@ -40,7 +55,7 @@ class NotFound extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              className={"btn"}
+              className={classes.button}
               component={Link}
               to={routes.pokemonsList}
             >
