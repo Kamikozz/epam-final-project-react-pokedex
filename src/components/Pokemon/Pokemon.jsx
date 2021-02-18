@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 
 import config from "../../config/config.json";
 import './Pokemon.css';
+import Loader from "../Loader/Loader";
 
 const styles = theme => ({
   root: {
@@ -119,6 +120,8 @@ class Pokemon extends React.Component {
     // const cardTitle = `${pokemonName} [ID: ${pokemonId}]`;
     const cardDateJsx = this.state.caughtPokemon ? (
       <Typography component="p">{`Caught at: ${data.caughtDate}`}</Typography>
+
+    if (!data) return <Loader />;
     ) : null;
 
     return (
