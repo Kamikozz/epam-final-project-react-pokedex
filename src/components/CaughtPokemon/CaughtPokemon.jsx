@@ -8,18 +8,32 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import Badge from "@material-ui/core/Badge";
 
 const styles = theme => ({
+  badgeWrapper: {
+    display: "block",
+    overflow: "hidden",
+    borderRadius: "4px"
+  },
+  badge: {
+    margin: "17px",
+    padding: "25px",
+    width: 0,
+    fontSize: "20px",
+    borderRadius: "0 50%",
+    backgroundColor: "red"
+  },
   card: {
     textAlign: "center",
     color: theme.palette.text.secondary
   },
   media: {
-    height: 400,
+    height: 300,
     backgroundSize: "contain"
   },
-  caughtPokemonId: {
-    display: "inline-block"
+  pokemonName: {
+    textTransform: "uppercase"
   }
 });
 
@@ -38,29 +52,38 @@ class CaughtPokemon extends React.Component {
       </Typography>
     ) : null;
     return (
-      <Grid key={key} item xs={10} md={6} lg={4}>
-        <Card className={classes.card}>
-          <CardActionArea component={Link} to={`/pokemons/${pokemonId}`}>
-            <CardMedia
-              className={classes.media}
-              image={pokemonImage}
-              title={name}
-            />
-            <CardContent>
-              <Typography variant="h4" component="h4">
-                <span>{name} </span>
-                <span
-                  className={classes.caughtPokemonId}
-                >{`[ID: ${pokemonId}]`}</span>
-              </Typography>
-              {cardCaughtDateJsx}
-              {/*<Typography component="p">*/}
-              {/*{this.getPokemonDescription(pokemon.name)}*/}
-              {/*</Typography>*/}
-            </CardContent>
-          </CardActionArea>
-          {cardActions}
-        </Card>
+      <Grid key={key} item xs={10} md={4} lg={3}>
+        <Badge
+          className={classes.badgeWrapper}
+          classes={{ badge: classes.badge }}
+          color="primary"
+          badgeContent={pokemonId}
+        >
+          <Card className={classes.card}>
+            <CardActionArea component={Link} to={`/pokemons/${pokemonId}`}>
+              <CardMedia
+                className={classes.media}
+                image={pokemonImage}
+                title={name}
+              />
+              <CardContent>
+                <Typography
+                  className={classes.pokemonName}
+                  variant="h4"
+                  component="h4"
+                >
+                  {name}
+                </Typography>
+                {cardCaughtDateJsx}
+                {/*<Typography component="p">*/}
+                {/*{this.getPokemonDescription(pokemon.name)}*/}
+                {/*</Typography>*/}
+              </CardContent>
+            </CardActionArea>
+
+            {cardActions}
+          </Card>
+        </Badge>
       </Grid>
     );
   }

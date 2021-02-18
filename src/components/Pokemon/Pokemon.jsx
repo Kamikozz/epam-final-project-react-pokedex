@@ -10,6 +10,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Badge from "@material-ui/core/Badge";
 
 import config from "../../config/config.json";
 import Loader from "../Loader/Loader";
@@ -23,6 +24,9 @@ const styles = theme => ({
     textAlign: "center",
     color: theme.palette.text.secondary
   },
+  pokemonName: {
+    textTransform: "uppercase"
+  },
   actions: {
     justifyContent: "center"
   },
@@ -30,8 +34,18 @@ const styles = theme => ({
     height: 400,
     backgroundSize: "contain"
   },
-  pokemonId: {
-    display: "inline-block"
+  badgeWrapper: {
+    display: "block",
+    overflow: "hidden",
+    borderRadius: "4px"
+  },
+  badge: {
+    margin: "17px",
+    padding: "25px",
+    width: 0,
+    fontSize: "20px",
+    borderRadius: "0 50%",
+    backgroundColor: "red"
   }
 });
 
@@ -138,25 +152,33 @@ class Pokemon extends React.Component {
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
           <Grid key={key} item xs={10} md={6} lg={4}>
-            <Card className={classes.card}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={pokemonImage}
-                  title={pokemonName}
-                />
-                <CardContent>
-                  <Typography variant="h4" component="h4">
-                    <span>{pokemonName} </span>
-                    <span
-                      className={classes.pokemonId}
-                    >{`[ID: ${pokemonId}]`}</span>
-                  </Typography>
-                  {cardDateJsx}
-                </CardContent>
-              </CardActionArea>
-              {cardActionsJsx}
-            </Card>
+            <Badge
+              className={classes.badgeWrapper}
+              classes={{ badge: classes.badge }}
+              color="primary"
+              badgeContent={pokemonId}
+            >
+              <Card className={classes.card}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={pokemonImage}
+                    title={pokemonName}
+                  />
+                  <CardContent>
+                    <Typography
+                      className={classes.pokemonName}
+                      variant="h4"
+                      component="h4"
+                    >
+                      {pokemonName}
+                    </Typography>
+                    {cardDateJsx}
+                  </CardContent>
+                </CardActionArea>
+                {cardActionsJsx}
+              </Card>
+            </Badge>
           </Grid>
         </Grid>
       </div>
