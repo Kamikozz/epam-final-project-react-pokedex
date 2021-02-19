@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import config from "../../config/config.json";
 import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
 import Loader from "../Loader/Loader";
+import services from "../../services/pokemons";
 
 const styles = theme => ({
   root: {
@@ -25,16 +25,11 @@ class CaughtPokemonsList extends React.Component {
     this.getCaughtPokemonsList = this.getCaughtPokemonsList.bind(this);
   }
 
-  getCaughtPokemonsList() {
-    const endpoint = `/user/${this.state.currentUserId}/
-		caught_pokemons`;
-    const url = `${config.host}:${config.port}${endpoint}`;
-    fetch(url)
-      .then(res => res.json())
-      .then(pokemons => {
-        this.setState({ caughtPokemons: pokemons });
-      })
-      .catch(err => console.error(err));
+  async getCaughtPokemonsList() {
+    const caughtPokemons = await services.getCaughtPokemons(
+      this.state.currentUserId
+    );
+    this.setState({ caughtPokemons });
   }
 
   componentDidMount() {

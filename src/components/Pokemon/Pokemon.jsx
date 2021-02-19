@@ -12,8 +12,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 
-import config from "../../config/config.json";
 import Loader from "../Loader/Loader";
+import services from "../../services/pokemons";
 
 const styles = theme => ({
   root: {
@@ -62,53 +62,28 @@ class Pokemon extends React.Component {
     this.catchPokemon = this.catchPokemon.bind(this);
   }
 
-  getPokemon() {
+  async getPokemon() {
     const pokemonId = this.props.match.params.id;
-    const endpoint = `/pokemons/${pokemonId}`;
-    const url = `${config.host}:${config.port}${endpoint}`;
-    fetch(url)
-      .then(res => res.json())
-      .then(pokemon => {
-        this.setState({ pokemon: pokemon });
-      })
-      .catch(err => console.error(err));
+    const pokemon = await services.getPokemon(pokemonId);
+    this.setState({ pokemon });
   }
 
-  getCaughtPokemon() {
+  async getCaughtPokemon() {
     const pokemonId = this.props.match.params.id;
-    const endpoint = `/users/${this.state.currentUserId}/
-		caught_pokemons`;
-    const params = `?pokemonId=${pokemonId}`;
-    const url = `${config.host}:${config.port}${endpoint}${params}`;
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        const [pokemon] = data;
-        this.setState({ caughtPokemon: pokemon });
-      })
-      .catch(err => console.error(err));
+    const caughtPokemon = await services.getCaughtPokemon(
+      this.state.currentUserId,
+      pokemonId
+    );
+    this.setState({ caughtPokemon });
   }
 
   catchPokemon() {
-    console.log("CAUGHT NEW POKEMON!");
-    const pokemonId = Number(this.props.match.params.id);
-    const caughtDate = new Date().toLocaleString();
-    const name = this.state.pokemon.name;
     const data = {
-      pokemonId,
-      caughtDate,
-      name
+      pokemonId: Number(this.props.match.params.id),
+      caughtDate: new Date().toLocaleString(),
+      name: this.state.pokemon.name
     };
-    const endpoint = `/users/${this.state.currentUserId}/
-		caught_pokemons`;
-    const url = `${config.host}:${config.port}${endpoint}`;
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
+    services.postCaughtPokemon(this.state.currentUserId, data);
     this.setState({ caughtPokemon: data });
   }
 

@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import config from "../../config/config.json";
 import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
 import Loader from "../Loader/Loader";
+import services from "../../services/pokemons";
 
 const styles = theme => ({
   root: {
@@ -72,40 +73,34 @@ class PokemonsList extends React.Component {
     });
   }
 
-  getPokemonsList(page) {
-    const endpoint = "/pokemons";
-    const params = `?_page=${page}&_limit=20`;
-    const url = `${config.host}:${config.port}${endpoint}${params}`;
-    return fetch(url)
-      .then(res => res.json())
-      .then(newPokemons => {
-        const pokemonsArr = [].concat(this.state.pokemons, newPokemons);
-        this.setState({ pokemons: pokemonsArr });
-      })
-      .catch(err => console.error(err));
+  async getPokemonsList() {
+    const { page } = this.state;
+    const newPokemons = await services.getPokemons({ page });
+    const pokemons = [].concat(this.state.pokemons, newPokemons);
+    this.setState({ pokemons });
   }
 
-  getCaughtPokemonsList(page) {
-    const endpoint = `/users/${this.state.currentUserId}/
-		caught_pokemons`;
-    const params = `?pokemonId_gte=${1 + page * 20 - 20}&pokemonId_lte=${page *
-      20}`;
-    const url = `${config.host}:${config.port}${endpoint}${params}`;
-    return fetch(url)
-      .then(res => res.json())
-      .then(newPokemons => {
-        const caughtPokemonsArr = [].concat(
-          this.state.caughtPokemons,
-          newPokemons
-        );
-        this.setState({ caughtPokemons: caughtPokemonsArr });
-      })
-      .catch(err => console.error(err));
+  async getCaughtPokemonsList() {
+    const { page } = this.state;
+    const limit = 20;
+    const from = 1 + (page - 1) * limit;
+    const to = page * limit;
+    const newCaughtPokemons = await services.getCaughtPokemons(
+      this.state.currentUserId,
+      from,
+      to
+    );
+    const caughtPokemons = [].concat(
+      this.state.caughtPokemons,
+      newCaughtPokemons
+    );
+    this.setState({ caughtPokemons });
   }
 
   async getPokemons() {
-    await this.getCaughtPokemonsList(this.state.page);
-    await this.getPokemonsList(this.state.page);
+    // FIXME: new pokemons retrieving enables disabled buttons (on the current/previous page)
+    await this.getCaughtPokemonsList();
+    await this.getPokemonsList();
     this.setState({
       caughtPokemonIds: new Set(
         this.state.caughtPokemons.map(({ pokemonId }) => pokemonId)
@@ -115,19 +110,10 @@ class PokemonsList extends React.Component {
   }
 
   catchPokemon(pokemonId, name) {
-    console.log("Пойман покемон из PokemonsList.jsx");
-    const endpoint = `/users/${this.state.currentUserId}/caught_pokemons`;
-    const url = `${config.host}:${config.port}${endpoint}`;
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        pokemonId,
-        caughtDate: new Date().toLocaleString(),
-        name
-      })
+    services.postCaughtPokemon(this.state.currentUserId, {
+      pokemonId,
+      caughtDate: new Date().toLocaleString(),
+      name
     });
     this.setState(state => {
       const caughtPokemonIds = state.caughtPokemonIds.add(pokemonId);
