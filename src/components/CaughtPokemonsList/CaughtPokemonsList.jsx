@@ -20,17 +20,13 @@ class CaughtPokemonsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUserId: 1,
       caughtPokemons: null
     };
     this.getCaughtPokemonsList = this.getCaughtPokemonsList.bind(this);
   }
 
   async getCaughtPokemonsList() {
-    const caughtPokemons = await services.getCaughtPokemons(
-      this.state.currentUserId
-    );
-    console.log(caughtPokemons);
+    const caughtPokemons = await services.getCaughtPokemons();
     this.setState({ caughtPokemons });
   }
 
@@ -39,15 +35,16 @@ class CaughtPokemonsList extends React.Component {
   }
 
   render() {
+    const { caughtPokemons } = this.state;
+
+    if (!caughtPokemons) return <Loader text />;
+    if (!caughtPokemons.length) return <EmptyCaughtPokemonsList />;
+
     const { classes } = this.props;
-
-    if (!this.state.caughtPokemons) return <Loader text />;
-    if (!this.state.caughtPokemons.length) return <EmptyCaughtPokemonsList />;
-
     return (
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
-          {this.state.caughtPokemons.map(pokemon => (
+          {caughtPokemons.map(pokemon => (
             <CaughtPokemon
               key={pokemon.id}
               pokemonId={pokemon.pokemonId}

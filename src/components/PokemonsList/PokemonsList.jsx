@@ -51,7 +51,6 @@ class PokemonsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUserId: 1,
       pokemons: [],
       caughtPokemons: [],
       page: 1,
@@ -84,11 +83,7 @@ class PokemonsList extends React.Component {
     const limit = 20;
     const from = 1 + (page - 1) * limit;
     const to = page * limit;
-    const newCaughtPokemons = await services.getCaughtPokemons(
-      this.state.currentUserId,
-      from,
-      to
-    );
+    const newCaughtPokemons = await services.getCaughtPokemons(from, to);
     const caughtPokemons = [].concat(
       this.state.caughtPokemons,
       newCaughtPokemons
@@ -108,14 +103,11 @@ class PokemonsList extends React.Component {
   }
 
   async catchPokemon(pokemonId, name) {
-    const createdCaughtPokemon = await services.postCaughtPokemon(
-      this.state.currentUserId,
-      {
-        pokemonId,
-        caughtDate: new Date().toLocaleString(),
-        name
-      }
-    );
+    const createdCaughtPokemon = await services.postCaughtPokemon({
+      pokemonId,
+      caughtDate: new Date().toLocaleString(),
+      name
+    });
     this.setState(state => {
       const caughtPokemon = createdCaughtPokemon;
       const caughtPokemons = [...state.caughtPokemons, caughtPokemon];

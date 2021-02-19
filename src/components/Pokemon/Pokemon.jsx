@@ -53,7 +53,6 @@ class Pokemon extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentUserId: 1,
       pokemon: null,
       caughtPokemon: null
     };
@@ -70,10 +69,7 @@ class Pokemon extends React.Component {
 
   async getCaughtPokemon() {
     const pokemonId = this.props.match.params.id;
-    const caughtPokemon = await services.getCaughtPokemon(
-      this.state.currentUserId,
-      pokemonId
-    );
+    const caughtPokemon = await services.getCaughtPokemon(pokemonId);
     this.setState({ caughtPokemon });
   }
 
@@ -83,7 +79,7 @@ class Pokemon extends React.Component {
       caughtDate: new Date().toLocaleString(),
       name: this.state.pokemon.name
     };
-    services.postCaughtPokemon(this.state.currentUserId, data);
+    services.postCaughtPokemon(data);
     this.setState({ caughtPokemon: data });
   }
 
