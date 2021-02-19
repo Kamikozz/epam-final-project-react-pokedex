@@ -55,19 +55,17 @@ class PokemonsList extends React.Component {
       caughtPokemons: [],
       page: 1,
       caughtPokemonIds: null,
-      isNextPageLoading: false,
-      endOfPage: null
+      isNextPageLoading: false
     };
+    this.endOfPageRef = null;
     this.handleNext = this.handleNext.bind(this);
-    this.getPokemonsList = this.getPokemonsList.bind(this);
-    this.getCaughtPokemonsList = this.getCaughtPokemonsList.bind(this);
   }
 
   handleNext() {
     const nextPageNo = this.state.page + 1;
     this.setState({ page: nextPageNo, isNextPageLoading: true }, async () => {
       await this.getPokemons();
-      scrollToBottom(this.endOfPage);
+      scrollToBottom(this.endOfPageRef);
     });
   }
 
@@ -120,6 +118,7 @@ class PokemonsList extends React.Component {
   }
 
   componentDidMount() {
+    console.log("PokemonsList-ComponentDidMount");
     this.getPokemons();
   }
 
@@ -163,7 +162,7 @@ class PokemonsList extends React.Component {
         </Grid>
         <div
           className={classes.nextPageButtonWrapper}
-          ref={el => (this.endOfPage = el)}
+          ref={el => (this.endOfPageRef = el)}
         >
           <Button
             disabled={this.state.isNextPageLoading}

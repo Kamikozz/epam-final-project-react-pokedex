@@ -22,7 +22,6 @@ class CaughtPokemonsList extends React.Component {
     this.state = {
       caughtPokemons: null
     };
-    this.getCaughtPokemonsList = this.getCaughtPokemonsList.bind(this);
   }
 
   async getCaughtPokemonsList() {
@@ -31,6 +30,7 @@ class CaughtPokemonsList extends React.Component {
   }
 
   componentDidMount() {
+    console.log("CaughtPokemonsList-ComponentDidMount");
     this.getCaughtPokemonsList();
   }
 

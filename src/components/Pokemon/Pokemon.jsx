@@ -56,8 +56,6 @@ class Pokemon extends React.Component {
       pokemon: null,
       caughtPokemon: null
     };
-    this.getPokemon = this.getPokemon.bind(this);
-    this.getCaughtPokemon = this.getCaughtPokemon.bind(this);
     this.catchPokemon = this.catchPokemon.bind(this);
   }
 
