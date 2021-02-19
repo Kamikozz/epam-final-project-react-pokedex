@@ -6,7 +6,6 @@ import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
-import config from "../../config/config.json";
 import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
 import Loader from "../Loader/Loader";
 import services from "../../services/pokemons";
@@ -98,7 +97,6 @@ class PokemonsList extends React.Component {
   }
 
   async getPokemons() {
-    // FIXME: new pokemons retrieving enables disabled buttons (on the current/previous page)
     await this.getCaughtPokemonsList();
     await this.getPokemonsList();
     this.setState({
@@ -109,15 +107,21 @@ class PokemonsList extends React.Component {
     });
   }
 
-  catchPokemon(pokemonId, name) {
-    services.postCaughtPokemon(this.state.currentUserId, {
-      pokemonId,
-      caughtDate: new Date().toLocaleString(),
-      name
-    });
+  async catchPokemon(pokemonId, name) {
+    const createdCaughtPokemon = await services.postCaughtPokemon(
+      this.state.currentUserId,
+      {
+        pokemonId,
+        caughtDate: new Date().toLocaleString(),
+        name
+      }
+    );
     this.setState(state => {
+      const caughtPokemon = createdCaughtPokemon;
+      const caughtPokemons = [...state.caughtPokemons, caughtPokemon];
       const caughtPokemonIds = state.caughtPokemonIds.add(pokemonId);
       return {
+        caughtPokemons,
         caughtPokemonIds
       };
     });

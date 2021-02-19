@@ -39,8 +39,6 @@ class CaughtPokemonsList extends React.Component {
   render() {
     const { classes } = this.props;
 
-    console.log(this.state.caughtPokemons);
-
     if (!this.state.caughtPokemons.length) return <Loader text />;
 
     return (

@@ -22,16 +22,23 @@ import config from "../config/config.json";
  * @param {String} userId
  * @param {Object} data { `pokemonId`: Number, `caughtDate`: String, `name`: String }
  */
-function postCaughtPokemon(userId, data) {
+async function postCaughtPokemon(userId, data) {
   const endpoint = `/users/${userId}/caught_pokemons`;
   const url = `${config.host}:${config.port}${endpoint}`;
-  fetch(url, {
+  const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
   });
+  let createdCaughtPokemon;
+  try {
+    createdCaughtPokemon = await response.json();
+  } catch (err) {
+    console.error(err);
+  }
+  return createdCaughtPokemon;
 }
 
 async function getPokemon(pokemonId) {
