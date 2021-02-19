@@ -55,12 +55,12 @@ class NotFound extends React.Component {
               404
             </Typography>
             <Typography className={classes.errorText}>
-              А это что за покемон? 😅
+              Who's that Pokemon? 😅
             </Typography>
             <img
               className={classes.notFoundImage}
               src={notFoundImage}
-              alt="who is this pokemon meme"
+              alt="who is that pokemon meme"
             />
             <Button
               variant="contained"

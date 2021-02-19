@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
 import Loader from "../Loader/Loader";
 import services from "../../services/pokemons";
+import EmptyCaughtPokemonsList from "../EmptyCaughtPokemonsList/EmptyCaughtPokemonsList";
 
 const styles = theme => ({
   root: {
@@ -20,7 +21,7 @@ class CaughtPokemonsList extends React.Component {
     super(props);
     this.state = {
       currentUserId: 1,
-      caughtPokemons: []
+      caughtPokemons: null
     };
     this.getCaughtPokemonsList = this.getCaughtPokemonsList.bind(this);
   }
@@ -29,6 +30,7 @@ class CaughtPokemonsList extends React.Component {
     const caughtPokemons = await services.getCaughtPokemons(
       this.state.currentUserId
     );
+    console.log(caughtPokemons);
     this.setState({ caughtPokemons });
   }
 
@@ -39,7 +41,8 @@ class CaughtPokemonsList extends React.Component {
   render() {
     const { classes } = this.props;
 
-    if (!this.state.caughtPokemons.length) return <Loader text />;
+    if (!this.state.caughtPokemons) return <Loader text />;
+    if (!this.state.caughtPokemons.length) return <EmptyCaughtPokemonsList />;
 
     return (
       <div className={classes.root}>
