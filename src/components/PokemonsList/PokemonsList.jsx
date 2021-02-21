@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
-import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
+import PokemonItem from "../PokemonItem/PokemonItem";
 import Loader from "../Loader/Loader";
 import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
@@ -175,11 +175,12 @@ class PokemonsList extends React.Component {
               </CardActions>
             );
             return (
-              <CaughtPokemon
+              <PokemonItem
                 key={pokemon.id}
                 pokemonId={pokemon.id}
                 name={pokemon.name}
                 cardActions={cardActions}
+                link
               />
             );
           })}

@@ -37,17 +37,24 @@ const styles = theme => ({
   }
 });
 
-class CaughtPokemon extends React.Component {
+class PokemonItem extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { classes } = this.props;
-    const { key, pokemonId, name, date, cardActions } = this.props;
+    const {
+      classes,
+      key,
+      pokemonId,
+      name,
+      date,
+      cardActions,
+      link
+    } = this.props;
     const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
     return (
-      <Grid key={key} item xs={10} md={4} lg={3}>
+      <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
         <Badge
           className={classes.badgeWrapper}
           classes={{ badge: classes.badge }}
@@ -56,7 +63,14 @@ class CaughtPokemon extends React.Component {
           max={99999} // max pokemonId found in db.json
         >
           <Card className={classes.card}>
-            <CardActionArea component={Link} to={`/pokemons/${pokemonId}`}>
+            <CardActionArea
+              {...(link
+                ? {
+                    component: Link,
+                    to: `/pokemons/${pokemonId}`
+                  }
+                : {})}
+            >
               <CardMedia
                 className={classes.media}
                 image={pokemonImage}
@@ -71,16 +85,13 @@ class CaughtPokemon extends React.Component {
                   {name}
                 </Typography>
                 {date && (
-                  <Typography gutterBottom component="p">
-                    {`Caught at: ${date}`}
-                  </Typography>
+                  <Typography component="p">{`Caught at: ${date}`}</Typography>
                 )}
                 {/*<Typography component="p">*/}
                 {/*{this.getPokemonDescription(pokemon.name)}*/}
                 {/*</Typography>*/}
               </CardContent>
             </CardActionArea>
-
             {cardActions}
           </Card>
         </Badge>
@@ -89,4 +100,4 @@ class CaughtPokemon extends React.Component {
   }
 }
 
-export default withStyles(styles)(CaughtPokemon);
+export default withStyles(styles)(PokemonItem);

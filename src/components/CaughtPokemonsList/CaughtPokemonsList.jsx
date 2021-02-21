@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
+import PokemonItem from "../PokemonItem/PokemonItem";
 import Loader from "../Loader/Loader";
 import services from "../../services/pokemons";
 import EmptyCaughtPokemonsList from "../EmptyCaughtPokemonsList/EmptyCaughtPokemonsList";
@@ -50,11 +50,12 @@ class CaughtPokemonsList extends React.Component {
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
           {caughtPokemons.map(pokemon => (
-            <CaughtPokemon
+            <PokemonItem
               key={pokemon.id}
               pokemonId={pokemon.pokemonId}
               name={pokemon.name}
               date={pokemon.caughtDate}
+              link
             />
           ))}
         </Grid>
