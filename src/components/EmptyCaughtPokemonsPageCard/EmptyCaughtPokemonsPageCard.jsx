@@ -31,7 +31,7 @@ const styles = {
   }
 };
 
-class EmptyCaughtPokemonsList extends React.Component {
+class EmptyCaughtPokemonsPageCard extends React.Component {
   render() {
     const { classes } = this.props;
 
@@ -54,8 +54,8 @@ class EmptyCaughtPokemonsList extends React.Component {
   }
 }
 
-EmptyCaughtPokemonsList.propTypes = {
+EmptyCaughtPokemonsPageCard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(EmptyCaughtPokemonsList);
+export default withStyles(styles)(EmptyCaughtPokemonsPageCard);

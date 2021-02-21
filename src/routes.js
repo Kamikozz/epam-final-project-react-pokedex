@@ -1,7 +1,7 @@
 const routes = {
-  pokemonsList: "/",
-  pokemon: "/pokemons/:id",
-  caughtPokemonsList: "/caught_pokemons/"
+  pokemonsPage: "/",
+  pokemonPage: "/pokemons/:id",
+  caughtPokemonsPage: "/caught_pokemons/"
 };
 
 export default routes;

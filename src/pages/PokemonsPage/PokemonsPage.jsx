@@ -6,8 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
-import PokemonItem from "../PokemonItem/PokemonItem";
-import Loader from "../Loader/Loader";
+import PokemonItem from "../../components/PokemonItem/PokemonItem";
+import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
 
@@ -48,7 +48,7 @@ function scrollToBottom(el) {
   el.scrollIntoView({ behavior: "smooth" });
 }
 
-class PokemonsList extends React.Component {
+class PokemonsPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,7 +136,7 @@ class PokemonsList extends React.Component {
   }
 
   componentDidMount() {
-    console.log("PokemonsList-ComponentDidMount");
+    console.log("PokemonsPage-ComponentDidMount");
     const { pokemons } = this.context;
     if (!pokemons.length) {
       console.log("GlobalState.pokemons is empty! RETRIEVING!");
@@ -150,7 +150,7 @@ class PokemonsList extends React.Component {
 
     if (!caughtPokemonIds) return <Loader text />;
 
-    console.log("PokemonsList-Render", this.context);
+    console.log("PokemonsPage-Render", this.context);
 
     return (
       <div className={classes.root}>
@@ -170,7 +170,7 @@ class PokemonsList extends React.Component {
                       : this.catchPokemon.bind(this, pokemon.id, pokemon.name)
                   }
                 >
-                  Поймать
+                  Catch
                 </Button>
               </CardActions>
             );
@@ -196,7 +196,7 @@ class PokemonsList extends React.Component {
             className={classes.nextPageButton}
             onClick={this.handleNext}
           >
-            Хочу больше
+            Load more
           </Button>
           {this.state.isNextPageLoading && (
             <Loader className={classes.nextPageButtonLoader} size={24} />
@@ -207,9 +207,9 @@ class PokemonsList extends React.Component {
   }
 }
 
-PokemonsList.contextType = AppContext;
-PokemonsList.propTypes = {
+PokemonsPage.contextType = AppContext;
+PokemonsPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(PokemonsList);
+export default withStyles(styles)(PokemonsPage);

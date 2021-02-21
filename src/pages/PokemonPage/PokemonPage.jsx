@@ -6,10 +6,10 @@ import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 
-import Loader from "../Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
-import PokemonItem from "../PokemonItem/PokemonItem";
+import PokemonItem from "../../components/PokemonItem/PokemonItem";
 
 const styles = theme => ({
   root: {
@@ -21,7 +21,7 @@ const styles = theme => ({
   }
 });
 
-class Pokemon extends React.Component {
+class PokemonPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -117,7 +117,7 @@ class Pokemon extends React.Component {
                     color="primary"
                     onClick={this.catchPokemon}
                   >
-                    Поймать
+                    Catch
                   </Button>
                 </CardActions>
               )
@@ -129,9 +129,9 @@ class Pokemon extends React.Component {
   }
 }
 
-Pokemon.contextType = AppContext;
-Pokemon.propTypes = {
+PokemonPage.contextType = AppContext;
+PokemonPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Pokemon);
+export default withStyles(styles)(PokemonPage);

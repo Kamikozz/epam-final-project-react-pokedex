@@ -12,7 +12,7 @@ import routes from "./routes";
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route path={routes.pokemonsList} component={App} />
+      <Route path={routes.pokemonsPage} component={App} />
     </Switch>
   </Router>,
   document.getElementById('root')

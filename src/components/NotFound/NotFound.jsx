@@ -67,7 +67,7 @@ class NotFound extends React.Component {
               color="primary"
               className={classes.button}
               component={Link}
-              to={routes.pokemonsList}
+              to={routes.pokemonsPage}
             >
               Go to home page
             </Button>

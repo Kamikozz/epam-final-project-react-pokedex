@@ -48,7 +48,7 @@ class Nav extends React.Component {
             icon={<img src={pokedexIcon} alt="Home pokedex" width="24px" />}
             label="POKEDEX"
             component={Link}
-            to={routes.pokemonsList}
+            to={routes.pokemonsPage}
           />
           <Tab
             icon={
@@ -60,7 +60,7 @@ class Nav extends React.Component {
             }
             label="GOTCHA!"
             component={Link}
-            to={routes.caughtPokemonsList}
+            to={routes.caughtPokemonsPage}
           />
         </Tabs>
       </Paper>

@@ -4,10 +4,10 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
-import PokemonItem from "../PokemonItem/PokemonItem";
-import Loader from "../Loader/Loader";
+import PokemonItem from "../../components/PokemonItem/PokemonItem";
+import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
-import EmptyCaughtPokemonsList from "../EmptyCaughtPokemonsList/EmptyCaughtPokemonsList";
+import EmptyCaughtPokemonsPageCard from "../../components/EmptyCaughtPokemonsPageCard/EmptyCaughtPokemonsPageCard";
 import AppContext from "../../AppContext";
 
 const styles = theme => ({
@@ -17,7 +17,7 @@ const styles = theme => ({
   }
 });
 
-class CaughtPokemonsList extends React.Component {
+class CaughtPokemonsPage extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -32,8 +32,8 @@ class CaughtPokemonsList extends React.Component {
   }
 
   componentDidMount() {
-    console.log("CaughtPokemonsList-ComponentDidMount");
-    // FIXME: написать алгоритм аналогичный PokemonsList для дозагрузки нужного количества пойманных покемонов
+    console.log("CaughtPokemonsPage-ComponentDidMount");
+    // FIXME: написать алгоритм аналогичный PokemonsPage для дозагрузки нужного количества пойманных покемонов
     this.getCaughtPokemonsList();
   }
 
@@ -41,9 +41,9 @@ class CaughtPokemonsList extends React.Component {
     const { caughtPokemons } = this.context;
 
     if (!caughtPokemons) return <Loader text />;
-    if (!caughtPokemons.length) return <EmptyCaughtPokemonsList />;
+    if (!caughtPokemons.length) return <EmptyCaughtPokemonsPageCard />;
 
-    console.log("CaughtPokemonsList-Render", this.context);
+    console.log("CaughtPokemonsPage-Render", this.context);
 
     const { classes } = this.props;
     return (
@@ -64,9 +64,9 @@ class CaughtPokemonsList extends React.Component {
   }
 }
 
-CaughtPokemonsList.contextType = AppContext;
-CaughtPokemonsList.propTypes = {
+CaughtPokemonsPage.contextType = AppContext;
+CaughtPokemonsPage.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CaughtPokemonsList);
+export default withStyles(styles)(CaughtPokemonsPage);

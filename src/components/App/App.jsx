@@ -4,10 +4,10 @@ import { Route, Switch } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
 import Nav from "../Nav/Nav";
-import PokemonsList from "../PokemonsList/PokemonsList";
-import CaughtPokemonsList from "../CaughtPokemonsList/CaughtPokemonsList";
+import PokemonsPage from "../../pages/PokemonsPage/PokemonsPage";
+import CaughtPokemonsPage from "../../pages/CaughtPokemonsPage/CaughtPokemonsPage";
 import NotFound from "../NotFound/NotFound";
-import Pokemon from "../Pokemon/Pokemon";
+import PokemonPage from "../../pages/PokemonPage/PokemonPage";
 import routes from "../../routes";
 import AppContext from "../../AppContext";
 
@@ -72,7 +72,7 @@ class App extends React.Component {
   render() {
     const { classes } = this.props;
     const selectedTab =
-      this.props.location.pathname === routes.pokemonsList ? 0 : 1;
+      this.props.location.pathname === routes.pokemonsPage ? 0 : 1;
 
     return (
       <AppContext.Provider value={this.state}>
@@ -82,14 +82,14 @@ class App extends React.Component {
             <Switch>
               <Route
                 exact
-                path={routes.pokemonsList}
-                component={PokemonsList}
+                path={routes.pokemonsPage}
+                component={PokemonsPage}
               />
-              <Route exact path={routes.pokemon} component={Pokemon} />
+              <Route exact path={routes.pokemonPage} component={PokemonPage} />
               <Route
                 exact
-                path={routes.caughtPokemonsList}
-                component={CaughtPokemonsList}
+                path={routes.caughtPokemonsPage}
+                component={CaughtPokemonsPage}
               />
               <Route component={NotFound} />
             </Switch>
