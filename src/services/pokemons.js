@@ -1,5 +1,4 @@
 import config from "../config/config.json";
-import globalState from "../state";
 
 // getPokemonDescription = (name) => {
 // 	fetch(`https://www.pokemon.com/ru/pokedex/${name}`)
@@ -22,8 +21,8 @@ import globalState from "../state";
  *
  * @param {Object} data { `pokemonId`: Number, `caughtDate`: String, `name`: String }
  */
-async function postCaughtPokemon(data) {
-  const endpoint = `/users/${globalState.currentUserId}/caught_pokemons`;
+async function postCaughtPokemon(userId, data) {
+  const endpoint = `/users/${userId}/caught_pokemons`;
   const url = `${config.host}:${config.port}${endpoint}`;
   const response = await fetch(url, {
     method: "POST",
@@ -77,8 +76,8 @@ async function getPokemons(pagination) {
   return pokemons;
 }
 
-async function getCaughtPokemon(pokemonId) {
-  const endpoint = `/users/${globalState.currentUserId}/caught_pokemons`;
+async function getCaughtPokemon(userId, pokemonId) {
+  const endpoint = `/users/${userId}/caught_pokemons`;
   const params = `?pokemonId=${pokemonId}`;
   const url = `${config.host}:${config.port}${endpoint}${params}`;
   const response = await fetch(url);
@@ -92,8 +91,8 @@ async function getCaughtPokemon(pokemonId) {
   return caughtPokemon;
 }
 
-async function getCaughtPokemons(from, to) {
-  const endpoint = `/users/${globalState.currentUserId}/caught_pokemons`;
+async function getCaughtPokemons(userId, from, to) {
+  const endpoint = `/users/${userId}/caught_pokemons`;
   let params = [];
   if (from) params.push(`pokemonId_gte=${from}`);
   if (to) params.push(`pokemonId_lte=${to}`);

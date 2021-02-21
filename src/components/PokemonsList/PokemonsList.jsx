@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
 import Loader from "../Loader/Loader";
 import services from "../../services/pokemons";
+import AppContext from "../../AppContext";
 
 const styles = theme => ({
   root: {
@@ -51,10 +52,6 @@ class PokemonsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pokemons: [],
-      caughtPokemons: [],
-      page: 1,
-      caughtPokemonIds: null,
       isNextPageLoading: false
     };
     this.endOfPageRef = null;
@@ -62,76 +59,103 @@ class PokemonsList extends React.Component {
   }
 
   handleNext() {
-    const nextPageNo = this.state.page + 1;
-    this.setState({ page: nextPageNo, isNextPageLoading: true }, async () => {
+    const { page, setPage } = this.context;
+    setPage(page + 1);
+    this.setState({ isNextPageLoading: true }, async () => {
       await this.getPokemons();
       scrollToBottom(this.endOfPageRef);
     });
   }
 
   async getPokemonsList() {
-    const { page } = this.state;
+    const { page } = this.context;
     const newPokemons = await services.getPokemons({ page });
-    const pokemons = [].concat(this.state.pokemons, newPokemons);
-    this.setState({ pokemons });
+    const { pokemons, setPokemons } = this.context;
+    setPokemons([].concat(pokemons, newPokemons));
   }
 
   async getCaughtPokemonsList() {
-    const { page } = this.state;
+    const { page } = this.context;
     const limit = 20;
     const from = 1 + (page - 1) * limit;
     const to = page * limit;
-    const newCaughtPokemons = await services.getCaughtPokemons(from, to);
-    const caughtPokemons = [].concat(
-      this.state.caughtPokemons,
-      newCaughtPokemons
+
+    const { caughtPokemons, setCaughtPokemons } = this.context;
+
+    // Make sure that we are not loading more items, if we are already have 100 caught pokemons, but page on the Pokemon's Page is still equals to "1"
+    if (caughtPokemons && caughtPokemons.length) {
+      const pokemonIds = caughtPokemons.map(({ pokemonId }) => pokemonId);
+      const maxPokemonId = Math.max(...pokemonIds);
+      const maxPage = Math.ceil(maxPokemonId / limit);
+      const isTheSamePage = maxPage === page;
+      const isDataUpdated = to <= maxPokemonId;
+      if (isTheSamePage || isDataUpdated) {
+        return;
+      }
+    }
+
+    const { userId } = this.context;
+    const newCaughtPokemons = await services.getCaughtPokemons(
+      userId,
+      from,
+      to
     );
-    this.setState({ caughtPokemons });
+    setCaughtPokemons(
+      [].concat(caughtPokemons ? caughtPokemons : [], newCaughtPokemons)
+    );
   }
 
   async getPokemons() {
     await this.getCaughtPokemonsList();
     await this.getPokemonsList();
+    const { caughtPokemons, setCaughtPokemonIds } = this.context;
+    const caughtPokemonsArr = caughtPokemons ? caughtPokemons : [];
     this.setState({
-      caughtPokemonIds: new Set(
-        this.state.caughtPokemons.map(({ pokemonId }) => pokemonId)
-      ),
       isNextPageLoading: false
     });
+    setCaughtPokemonIds(
+      new Set(caughtPokemonsArr.map(({ pokemonId }) => pokemonId))
+    );
   }
 
   async catchPokemon(pokemonId, name) {
-    const createdCaughtPokemon = await services.postCaughtPokemon({
+    const { userId } = this.context;
+    const createdCaughtPokemon = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
       name
     });
-    this.setState(state => {
-      const caughtPokemon = createdCaughtPokemon;
-      const caughtPokemons = [...state.caughtPokemons, caughtPokemon];
-      const caughtPokemonIds = state.caughtPokemonIds.add(pokemonId);
-      return {
-        caughtPokemons,
-        caughtPokemonIds
-      };
-    });
+    const {
+      caughtPokemons,
+      setCaughtPokemons,
+      caughtPokemonIds,
+      setCaughtPokemonIds
+    } = this.context;
+    setCaughtPokemons([...caughtPokemons, createdCaughtPokemon]);
+    setCaughtPokemonIds(caughtPokemonIds.add(pokemonId));
   }
 
   componentDidMount() {
     console.log("PokemonsList-ComponentDidMount");
-    this.getPokemons();
+    const { pokemons } = this.context;
+    if (!pokemons.length) {
+      console.log("GlobalState.pokemons is empty! RETRIEVING!");
+      this.getPokemons();
+    }
   }
 
   render() {
     const { classes } = this.props;
-    const { caughtPokemonIds } = this.state;
+    const { caughtPokemonIds, pokemons } = this.context;
 
     if (!caughtPokemonIds) return <Loader text />;
+
+    console.log("PokemonsList-Render", this.context);
 
     return (
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
-          {this.state.pokemons.map(pokemon => {
+          {pokemons.map(pokemon => {
             const isAlreadyCaught = caughtPokemonIds.has(pokemon.id);
             const cardActions = (
               <CardActions className={classes.actions}>
@@ -182,6 +206,7 @@ class PokemonsList extends React.Component {
   }
 }
 
+PokemonsList.contextType = AppContext;
 PokemonsList.propTypes = {
   classes: PropTypes.object.isRequired
 };

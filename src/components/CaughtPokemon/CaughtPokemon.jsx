@@ -46,11 +46,6 @@ class CaughtPokemon extends React.Component {
     const { classes } = this.props;
     const { key, pokemonId, name, date, cardActions } = this.props;
     const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
-    const cardCaughtDateJsx = date ? (
-      <Typography gutterBottom component="p">
-        {`Caught at: ${date}`}
-      </Typography>
-    ) : null;
     return (
       <Grid key={key} item xs={10} md={4} lg={3}>
         <Badge
@@ -75,7 +70,11 @@ class CaughtPokemon extends React.Component {
                 >
                   {name}
                 </Typography>
-                {cardCaughtDateJsx}
+                {date && (
+                  <Typography gutterBottom component="p">
+                    {`Caught at: ${date}`}
+                  </Typography>
+                )}
                 {/*<Typography component="p">*/}
                 {/*{this.getPokemonDescription(pokemon.name)}*/}
                 {/*</Typography>*/}

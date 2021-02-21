@@ -8,6 +8,7 @@ import CaughtPokemon from "../CaughtPokemon/CaughtPokemon";
 import Loader from "../Loader/Loader";
 import services from "../../services/pokemons";
 import EmptyCaughtPokemonsList from "../EmptyCaughtPokemonsList/EmptyCaughtPokemonsList";
+import AppContext from "../../AppContext";
 
 const styles = theme => ({
   root: {
@@ -19,26 +20,30 @@ const styles = theme => ({
 class CaughtPokemonsList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      caughtPokemons: null
-    };
   }
 
   async getCaughtPokemonsList() {
-    const caughtPokemons = await services.getCaughtPokemons();
-    this.setState({ caughtPokemons });
+    let { caughtPokemons } = this.context;
+    if (caughtPokemons) return;
+
+    const { userId, setCaughtPokemons } = this.context;
+    caughtPokemons = await services.getCaughtPokemons(userId);
+    setCaughtPokemons(caughtPokemons);
   }
 
   componentDidMount() {
     console.log("CaughtPokemonsList-ComponentDidMount");
+    // FIXME: написать алгоритм аналогичный PokemonsList для дозагрузки нужного количества пойманных покемонов
     this.getCaughtPokemonsList();
   }
 
   render() {
-    const { caughtPokemons } = this.state;
+    const { caughtPokemons } = this.context;
 
     if (!caughtPokemons) return <Loader text />;
     if (!caughtPokemons.length) return <EmptyCaughtPokemonsList />;
+
+    console.log("CaughtPokemonsList-Render", this.context);
 
     const { classes } = this.props;
     return (
@@ -58,6 +63,7 @@ class CaughtPokemonsList extends React.Component {
   }
 }
 
+CaughtPokemonsList.contextType = AppContext;
 CaughtPokemonsList.propTypes = {
   classes: PropTypes.object.isRequired
 };
