@@ -33,7 +33,6 @@ class CaughtPokemonsPage extends React.Component {
 
   componentDidMount() {
     console.log("CaughtPokemonsPage-ComponentDidMount");
-    // FIXME: написать алгоритм аналогичный PokemonsPage для дозагрузки нужного количества пойманных покемонов
     this.getCaughtPokemonsList();
   }
 

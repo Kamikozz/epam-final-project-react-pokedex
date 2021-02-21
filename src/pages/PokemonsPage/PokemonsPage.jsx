@@ -75,35 +75,43 @@ class PokemonsPage extends React.Component {
   }
 
   async getCaughtPokemonsList() {
-    const { page } = this.context;
-    const limit = 20;
-    const from = 1 + (page - 1) * limit;
-    const to = page * limit;
-
-    const { caughtPokemons, setCaughtPokemons } = this.context;
-
-    // Make sure that we are not loading more items, if we are already have 100 caught pokemons, but page on the Pokemon's Page is still equals to "1"
-    if (caughtPokemons && caughtPokemons.length) {
-      const pokemonIds = caughtPokemons.map(({ pokemonId }) => pokemonId);
-      const maxPokemonId = Math.max(...pokemonIds);
-      const maxPage = Math.ceil(maxPokemonId / limit);
-      const isTheSamePage = maxPage === page;
-      const isDataUpdated = to <= maxPokemonId;
-      if (isTheSamePage || isDataUpdated) {
-        return;
-      }
-    }
-
-    const { userId } = this.context;
-    const newCaughtPokemons = await services.getCaughtPokemons(
-      userId,
-      from,
-      to
-    );
-    setCaughtPokemons(
-      [].concat(caughtPokemons ? caughtPokemons : [], newCaughtPokemons)
-    );
+    let { caughtPokemons } = this.context;
+    if (caughtPokemons) return;
+    const { userId, setCaughtPokemons } = this.context;
+    caughtPokemons = await services.getCaughtPokemons(userId);
+    setCaughtPokemons(caughtPokemons);
   }
+
+  // async getCaughtPokemonsList() {
+  //   const { page } = this.context;
+  //   const limit = 20;
+  //   const from = 1 + (page - 1) * limit;
+  //   const to = page * limit;
+
+  //   const { caughtPokemons, setCaughtPokemons } = this.context;
+
+  //   // Make sure that we are not loading more items, if we are already have 100 caught pokemons, but page on the Pokemon's Page is still equals to "1"
+  //   if (caughtPokemons && caughtPokemons.length) {
+  //     const pokemonIds = caughtPokemons.map(({ pokemonId }) => pokemonId);
+  //     const maxPokemonId = Math.max(...pokemonIds);
+  //     const maxPage = Math.ceil(maxPokemonId / limit);
+  //     const isTheSamePage = maxPage === page;
+  //     const isDataUpdated = to <= maxPokemonId;
+  //     if (isTheSamePage || isDataUpdated) {
+  //       return;
+  //     }
+  //   }
+
+  //   const { userId } = this.context;
+  //   const newCaughtPokemons = await services.getCaughtPokemons(
+  //     userId,
+  //     from,
+  //     to
+  //   );
+  //   setCaughtPokemons(
+  //     [].concat(caughtPokemons ? caughtPokemons : [], newCaughtPokemons)
+  //   );
+  // }
 
   async getPokemons() {
     await this.getCaughtPokemonsList();
