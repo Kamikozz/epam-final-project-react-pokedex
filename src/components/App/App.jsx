@@ -36,7 +36,7 @@ class App extends React.Component {
       caughtPokemons: null,
       caughtPokemonIds: null,
       pokemons: [],
-      setNewState: this.setNewState.bind(this),
+      setAppState: this.setAppState.bind(this),
       setUserId: this.setUserId.bind(this),
       setPage: this.setPage.bind(this),
       setCaughtPokemons: this.setCaughtPokemons.bind(this),
@@ -45,7 +45,7 @@ class App extends React.Component {
     };
   }
 
-  setNewState(state) {
+  setAppState(state) {
     this.setState(state);
   }
 

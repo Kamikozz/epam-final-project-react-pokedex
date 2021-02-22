@@ -70,16 +70,17 @@ class PokemonsPage extends React.Component {
   async getPokemonsList() {
     const { page } = this.context;
     const newPokemons = await services.getPokemons({ page });
-    const { pokemons, setPokemons } = this.context;
-    setPokemons([].concat(pokemons, newPokemons));
+    const { pokemons } = this.context;
+    return [].concat(pokemons, newPokemons);
   }
 
   async getCaughtPokemonsList() {
     let { caughtPokemons } = this.context;
-    if (caughtPokemons) return;
-    const { userId, setCaughtPokemons } = this.context;
-    caughtPokemons = await services.getCaughtPokemons(userId);
-    setCaughtPokemons(caughtPokemons);
+    if (!caughtPokemons) {
+      const { userId } = this.context;
+      caughtPokemons = await services.getCaughtPokemons(userId);
+    }
+    return caughtPokemons;
   }
 
   // async getCaughtPokemonsList() {
@@ -114,16 +115,22 @@ class PokemonsPage extends React.Component {
   // }
 
   async getPokemons() {
-    await this.getCaughtPokemonsList();
-    await this.getPokemonsList();
-    const { caughtPokemons, setCaughtPokemonIds } = this.context;
-    const caughtPokemonsArr = caughtPokemons ? caughtPokemons : [];
+    const { setAppState } = this.context;
+    const [caughtPokemons, pokemons] = await Promise.all([
+      this.getCaughtPokemonsList(),
+      this.getPokemonsList()
+    ]);
+    const caughtPokemonIds = new Set(
+      caughtPokemons.map(({ pokemonId }) => pokemonId)
+    );
     this.setState({
       isNextPageLoading: false
     });
-    setCaughtPokemonIds(
-      new Set(caughtPokemonsArr.map(({ pokemonId }) => pokemonId))
-    );
+    setAppState({
+      caughtPokemonIds,
+      caughtPokemons,
+      pokemons
+    });
   }
 
   async catchPokemon(pokemonId, name) {
@@ -133,14 +140,11 @@ class PokemonsPage extends React.Component {
       caughtDate: new Date().toLocaleString(),
       name
     });
-    const {
-      caughtPokemons,
-      setCaughtPokemons,
-      caughtPokemonIds,
-      setCaughtPokemonIds
-    } = this.context;
-    setCaughtPokemons([...caughtPokemons, createdCaughtPokemon]);
-    setCaughtPokemonIds(caughtPokemonIds.add(pokemonId));
+    const { caughtPokemons, caughtPokemonIds, setAppState } = this.context;
+    setAppState({
+      caughtPokemons: [...caughtPokemons, createdCaughtPokemon],
+      caughtPokemonIds: caughtPokemonIds.add(pokemonId)
+    });
   }
 
   componentDidMount() {
