@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import { WithStyles, createStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import routes from "../../routes";
 import notFoundImage from "../../assets/pokemon-meme.gif";
 
-const styles = {
+const styles = createStyles({
   root: {
     display: "flex",
     flexDirection: "column",
@@ -41,9 +42,21 @@ const styles = {
       backgroundColor: "red"
     }
   }
+});
+
+interface Props extends WithStyles<typeof styles> {
+  classes: {
+    root: string;
+    card: string;
+    cardContent: string;
+    errorStatus: string;
+    notFoundImage: string;
+    button: string;
+  };
 };
 
-class NotFound extends React.Component {
+const LinkToPokemonsPage = (props: any) => <Link to={routes.pokemonsPage} {...props} />;
+class NotFound extends React.Component<Props> {
   render() {
     const { classes } = this.props;
 
@@ -54,7 +67,7 @@ class NotFound extends React.Component {
             <Typography variant="h2" className={classes.errorStatus}>
               404
             </Typography>
-            <Typography className={classes.errorText}>
+            <Typography>
               Who's that Pokemon? 😅
             </Typography>
             <img
@@ -66,8 +79,7 @@ class NotFound extends React.Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              component={Link}
-              to={routes.pokemonsPage}
+              component={LinkToPokemonsPage}
             >
               Go to home page
             </Button>
@@ -78,8 +90,8 @@ class NotFound extends React.Component {
   }
 }
 
-NotFound.propTypes = {
+(NotFound as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
-};
+} as any;
 
 export default withStyles(styles)(NotFound);

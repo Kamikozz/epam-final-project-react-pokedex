@@ -17,11 +17,17 @@ import config from "../config/config.json";
 // 		.catch(err => console.log(err))
 // };
 
+interface ICaughtPokemon {
+  pokemonId: number;
+  caughtDate: string;
+  name: string;
+};
+
 /**
  *
  * @param {Object} data { `pokemonId`: Number, `caughtDate`: String, `name`: String }
  */
-async function postCaughtPokemon(userId, data) {
+async function postCaughtPokemon(userId: string, data: ICaughtPokemon) {
   const endpoint = `/users/${userId}/caught_pokemons`;
   const url = `${config.host}:${config.port}${endpoint}`;
   const response = await fetch(url, {
@@ -40,7 +46,7 @@ async function postCaughtPokemon(userId, data) {
   return createdCaughtPokemon;
 }
 
-async function getPokemon(pokemonId) {
+async function getPokemon(pokemonId: number) {
   const endpoint = `/pokemons/${pokemonId}`;
   const url = `${config.host}:${config.port}${endpoint}`;
   const response = await fetch(url);
@@ -53,11 +59,16 @@ async function getPokemon(pokemonId) {
   return pokemon;
 }
 
+interface IPagination {
+  page?: number;
+  limit?: number;
+};
+
 /**
  * Retrieve pokemons list with optional pagination.
  * @param {Object} pagination { `page`: Number, `limit`: Number }
  */
-async function getPokemons(pagination) {
+async function getPokemons(pagination: IPagination) {
   let params = '';
   if (pagination) {
     const {
@@ -76,7 +87,7 @@ async function getPokemons(pagination) {
   return pokemons;
 }
 
-async function getCaughtPokemon(userId, pokemonId) {
+async function getCaughtPokemon(userId: string, pokemonId: number) {
   const endpoint = `/users/${userId}/caught_pokemons`;
   const params = `?pokemonId=${pokemonId}`;
   const url = `${config.host}:${config.port}${endpoint}${params}`;
@@ -91,9 +102,9 @@ async function getCaughtPokemon(userId, pokemonId) {
   return caughtPokemon;
 }
 
-async function getCaughtPokemons(userId, from, to) {
+async function getCaughtPokemons(userId: string, from?: number, to?: number) {
   const endpoint = `/users/${userId}/caught_pokemons`;
-  let params = [];
+  let params: string | Array<string> = [];
   if (from) params.push(`pokemonId_gte=${from}`);
   if (to) params.push(`pokemonId_lte=${to}`);
   params = params.length ? `?${params.join('&')}` : '';

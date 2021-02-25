@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import { WithStyles, createStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Tabs from "@material-ui/core/Tabs";
@@ -11,7 +12,7 @@ import pokedexIcon from "../../assets/pokeball.png";
 import caughtPokemonsIcon from "../../assets/pokeball3.png";
 import routes from "../../routes";
 
-const styles = {
+const styles = createStyles({
   root: {
     flexGrow: 1
   },
@@ -21,15 +22,31 @@ const styles = {
   tabsRoot: {
     color: "red"
   }
+});
+
+
+interface Props extends WithStyles<typeof styles> {
+  // className: string;
+  // text: string;
+  // size: number;
+  selected: number;
+  classes: {
+    root: string;
+    tabsRoot: string;
+    tabsIndicator: string;
+  };
 };
 
-class Nav extends React.Component {
-  constructor(props) {
+const LinkToPokemonsPage = (props: any) => <Link to={routes.pokemonsPage} {...props} />;
+const LinkToCaughtPokemonsPage = (props: any) => <Link to={routes.caughtPokemonsPage} {...props} />;
+
+class Nav extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(event, selectedTabIndex) {
+  handleChange(event: any, selectedTabIndex: number) {
     this.setState({ selectedTabIndex });
   }
 
@@ -47,8 +64,7 @@ class Nav extends React.Component {
           <Tab
             icon={<img src={pokedexIcon} alt="Home pokedex" width="24px" />}
             label="POKEDEX"
-            component={Link}
-            to={routes.pokemonsPage}
+            component={LinkToPokemonsPage}
           />
           <Tab
             icon={
@@ -59,8 +75,7 @@ class Nav extends React.Component {
               />
             }
             label="GOTCHA!"
-            component={Link}
-            to={routes.caughtPokemonsPage}
+            component={LinkToCaughtPokemonsPage}
           />
         </Tabs>
       </Paper>
@@ -68,8 +83,8 @@ class Nav extends React.Component {
   }
 }
 
-Nav.propTypes = {
+(Nav as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
-};
+} as any;
 
 export default withStyles(styles)(Nav);

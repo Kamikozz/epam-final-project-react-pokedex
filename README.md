@@ -52,3 +52,26 @@
 ### Примечание
 
 Картинки покемонов и `db.json` для `json-server` можно найти в этом репозитории.
+
+## Results (demo, description)
+
+### Tag: #f8f3baa (2 years ago)
+Unfinished project with few bugs
+
+### Tag: #working-mui #61fa888
+
+Final React application with Material-UI
+- without any caching
+- without unit-tests
+- with different states in each of the component
+
+### Tag: #working-mui-context-providers #31cff7c
+
+Final React application with Material-UI, Context Providers
+- with caching
+- rename all of the components & place main components as a pages
+- still without unit-tests
+- one state on the upper-level provided using Context Providers
+- reduced count of the requests & re-renders
+
+### Tag: #working-mui-context-providers-typescript ????

@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { withStyles } from "@material-ui/core/styles";
+import { WithStyles, createStyles } from "@material-ui/core";
+import { withStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
@@ -10,21 +11,15 @@ import PokemonItem from "../../components/PokemonItem/PokemonItem";
 import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
+import { IPokemon } from "../PokemonPage/PokemonPage";
 
-const styles = theme => ({
+const styles = createStyles({
   root: {
     margin: "20px",
     flexGrow: 1
   },
-  card: {
-    textAlign: "center",
-    color: theme.palette.text.secondary
-  },
   actions: {
     justifyContent: "center"
-  },
-  media: {
-    height: 400
   },
   nextPageButtonWrapper: {
     position: "relative"
@@ -44,12 +39,28 @@ const styles = theme => ({
   }
 });
 
-function scrollToBottom(el) {
+function scrollToBottom(el: Element) {
   el.scrollIntoView({ behavior: "smooth" });
 }
 
-class PokemonsPage extends React.Component {
-  constructor(props) {
+interface Props extends WithStyles<typeof styles> {
+  classes: {
+    root: string;
+    actions: string;
+    nextPageButtonWrapper: string;
+    nextPageButton: string;
+    nextPageButtonLoader: string;
+  };
+};
+interface State {
+  isNextPageLoading: boolean;
+};
+
+
+class PokemonsPage extends React.Component<Props, State> {
+  endOfPageRef: null | Element;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
       isNextPageLoading: false
@@ -63,12 +74,14 @@ class PokemonsPage extends React.Component {
     setPage(page + 1);
     this.setState({ isNextPageLoading: true }, async () => {
       await this.getPokemons();
-      scrollToBottom(this.endOfPageRef);
+      if (this.endOfPageRef) {
+        scrollToBottom(this.endOfPageRef);
+      }
     });
   }
 
   async getPokemonsList() {
-    const { page } = this.context;
+    const { page }: { page: number } = this.context;
     const newPokemons = await services.getPokemons({ page });
     const { pokemons } = this.context;
     return [].concat(pokemons, newPokemons);
@@ -121,7 +134,7 @@ class PokemonsPage extends React.Component {
       this.getPokemonsList()
     ]);
     const caughtPokemonIds = new Set(
-      caughtPokemons.map(({ pokemonId }) => pokemonId)
+      caughtPokemons.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
     );
     this.setState({
       isNextPageLoading: false
@@ -133,7 +146,7 @@ class PokemonsPage extends React.Component {
     });
   }
 
-  async catchPokemon(pokemonId, name) {
+  async catchPokemon(pokemonId: number, name: string) {
     const { userId } = this.context;
     const createdCaughtPokemon = await services.postCaughtPokemon(userId, {
       pokemonId,
@@ -167,7 +180,7 @@ class PokemonsPage extends React.Component {
     return (
       <div className={classes.root}>
         <Grid container spacing={24} justify="center">
-          {pokemons.map(pokemon => {
+          {pokemons.map((pokemon: IPokemon) => {
             const isAlreadyCaught = caughtPokemonIds.has(pokemon.id);
             const cardActions = (
               <CardActions className={classes.actions}>
@@ -178,8 +191,8 @@ class PokemonsPage extends React.Component {
                   color="primary"
                   onClick={
                     isAlreadyCaught
-                      ? null
-                      : this.catchPokemon.bind(this, pokemon.id, pokemon.name)
+                    ? undefined
+                    : this.catchPokemon.bind(this, pokemon.id, pokemon.name)
                   }
                 >
                   Catch
@@ -219,9 +232,9 @@ class PokemonsPage extends React.Component {
   }
 }
 
-PokemonsPage.contextType = AppContext;
-PokemonsPage.propTypes = {
+(PokemonsPage as React.ComponentClass<Props>).contextType = AppContext;
+(PokemonsPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
-};
+} as any;
 
 export default withStyles(styles)(PokemonsPage);

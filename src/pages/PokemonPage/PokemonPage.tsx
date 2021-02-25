@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { WithStyles, createStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
@@ -10,8 +11,9 @@ import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
 import PokemonItem from "../../components/PokemonItem/PokemonItem";
+import { ICaughtPokemon } from "../CaughtPokemonsPage/CaughtPokemonsPage";
 
-const styles = theme => ({
+const styles = createStyles({
   root: {
     margin: "20px",
     flexGrow: 1
@@ -21,8 +23,31 @@ const styles = theme => ({
   }
 });
 
-class PokemonPage extends React.Component {
-  constructor(props) {
+interface IData {
+  id: number;
+  pokemonId?: number;
+  name: string;
+  caughtDate?: string;
+};
+
+export interface IPokemon {
+  id: number;
+  name: string;
+};
+interface Props extends WithStyles<typeof styles> {
+  classes: {
+    root: string;
+    actions: string;
+  };
+  match: any;
+};
+interface State {
+  data: null | IData;
+  pokemonId: number;
+};
+
+class PokemonPage extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       data: null,
@@ -37,7 +62,7 @@ class PokemonPage extends React.Component {
     const { pokemons } = this.context;
     const { pokemonId } = this.state;
     if (pokemons) {
-      pokemon = pokemons.find(item => item.id === pokemonId);
+      pokemon = pokemons.find((item: IPokemon) => item.id === pokemonId);
     }
 
     if (!pokemon) {
@@ -52,7 +77,7 @@ class PokemonPage extends React.Component {
     const { caughtPokemons } = this.context;
     const { pokemonId } = this.state;
     if (caughtPokemons) {
-      caughtPokemon = caughtPokemons.find(item => item.pokemonId === pokemonId);
+      caughtPokemon = caughtPokemons.find((item: ICaughtPokemon) => item.pokemonId === pokemonId);
     }
 
     if (!caughtPokemon) {
@@ -68,7 +93,7 @@ class PokemonPage extends React.Component {
     const data = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
-      name: this.state.data.name
+      name: this.state.data ? this.state.data.name : ''
     });
     this.setState({ data });
 
@@ -129,9 +154,9 @@ class PokemonPage extends React.Component {
   }
 }
 
-PokemonPage.contextType = AppContext;
-PokemonPage.propTypes = {
+(PokemonPage as React.ComponentClass<Props>).contextType = AppContext;
+(PokemonPage as React.ComponentClass<Props>).propTypes = {
   classes: PropTypes.object.isRequired
-};
+} as any;
 
 export default withStyles(styles)(PokemonPage);

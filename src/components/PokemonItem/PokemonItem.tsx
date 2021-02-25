@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { withStyles } from "@material-ui/core/styles";
+import { WithStyles, createStyles } from "@material-ui/core";
+import { withStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -10,7 +11,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
   badgeWrapper: {
     display: "block",
     overflow: "hidden",
@@ -37,8 +38,26 @@ const styles = theme => ({
   }
 });
 
-class PokemonItem extends React.Component {
-  constructor(props) {
+interface Props extends WithStyles<typeof styles> {
+  classes: {
+    badgeWrapper: string;
+    badge: string;
+    card: string;
+    media: string;
+    pokemonName: string;
+  };
+  key: number;
+  pokemonId: number;
+  name: string;
+  date?: string;
+  cardActions?: JSX.Element | boolean;
+  link?: boolean;
+};
+
+const LinkToPokemonsPage = (props: any) => <Link {...props} />;
+
+class PokemonItem extends React.Component<Props> {
+  constructor(props: Props) {
     super(props);
   }
 
@@ -53,6 +72,10 @@ class PokemonItem extends React.Component {
       link
     } = this.props;
     const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
+    const cardActionAreaProps = link ? {
+      component: LinkToPokemonsPage,
+      to: `/pokemons/${pokemonId}`
+    } : {};
     return (
       <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
         <Badge
@@ -64,12 +87,7 @@ class PokemonItem extends React.Component {
         >
           <Card className={classes.card}>
             <CardActionArea
-              {...(link
-                ? {
-                    component: Link,
-                    to: `/pokemons/${pokemonId}`
-                  }
-                : {})}
+              {...cardActionAreaProps}
             >
               <CardMedia
                 className={classes.media}

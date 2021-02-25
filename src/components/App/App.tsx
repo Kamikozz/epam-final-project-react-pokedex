@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
+import { WithStyles, createStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import Nav from "../Nav/Nav";
@@ -11,7 +12,7 @@ import PokemonPage from "../../pages/PokemonPage/PokemonPage";
 import routes from "../../routes";
 import AppContext from "../../AppContext";
 
-const styles = theme => ({
+const styles = () => createStyles({
   root: {
     textAlign: "center"
   },
@@ -27,8 +28,31 @@ const styles = theme => ({
   }
 });
 
-class App extends React.Component {
-  constructor(props) {
+interface AppProps extends WithStyles<typeof styles> {
+  location?: any;
+  // classes: any;
+  classes: {
+    root: string;
+    main: string;
+  };
+};
+
+interface AppState {
+    userId: number;
+    page: number;
+    caughtPokemons: null | Array<Object>;
+    caughtPokemonIds: null | Set<number>;
+    pokemons: Array<Object>;
+    setAppState: Function;
+    setUserId: Function;
+    setPage: Function;
+    setCaughtPokemons: Function;
+    setCaughtPokemonIds: Function;
+    setPokemons: Function;
+};
+
+class App extends React.Component <AppProps, AppState> {
+  constructor(props: AppProps) {
     super(props);
     this.state = {
       userId: 1,
@@ -45,34 +69,33 @@ class App extends React.Component {
     };
   }
 
-  setAppState(state) {
+  setAppState(state: AppState) {
     this.setState(state);
   }
 
-  setUserId(userId) {
+  setUserId(userId: number) {
     this.setState({ userId });
   }
 
-  setPage(page) {
+  setPage(page: number) {
     this.setState({ page });
   }
 
-  setCaughtPokemons(caughtPokemons) {
+  setCaughtPokemons(caughtPokemons: Array<Object>) {
     this.setState({ caughtPokemons });
   }
 
-  setCaughtPokemonIds(caughtPokemonIds) {
+  setCaughtPokemonIds(caughtPokemonIds: Set<number>) {
     this.setState({ caughtPokemonIds });
   }
 
-  setPokemons(pokemons) {
+  setPokemons(pokemons: Array<Object>) {
     this.setState({ pokemons });
   }
 
   render() {
     const { classes } = this.props;
-    const selectedTab =
-      this.props.location.pathname === routes.pokemonsPage ? 0 : 1;
+    const selectedTab = this.props.location && this.props.location.pathname === routes.pokemonsPage ? 0 : 1;
 
     return (
       <AppContext.Provider value={this.state}>

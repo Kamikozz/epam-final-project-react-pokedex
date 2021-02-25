@@ -1,10 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { withStyles } from "@material-ui/core/styles";
+import { WithStyles, createStyles } from "@material-ui/core";
+import { withStyles, Theme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const styles = theme => ({
+const styles = (theme: Theme) => createStyles({
   progress: {
     margin: theme.spacing.unit * 2
   },
@@ -13,7 +14,17 @@ const styles = theme => ({
   }
 });
 
-function Loader(props) {
+interface Props extends WithStyles<typeof styles> {
+  className: string;
+  text: string;
+  size: number;
+  classes: {
+    progressColor: string;
+    progress: string;
+  };
+};
+
+function Loader(props: Props) {
   const { classes, className, text, size = 70 } = props;
   return (
     <div className={[classes.progressColor, className].join(" ")}>
@@ -30,6 +41,6 @@ function Loader(props) {
 
 Loader.propTypes = {
   classes: PropTypes.object.isRequired
-};
+} as any;
 
 export default withStyles(styles)(Loader);

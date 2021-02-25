@@ -6,3 +6,5 @@ if (!window.Promise) {
 if (!window.fetch) {
   require('isomorphic-fetch');
 }
+
+export {};

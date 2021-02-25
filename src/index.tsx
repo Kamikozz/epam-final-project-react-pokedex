@@ -10,6 +10,7 @@ import './index.css';
 import routes from "./routes";
 
 ReactDOM.render(
+  // <App  />,
   <Router>
     <Switch>
       <Route path={routes.pokemonsPage} component={App} />
