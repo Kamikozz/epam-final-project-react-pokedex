@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { WithStyles, createStyles } from "@material-ui/core";
+import { WithStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,38 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 import routes from "../../routes";
 import notFoundImage from "../../assets/pokemon-meme.gif";
-
-const styles = createStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  card: {
-    minWidth: 275
-  },
-  cardContent: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  errorStatus: {
-    color: "red"
-  },
-  notFoundImage: {
-    margin: "12px 0 12px 0",
-    width: "80%",
-    borderRadius: "4px"
-  },
-  button: {
-    backgroundColor: "red",
-    "&:hover": {
-      backgroundColor: "red"
-    }
-  }
-});
+import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   classes: {

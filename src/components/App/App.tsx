@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 
-import { WithStyles, createStyles } from "@material-ui/core";
+import { WithStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import Nav from "../Nav/Nav";
@@ -11,22 +11,7 @@ import NotFound from "../NotFound/NotFound";
 import PokemonPage from "../../pages/PokemonPage/PokemonPage";
 import routes from "../../routes";
 import AppContext from "../../AppContext";
-
-const styles = () => createStyles({
-  root: {
-    textAlign: "center"
-  },
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    height: "100%",
-    minHeight: "calc(100vh - 72px)",
-    color: "white",
-    fontSize: "calc(10px + 2vmin)",
-    backgroundColor: "#282c34"
-  }
-});
+import styles from "./styles";
 
 interface AppProps extends WithStyles<typeof styles> {
   location?: any;

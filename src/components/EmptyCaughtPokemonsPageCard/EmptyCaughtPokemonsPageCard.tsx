@@ -1,36 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { WithStyles, createStyles } from "@material-ui/core";
+import { WithStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 
 import caughtPokemonImage from "../../assets/pokemon-catching.gif";
-
-const styles = createStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  cardContent: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  text: {
-    fontWeight: 400
-  },
-  caughtPokemonImage: {
-    margin: "12px 0 0 0",
-    width: "90%",
-    borderRadius: "4px"
-  }
-});
+import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   classes: {

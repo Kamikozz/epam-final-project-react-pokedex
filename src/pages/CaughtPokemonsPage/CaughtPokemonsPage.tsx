@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { WithStyles, createStyles } from "@material-ui/core";
+import { WithStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 
@@ -10,13 +10,7 @@ import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import EmptyCaughtPokemonsPageCard from "../../components/EmptyCaughtPokemonsPageCard/EmptyCaughtPokemonsPageCard";
 import AppContext from "../../AppContext";
-
-const styles = createStyles({
-  root: {
-    margin: "20px",
-    flexGrow: 1
-  }
-});
+import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   classes: {

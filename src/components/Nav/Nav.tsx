@@ -11,19 +11,7 @@ import Tab from "@material-ui/core/Tab";
 import pokedexIcon from "../../assets/pokeball.png";
 import caughtPokemonsIcon from "../../assets/pokeball3.png";
 import routes from "../../routes";
-
-const styles = createStyles({
-  root: {
-    flexGrow: 1
-  },
-  tabsIndicator: {
-    backgroundColor: "red"
-  },
-  tabsRoot: {
-    color: "red"
-  }
-});
-
+import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   // className: string;

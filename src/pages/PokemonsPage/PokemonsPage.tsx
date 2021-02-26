@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { WithStyles, createStyles } from "@material-ui/core";
-import { withStyles, Theme } from "@material-ui/core/styles";
+import { WithStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
@@ -12,32 +12,7 @@ import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
 import { IPokemon } from "../PokemonPage/PokemonPage";
-
-const styles = createStyles({
-  root: {
-    margin: "20px",
-    flexGrow: 1
-  },
-  actions: {
-    justifyContent: "center"
-  },
-  nextPageButtonWrapper: {
-    position: "relative"
-  },
-  nextPageButton: {
-    margin: "10px 0 10px 0",
-    backgroundColor: "red",
-    "&:hover": {
-      backgroundColor: "red"
-    }
-  },
-  nextPageButtonLoader: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)"
-  }
-});
+import styles from "./styles";
 
 function scrollToBottom(el: Element) {
   el.scrollIntoView({ behavior: "smooth" });

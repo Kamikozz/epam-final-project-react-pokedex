@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { WithStyles, createStyles } from "@material-ui/core";
-import { withStyles, Theme } from "@material-ui/core/styles";
+import { WithStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -11,32 +11,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 
-const styles = (theme: Theme) => createStyles({
-  badgeWrapper: {
-    display: "block",
-    overflow: "hidden",
-    borderRadius: "4px"
-  },
-  badge: {
-    margin: "17px",
-    padding: "25px",
-    width: 0,
-    fontSize: "20px",
-    borderRadius: "0 50%",
-    backgroundColor: "red"
-  },
-  card: {
-    textAlign: "center",
-    color: theme.palette.text.secondary
-  },
-  media: {
-    height: 300,
-    backgroundSize: "contain"
-  },
-  pokemonName: {
-    textTransform: "uppercase"
-  }
-});
+import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   classes: {

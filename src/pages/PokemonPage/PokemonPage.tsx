@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { WithStyles, createStyles } from "@material-ui/core";
+import { WithStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
@@ -12,16 +12,7 @@ import services from "../../services/pokemons";
 import AppContext from "../../AppContext";
 import PokemonItem from "../../components/PokemonItem/PokemonItem";
 import { ICaughtPokemon } from "../CaughtPokemonsPage/CaughtPokemonsPage";
-
-const styles = createStyles({
-  root: {
-    margin: "20px",
-    flexGrow: 1
-  },
-  actions: {
-    justifyContent: "center"
-  }
-});
+import styles from "./styles";
 
 interface IData {
   id: number;

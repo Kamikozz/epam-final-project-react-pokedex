@@ -1,18 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { WithStyles, createStyles } from "@material-ui/core";
-import { withStyles, Theme } from "@material-ui/core/styles";
+import { WithStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-const styles = (theme: Theme) => createStyles({
-  progress: {
-    margin: theme.spacing.unit * 2
-  },
-  progressColor: {
-    color: "white"
-  }
-});
+import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   className: string;
