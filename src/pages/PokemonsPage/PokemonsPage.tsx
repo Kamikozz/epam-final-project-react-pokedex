@@ -10,7 +10,7 @@ import Button from "@material-ui/core/Button";
 import PokemonItem from "../../components/PokemonItem/PokemonItem";
 import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
-import AppContext from "../../AppContext";
+import { AppContext, ActionType } from "../../reducer";
 import { IPokemon } from "../PokemonPage/PokemonPage";
 import styles from "./styles";
 
@@ -27,11 +27,10 @@ interface Props extends WithStyles<typeof styles> {
 const PokemonsPage = (props: Props) => {
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const endOfPageRef = useRef(null);
-  const context = useContext(AppContext);
+  const { dispatch, state } = useContext(AppContext);
 
   const handleNext = () => {
-    const { page, setAppState } = context;
-    setAppState({ page: page + 1});
+    dispatch({ type: ActionType.NEXT_PAGE });
     setIsNextPageLoading(true);
   };
 
@@ -44,16 +43,16 @@ const PokemonsPage = (props: Props) => {
   };
 
   const getPokemonsList = async () => {
-    const { page }: { page: number } = context;
+    const { page }: { page: number } = state;
     const newPokemons = await services.getPokemons({ page });
-    const { pokemons } = context;
+    const { pokemons } = state;
     return Array().concat(pokemons, newPokemons);
   };
 
   const getCaughtPokemonsList = async () => {
-    let { caughtPokemons } = context;
+    let { caughtPokemons } = state;
     if (!caughtPokemons) {
-      const { userId } = context;
+      const { userId } = state;
       caughtPokemons = await services.getCaughtPokemons(userId);
     }
     return caughtPokemons;
@@ -91,7 +90,6 @@ const PokemonsPage = (props: Props) => {
   // }
 
   const getPokemons = async () => {
-    const { setAppState } = context;
     const [caughtPokemons, pokemons] = await Promise.all([
       getCaughtPokemonsList(),
       getPokemonsList()
@@ -100,30 +98,36 @@ const PokemonsPage = (props: Props) => {
       caughtPokemons!.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
     );
     setIsNextPageLoading(false);
-    setAppState({
-      caughtPokemonIds,
-      caughtPokemons,
-      pokemons
+    dispatch({
+      type: ActionType.SET_NEW_STATE,
+      payload: {
+        caughtPokemonIds,
+        caughtPokemons,
+        pokemons
+      },
     });
   };
 
   const catchPokemon = async (pokemonId: number, name: string) => {
-    const { userId } = context;
+    const { userId } = state;
     const createdCaughtPokemon = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
       name
     });
-    const { caughtPokemons, caughtPokemonIds, setAppState } = context;
-    setAppState({
-      caughtPokemons: [...caughtPokemons!, createdCaughtPokemon!],
-      caughtPokemonIds: caughtPokemonIds!.add(pokemonId)
+    const { caughtPokemons, caughtPokemonIds } = state;
+    dispatch({
+      type: ActionType.SET_NEW_STATE,
+      payload: {
+        caughtPokemons: [...caughtPokemons!, createdCaughtPokemon!],
+        caughtPokemonIds: caughtPokemonIds!.add(pokemonId)
+      }
     });
   };
 
   useEffect(() => {
     console.log("PokemonsPage-ComponentDidMount");
-    const { pokemons } = context;
+    const { pokemons } = state;
     if (!pokemons.length) {
       console.log("GlobalState.pokemons is empty! RETRIEVING!");
       getPokemons();
@@ -136,11 +140,11 @@ const PokemonsPage = (props: Props) => {
   }, [isNextPageLoading]);
 
   const { classes } = props;
-  const { caughtPokemonIds, pokemons } = context;
+  const { caughtPokemonIds, pokemons } = state;
 
   if (!caughtPokemonIds) return <Loader text />;
 
-  console.log("PokemonsPage-Render", context);
+  console.log("PokemonsPage-Render", state);
 
   return (
     <div className={classes.root}>

@@ -9,7 +9,7 @@ import PokemonItem from "../../components/PokemonItem/PokemonItem";
 import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
 import EmptyCaughtPokemonsPageCard from "../../components/EmptyCaughtPokemonsPageCard/EmptyCaughtPokemonsPageCard";
-import AppContext from "../../AppContext";
+import { AppContext, ActionType } from "../../reducer";
 import styles from "./styles";
 
 export interface ICaughtPokemon {
@@ -32,15 +32,16 @@ interface Props extends WithStyles<typeof styles> {
 };
 
 const CaughtPokemonsPage = (props: Props) => {
-  const context = useContext(AppContext);
+  const { dispatch, state } = useContext(AppContext);
   const getCaughtPokemonsList = async () => {
-    let { caughtPokemons } = context;
+    let { caughtPokemons } = state;
     if (caughtPokemons) return;
 
-    const { userId, setAppState } = context;
+    const { userId } = state;
     caughtPokemons = await services.getCaughtPokemons(userId);
-    setAppState({
-      caughtPokemons,
+    dispatch({
+      type: ActionType.SET_NEW_STATE,
+      payload: { caughtPokemons }
     });
   };
 
@@ -49,12 +50,12 @@ const CaughtPokemonsPage = (props: Props) => {
     getCaughtPokemonsList();
   }, []);
 
-  const { caughtPokemons } = context;
+  const { caughtPokemons } = state;
 
   if (!caughtPokemons) return <Loader text />;
   if (!caughtPokemons.length) return <EmptyCaughtPokemonsPageCard />;
 
-  console.log("CaughtPokemonsPage-Render", context);
+  console.log("CaughtPokemonsPage-Render", state);
 
   const { classes } = props;
 

@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 
 import Loader from "../../components/Loader/Loader";
 import services from "../../services/pokemons";
-import AppContext from "../../AppContext";
+import { AppContext } from "../../reducer";
 import PokemonItem from "../../components/PokemonItem/PokemonItem";
 import { ICaughtPokemon } from "../CaughtPokemonsPage/CaughtPokemonsPage";
 import styles from "./styles";
@@ -36,12 +36,12 @@ interface Props extends WithStyles<typeof styles> {
 const PokemonPage = (props: Props) => {
   let [data, setData]: [null | IData, Function] = useState(null);
   const [pokemonId] = useState(Number(props.match.params.id));
-  const context = useContext(AppContext);
+  const { dispatch, state } = useContext(AppContext);
 
   const getPokemon = async () => {
     let pokemon;
     // check if already cached
-    const { pokemons } = context;
+    const { pokemons } = state;
     if (pokemons) {
       pokemon = pokemons.find((item: IPokemon) => item.id === pokemonId);
     }
@@ -55,20 +55,20 @@ const PokemonPage = (props: Props) => {
   const getCaughtPokemon = async () => {
     let caughtPokemon;
     // check if already cached
-    const { caughtPokemons } = context;
+    const { caughtPokemons } = state;
     if (caughtPokemons) {
       caughtPokemon = caughtPokemons.find((item: ICaughtPokemon) => item.pokemonId === pokemonId);
     }
 
     if (!caughtPokemon) {
-      const { userId } = context;
+      const { userId } = state;
       caughtPokemon = await services.getCaughtPokemon(userId, pokemonId);
     }
     return caughtPokemon;
   };
 
   const catchPokemon = async () => {
-    const { userId } = context;
+    const { userId } = state;
     const newData = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
@@ -76,7 +76,7 @@ const PokemonPage = (props: Props) => {
     });
     setData(newData);
 
-    const { caughtPokemons, caughtPokemonIds } = context;
+    const { caughtPokemons, caughtPokemonIds } = state;
 
     // if already cached caughtPokemons in the application
     if (caughtPokemons && newData) {

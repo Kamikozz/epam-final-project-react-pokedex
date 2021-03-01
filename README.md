@@ -74,4 +74,16 @@ Final React application with Material-UI, Context Providers
 - one state on the upper-level provided using Context Providers
 - reduced count of the requests & re-renders
 
-### Tag: #working-mui-context-providers-typescript ????
+### Tag: #working-mui-context-providers-typescript #c02fbae
+
+Final React application with MUI, Context Providers & typescript
+- all is the same like in the previous version, except typescript
+
+### Tag: #working-mui-context-providers-ts-hooks #958e63c
+
+Final React application with MUI, Context Providers, TS & React Hooks (without useReducer)
+- move TSS/JSS into separate styles.ts file in each of the component's folder
+
+### Tag: #working-mui-context-providers-ts-hooks-usereducer ???
+
+Final React application with MUI, Typescript, useContext & useReducer
