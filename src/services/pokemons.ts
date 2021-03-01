@@ -1,4 +1,6 @@
 import config from "../config/config.json";
+import { IPokemon } from "../pages/PokemonPage/PokemonPage";
+import { ICaughtPokemon } from "../pages/CaughtPokemonsPage/CaughtPokemonsPage";
 
 // getPokemonDescription = (name) => {
 // 	fetch(`https://www.pokemon.com/ru/pokedex/${name}`)
@@ -17,17 +19,12 @@ import config from "../config/config.json";
 // 		.catch(err => console.log(err))
 // };
 
-interface ICaughtPokemon {
-  pokemonId: number;
-  caughtDate: string;
-  name: string;
+interface IPagination {
+  page?: number;
+  limit?: number;
 };
 
-/**
- *
- * @param {Object} data { `pokemonId`: Number, `caughtDate`: String, `name`: String }
- */
-async function postCaughtPokemon(userId: string, data: ICaughtPokemon) {
+async function postCaughtPokemon(userId: number, data: ICaughtPokemon) {
   const endpoint = `/users/${userId}/caught_pokemons`;
   const url = `${config.host}:${config.port}${endpoint}`;
   const response = await fetch(url, {
@@ -39,7 +36,7 @@ async function postCaughtPokemon(userId: string, data: ICaughtPokemon) {
   });
   let createdCaughtPokemon;
   try {
-    createdCaughtPokemon = await response.json();
+    createdCaughtPokemon = await response.json() as ICaughtPokemon;
   } catch (err) {
     console.error(err);
   }
@@ -50,23 +47,18 @@ async function getPokemon(pokemonId: number) {
   const endpoint = `/pokemons/${pokemonId}`;
   const url = `${config.host}:${config.port}${endpoint}`;
   const response = await fetch(url);
-  let pokemon;
+  let pokemon = null;
   try {
-    pokemon = await response.json();
+    pokemon = await response.json() as IPokemon;
   } catch (err) {
     console.error(err);
   }
   return pokemon;
 }
 
-interface IPagination {
-  page?: number;
-  limit?: number;
-};
-
 /**
  * Retrieve pokemons list with optional pagination.
- * @param {Object} pagination { `page`: Number, `limit`: Number }
+ * @param {IPagination} pagination
  */
 async function getPokemons(pagination: IPagination) {
   let params = '';
@@ -80,14 +72,14 @@ async function getPokemons(pagination: IPagination) {
   const response = await fetch(url);
   let pokemons;
   try {
-    pokemons = await response.json();
+    pokemons = await response.json() as Array<IPokemon>;
   } catch (err) {
     console.error(err);
   }
   return pokemons;
 }
 
-async function getCaughtPokemon(userId: string, pokemonId: number) {
+async function getCaughtPokemon(userId: number, pokemonId: number) {
   const endpoint = `/users/${userId}/caught_pokemons`;
   const params = `?pokemonId=${pokemonId}`;
   const url = `${config.host}:${config.port}${endpoint}${params}`;
@@ -95,14 +87,14 @@ async function getCaughtPokemon(userId: string, pokemonId: number) {
   let caughtPokemon;
   try {
     const data = await response.json();
-    caughtPokemon = data[0];
+    caughtPokemon = data[0] as ICaughtPokemon;
   } catch (err) {
     console.error(err);
   }
   return caughtPokemon;
 }
 
-async function getCaughtPokemons(userId: string, from?: number, to?: number) {
+async function getCaughtPokemons(userId: number, from?: number, to?: number) {
   const endpoint = `/users/${userId}/caught_pokemons`;
   let params: string | Array<string> = [];
   if (from) params.push(`pokemonId_gte=${from}`);
@@ -110,9 +102,9 @@ async function getCaughtPokemons(userId: string, from?: number, to?: number) {
   params = params.length ? `?${params.join('&')}` : '';
   const url = `${config.host}:${config.port}${endpoint}${params}`;
   const response = await fetch(url);
-  let caughtPokemons;
+  let caughtPokemons = null;
   try {
-    caughtPokemons = await response.json();
+    caughtPokemons = await response.json() as Array<ICaughtPokemon>;
   } catch (err) {
     console.error(err);
   }

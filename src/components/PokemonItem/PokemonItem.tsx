@@ -31,66 +31,60 @@ interface Props extends WithStyles<typeof styles> {
 
 const LinkToPokemonsPage = (props: any) => <Link {...props} />;
 
-class PokemonItem extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props);
-  }
-
-  render() {
-    const {
-      classes,
-      key,
-      pokemonId,
-      name,
-      date,
-      cardActions,
-      link
-    } = this.props;
-    const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
-    const cardActionAreaProps = link ? {
-      component: LinkToPokemonsPage,
-      to: `/pokemons/${pokemonId}`
-    } : {};
-    return (
-      <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
-        <Badge
-          className={classes.badgeWrapper}
-          classes={{ badge: classes.badge }}
-          color="primary"
-          badgeContent={pokemonId}
-          max={99999} // max pokemonId found in db.json
-        >
-          <Card className={classes.card}>
-            <CardActionArea
-              {...cardActionAreaProps}
-            >
-              <CardMedia
-                className={classes.media}
-                image={pokemonImage}
-                title={name}
-              />
-              <CardContent>
-                <Typography
-                  className={classes.pokemonName}
-                  variant="h4"
-                  component="h4"
-                >
-                  {name}
-                </Typography>
-                {date && (
-                  <Typography component="p">{`Caught at: ${date}`}</Typography>
-                )}
-                {/*<Typography component="p">*/}
-                {/*{this.getPokemonDescription(pokemon.name)}*/}
-                {/*</Typography>*/}
-              </CardContent>
-            </CardActionArea>
-            {cardActions}
-          </Card>
-        </Badge>
-      </Grid>
-    );
-  }
-}
+const PokemonItem = (props: Props) => {
+  const {
+    classes,
+    key,
+    pokemonId,
+    name,
+    date,
+    cardActions,
+    link
+  } = props;
+  const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
+  const cardActionAreaProps = link ? {
+    component: LinkToPokemonsPage,
+    to: `/pokemons/${pokemonId}`
+  } : {};
+  return (
+    <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
+      <Badge
+        className={classes.badgeWrapper}
+        classes={{ badge: classes.badge }}
+        color="primary"
+        badgeContent={pokemonId}
+        max={99999} // max pokemonId found in db.json
+      >
+        <Card className={classes.card}>
+          <CardActionArea
+            {...cardActionAreaProps}
+          >
+            <CardMedia
+              className={classes.media}
+              image={pokemonImage}
+              title={name}
+            />
+            <CardContent>
+              <Typography
+                className={classes.pokemonName}
+                variant="h4"
+                component="h4"
+              >
+                {name}
+              </Typography>
+              {date && (
+                <Typography component="p">{`Caught at: ${date}`}</Typography>
+              )}
+              {/*<Typography component="p">*/}
+              {/*{this.getPokemonDescription(pokemon.name)}*/}
+              {/*</Typography>*/}
+            </CardContent>
+          </CardActionArea>
+          {cardActions}
+        </Card>
+      </Badge>
+    </Grid>
+  );
+};
 
 export default withStyles(styles)(PokemonItem);

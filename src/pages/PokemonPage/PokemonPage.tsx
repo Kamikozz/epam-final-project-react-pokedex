@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { WithStyles } from "@material-ui/core";
@@ -32,26 +32,16 @@ interface Props extends WithStyles<typeof styles> {
   };
   match: any;
 };
-interface State {
-  data: null | IData;
-  pokemonId: number;
-};
 
-class PokemonPage extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      data: null,
-      pokemonId: Number(this.props.match.params.id)
-    };
-    this.catchPokemon = this.catchPokemon.bind(this);
-  }
+const PokemonPage = (props: Props) => {
+  let [data, setData]: [null | IData, Function] = useState(null);
+  const [pokemonId] = useState(Number(props.match.params.id));
+  const context = useContext(AppContext);
 
-  async getPokemon() {
+  const getPokemon = async () => {
     let pokemon;
     // check if already cached
-    const { pokemons } = this.context;
-    const { pokemonId } = this.state;
+    const { pokemons } = context;
     if (pokemons) {
       pokemon = pokemons.find((item: IPokemon) => item.id === pokemonId);
     }
@@ -60,93 +50,93 @@ class PokemonPage extends React.Component<Props, State> {
       pokemon = await services.getPokemon(pokemonId);
     }
     return pokemon;
-  }
+  };
 
-  async getCaughtPokemon() {
+  const getCaughtPokemon = async () => {
     let caughtPokemon;
     // check if already cached
-    const { caughtPokemons } = this.context;
-    const { pokemonId } = this.state;
+    const { caughtPokemons } = context;
     if (caughtPokemons) {
       caughtPokemon = caughtPokemons.find((item: ICaughtPokemon) => item.pokemonId === pokemonId);
     }
 
     if (!caughtPokemon) {
-      const { userId } = this.context;
+      const { userId } = context;
       caughtPokemon = await services.getCaughtPokemon(userId, pokemonId);
     }
     return caughtPokemon;
-  }
+  };
 
-  async catchPokemon() {
-    const { userId } = this.context;
-    const { pokemonId } = this.state;
-    const data = await services.postCaughtPokemon(userId, {
+  const catchPokemon = async () => {
+    const { userId } = context;
+    const newData = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
-      name: this.state.data ? this.state.data.name : ''
+      name: data ? data.name : ''
     });
-    this.setState({ data });
+    setData(newData);
 
-    const { caughtPokemons, caughtPokemonIds } = this.context;
+    const { caughtPokemons, caughtPokemonIds } = context;
 
     // if already cached caughtPokemons in the application
-    if (caughtPokemons) {
-      caughtPokemons.push(data);
+    if (caughtPokemons && newData) {
+      caughtPokemons.push(newData);
+    }
+    if (caughtPokemons && caughtPokemonIds) {
       caughtPokemonIds.add(pokemonId);
     }
-  }
+  };
 
-  async getPokemonData() {
-    let data = await this.getCaughtPokemon();
+  const getPokemonData = async () => {
+    let data = await getCaughtPokemon() as IData;
     if (!data) {
-      data = await this.getPokemon();
+      const temp = await getPokemon();
+      if (temp) {
+        data = temp;
+      }
     }
-    this.setState({ data });
-  }
+    setData(data);
+  };
 
-  componentDidMount() {
-    this.getPokemonData();
-  }
+  useEffect(() => {
+    getPokemonData();
+  }, []);
 
-  render() {
-    console.log("EXACT POKEMON");
-    const { data, pokemonId } = this.state;
-    if (!data) return <Loader text />;
+  console.log("EXACT POKEMON");
 
-    const { classes } = this.props;
-    const { name: pokemonName, caughtDate } = data;
-    return (
-      <div className={classes.root}>
-        <Grid container spacing={24} justify="center">
-          <PokemonItem
-            key={pokemonId}
-            pokemonId={pokemonId}
-            name={pokemonName}
-            date={caughtDate}
-            cardActions={
-              !caughtDate && (
-                <CardActions className={classes.actions}>
-                  <Button
-                    variant="outlined"
-                    size="medium"
-                    color="primary"
-                    onClick={this.catchPokemon}
-                  >
-                    Catch
-                  </Button>
-                </CardActions>
-              )
-            }
-          />
-        </Grid>
-      </div>
-    );
-  }
-}
+  if (!data) return <Loader text />;
 
-(PokemonPage as React.ComponentClass<Props>).contextType = AppContext;
-(PokemonPage as React.ComponentClass<Props>).propTypes = {
+  const { classes } = props;
+  const { name: pokemonName, caughtDate } = data;
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={24} justify="center">
+        <PokemonItem
+          key={pokemonId}
+          pokemonId={pokemonId}
+          name={pokemonName}
+          date={caughtDate}
+          cardActions={
+            !caughtDate && (
+              <CardActions className={classes.actions}>
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  color="primary"
+                  onClick={catchPokemon}
+                >
+                  Catch
+                </Button>
+              </CardActions>
+            )
+          }
+        />
+      </Grid>
+    </div>
+  );
+};
+
+PokemonPage.propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 

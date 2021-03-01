@@ -17,7 +17,7 @@ interface Props extends WithStyles<typeof styles> {
   };
 };
 
-function Loader(props: Props) {
+const Loader = (props: Props) => {
   const { classes, className, text, size = 70 } = props;
   return (
     <div className={[classes.progressColor, className].join(" ")}>
@@ -30,7 +30,7 @@ function Loader(props: Props) {
       />
     </div>
   );
-}
+};
 
 Loader.propTypes = {
   classes: PropTypes.object.isRequired

@@ -19,30 +19,27 @@ interface Props extends WithStyles<typeof styles> {
   };
 };
 
-class EmptyCaughtPokemonsPageCard extends React.Component<Props> {
-  render() {
-    const { classes } = this.props;
+const EmptyCaughtPokemonsPageCard = (props: Props) => {
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+      <Card>
+        <CardContent className={classes.cardContent}>
+          <Typography variant="h5" className={classes.text}>
+            Need to catch more pokemons
+          </Typography>
+          <img
+            className={classes.caughtPokemonImage}
+            src={caughtPokemonImage}
+            alt="pokeball catches wild pokemon"
+          />
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
-    return (
-      <div className={classes.root}>
-        <Card>
-          <CardContent className={classes.cardContent}>
-            <Typography variant="h5" className={classes.text}>
-              Need to catch more pokemons
-            </Typography>
-            <img
-              className={classes.caughtPokemonImage}
-              src={caughtPokemonImage}
-              alt="pokeball catches wild pokemon"
-            />
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-}
-
-(EmptyCaughtPokemonsPageCard as React.ComponentClass<Props>).propTypes = {
+EmptyCaughtPokemonsPageCard.propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 

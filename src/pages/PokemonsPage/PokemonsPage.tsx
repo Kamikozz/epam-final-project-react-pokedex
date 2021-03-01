@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import { WithStyles } from "@material-ui/core";
@@ -14,10 +14,6 @@ import AppContext from "../../AppContext";
 import { IPokemon } from "../PokemonPage/PokemonPage";
 import styles from "./styles";
 
-function scrollToBottom(el: Element) {
-  el.scrollIntoView({ behavior: "smooth" });
-}
-
 interface Props extends WithStyles<typeof styles> {
   classes: {
     root: string;
@@ -27,49 +23,41 @@ interface Props extends WithStyles<typeof styles> {
     nextPageButtonLoader: string;
   };
 };
-interface State {
-  isNextPageLoading: boolean;
-};
 
+const PokemonsPage = (props: Props) => {
+  const [isNextPageLoading, setIsNextPageLoading] = useState(false);
+  const endOfPageRef = useRef(null);
+  const context = useContext(AppContext);
 
-class PokemonsPage extends React.Component<Props, State> {
-  endOfPageRef: null | Element;
+  const handleNext = () => {
+    const { page, setAppState } = context;
+    setAppState({ page: page + 1});
+    setIsNextPageLoading(true);
+  };
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      isNextPageLoading: false
-    };
-    this.endOfPageRef = null;
-    this.handleNext = this.handleNext.bind(this);
-  }
+  const getPokemonsAndScroll = async () => {
+    await getPokemons();
+    const element = endOfPageRef.current as Element | null;
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
-  handleNext() {
-    const { page, setPage } = this.context;
-    setPage(page + 1);
-    this.setState({ isNextPageLoading: true }, async () => {
-      await this.getPokemons();
-      if (this.endOfPageRef) {
-        scrollToBottom(this.endOfPageRef);
-      }
-    });
-  }
-
-  async getPokemonsList() {
-    const { page }: { page: number } = this.context;
+  const getPokemonsList = async () => {
+    const { page }: { page: number } = context;
     const newPokemons = await services.getPokemons({ page });
-    const { pokemons } = this.context;
-    return [].concat(pokemons, newPokemons);
-  }
+    const { pokemons } = context;
+    return Array().concat(pokemons, newPokemons);
+  };
 
-  async getCaughtPokemonsList() {
-    let { caughtPokemons } = this.context;
+  const getCaughtPokemonsList = async () => {
+    let { caughtPokemons } = context;
     if (!caughtPokemons) {
-      const { userId } = this.context;
+      const { userId } = context;
       caughtPokemons = await services.getCaughtPokemons(userId);
     }
     return caughtPokemons;
-  }
+  };
 
   // async getCaughtPokemonsList() {
   //   const { page } = this.context;
@@ -102,113 +90,114 @@ class PokemonsPage extends React.Component<Props, State> {
   //   );
   // }
 
-  async getPokemons() {
-    const { setAppState } = this.context;
+  const getPokemons = async () => {
+    const { setAppState } = context;
     const [caughtPokemons, pokemons] = await Promise.all([
-      this.getCaughtPokemonsList(),
-      this.getPokemonsList()
+      getCaughtPokemonsList(),
+      getPokemonsList()
     ]);
     const caughtPokemonIds = new Set(
-      caughtPokemons.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
+      caughtPokemons!.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
     );
-    this.setState({
-      isNextPageLoading: false
-    });
+    setIsNextPageLoading(false);
     setAppState({
       caughtPokemonIds,
       caughtPokemons,
       pokemons
     });
-  }
+  };
 
-  async catchPokemon(pokemonId: number, name: string) {
-    const { userId } = this.context;
+  const catchPokemon = async (pokemonId: number, name: string) => {
+    const { userId } = context;
     const createdCaughtPokemon = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
       name
     });
-    const { caughtPokemons, caughtPokemonIds, setAppState } = this.context;
+    const { caughtPokemons, caughtPokemonIds, setAppState } = context;
     setAppState({
-      caughtPokemons: [...caughtPokemons, createdCaughtPokemon],
-      caughtPokemonIds: caughtPokemonIds.add(pokemonId)
+      caughtPokemons: [...caughtPokemons!, createdCaughtPokemon!],
+      caughtPokemonIds: caughtPokemonIds!.add(pokemonId)
     });
-  }
+  };
 
-  componentDidMount() {
+  useEffect(() => {
     console.log("PokemonsPage-ComponentDidMount");
-    const { pokemons } = this.context;
+    const { pokemons } = context;
     if (!pokemons.length) {
       console.log("GlobalState.pokemons is empty! RETRIEVING!");
-      this.getPokemons();
+      getPokemons();
     }
-  }
+  }, []);
 
-  render() {
-    const { classes } = this.props;
-    const { caughtPokemonIds, pokemons } = this.context;
+  useEffect(() => {
+    if (!isNextPageLoading) return;
+    getPokemonsAndScroll();
+  }, [isNextPageLoading]);
 
-    if (!caughtPokemonIds) return <Loader text />;
+  const { classes } = props;
+  const { caughtPokemonIds, pokemons } = context;
 
-    console.log("PokemonsPage-Render", this.context);
+  if (!caughtPokemonIds) return <Loader text />;
 
-    return (
-      <div className={classes.root}>
-        <Grid container spacing={24} justify="center">
-          {pokemons.map((pokemon: IPokemon) => {
-            const isAlreadyCaught = caughtPokemonIds.has(pokemon.id);
-            const cardActions = (
-              <CardActions className={classes.actions}>
-                <Button
-                  disabled={isAlreadyCaught}
-                  variant="outlined"
-                  size="medium"
-                  color="primary"
-                  onClick={
-                    isAlreadyCaught
-                    ? undefined
-                    : this.catchPokemon.bind(this, pokemon.id, pokemon.name)
-                  }
-                >
-                  Catch
-                </Button>
-              </CardActions>
-            );
-            return (
-              <PokemonItem
-                key={pokemon.id}
-                pokemonId={pokemon.id}
-                name={pokemon.name}
-                cardActions={cardActions}
-                link
-              />
-            );
-          })}
-        </Grid>
-        <div
-          className={classes.nextPageButtonWrapper}
-          ref={el => (this.endOfPageRef = el)}
+  console.log("PokemonsPage-Render", context);
+
+  return (
+    <div className={classes.root}>
+      <Grid container spacing={24} justify="center">
+        {pokemons.map((pokemon: IPokemon) => {
+          const isAlreadyCaught = caughtPokemonIds.has(pokemon.id);
+          const clickHandler = isAlreadyCaught
+            ? undefined
+            : () => {
+            catchPokemon(pokemon.id, pokemon.name);
+          };
+          const cardActions = (
+            <CardActions className={classes.actions}>
+              <Button
+                disabled={isAlreadyCaught}
+                variant="outlined"
+                size="medium"
+                color="primary"
+                onClick={clickHandler}
+              >
+                Catch
+              </Button>
+            </CardActions>
+          );
+          return (
+            <PokemonItem
+              key={pokemon.id}
+              pokemonId={pokemon.id}
+              name={pokemon.name}
+              cardActions={cardActions}
+              link
+            />
+          );
+        })}
+      </Grid>
+      <div
+        className={classes.nextPageButtonWrapper}
+        ref={endOfPageRef}
+      >
+        <Button
+          disabled={isNextPageLoading}
+          variant="contained"
+          color="primary"
+          className={classes.nextPageButton}
+          onClick={handleNext}
         >
-          <Button
-            disabled={this.state.isNextPageLoading}
-            variant="contained"
-            color="primary"
-            className={classes.nextPageButton}
-            onClick={this.handleNext}
-          >
-            Load more
-          </Button>
-          {this.state.isNextPageLoading && (
-            <Loader className={classes.nextPageButtonLoader} size={24} />
-          )}
-        </div>
+          Load more
+        </Button>
+        {isNextPageLoading && (
+          <Loader className={classes.nextPageButtonLoader} size={24} />
+        )}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-(PokemonsPage as React.ComponentClass<Props>).contextType = AppContext;
-(PokemonsPage as React.ComponentClass<Props>).propTypes = {
+PokemonsPage.propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 

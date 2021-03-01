@@ -25,41 +25,38 @@ interface Props extends WithStyles<typeof styles> {
 };
 
 const LinkToPokemonsPage = (props: any) => <Link to={routes.pokemonsPage} {...props} />;
-class NotFound extends React.Component<Props> {
-  render() {
-    const { classes } = this.props;
+const NotFound = (props: Props) => {
+  const { classes } = props;
+  return (
+    <div className={classes.root}>
+      <Card className={classes.card}>
+        <CardContent className={classes.cardContent}>
+          <Typography variant="h2" className={classes.errorStatus}>
+            404
+          </Typography>
+          <Typography>
+            Who's that Pokemon? 😅
+          </Typography>
+          <img
+            className={classes.notFoundImage}
+            src={notFoundImage}
+            alt="who is that pokemon meme"
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            component={LinkToPokemonsPage}
+          >
+            Go to home page
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
-    return (
-      <div className={classes.root}>
-        <Card className={classes.card}>
-          <CardContent className={classes.cardContent}>
-            <Typography variant="h2" className={classes.errorStatus}>
-              404
-            </Typography>
-            <Typography>
-              Who's that Pokemon? 😅
-            </Typography>
-            <img
-              className={classes.notFoundImage}
-              src={notFoundImage}
-              alt="who is that pokemon meme"
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.button}
-              component={LinkToPokemonsPage}
-            >
-              Go to home page
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-}
-
-(NotFound as React.ComponentClass<Props>).propTypes = {
+NotFound.propTypes = {
   classes: PropTypes.object.isRequired
 } as any;
 
