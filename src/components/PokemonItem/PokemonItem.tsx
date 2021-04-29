@@ -1,26 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { WithStyles } from "@material-ui/core";
+import {
+  WithStyles,
+  Grid, Card, CardActionArea, CardContent, CardMedia, Typography, Badge,
+} from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import Badge from "@material-ui/core/Badge";
 
 import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
-  classes: {
-    badgeWrapper: string;
-    badge: string;
-    card: string;
-    media: string;
-    pokemonName: string;
-  };
   key: number;
   pokemonId: number;
   name: string;
@@ -56,9 +45,7 @@ const PokemonItem = (props: Props) => {
         max={99999} // max pokemonId found in db.json
       >
         <Card className={classes.card}>
-          <CardActionArea
-            {...cardActionAreaProps}
-          >
+          <CardActionArea {...cardActionAreaProps}>
             <CardMedia
               className={classes.media}
               image={pokemonImage}
@@ -72,9 +59,11 @@ const PokemonItem = (props: Props) => {
               >
                 {name}
               </Typography>
-              {date && (
+              {
+                date && (
                 <Typography component="p">{`Caught at: ${date}`}</Typography>
-              )}
+                )
+              }
               {/*<Typography component="p">*/}
               {/*{this.getPokemonDescription(pokemon.name)}*/}
               {/*</Typography>*/}

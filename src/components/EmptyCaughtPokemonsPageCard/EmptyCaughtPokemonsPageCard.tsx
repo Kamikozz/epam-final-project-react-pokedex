@@ -1,23 +1,12 @@
 import React from "react";
-import PropTypes from "prop-types";
 
-import { WithStyles } from "@material-ui/core";
+import { WithStyles, Card, CardContent, Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 
 import caughtPokemonImage from "../../assets/pokemon-catching.gif";
 import styles from "./styles";
 
-interface Props extends WithStyles<typeof styles> {
-  classes: {
-    root: string;
-    cardContent: string;
-    text: string;
-    caughtPokemonImage: string;
-  };
-};
+interface Props extends WithStyles<typeof styles> {};
 
 const EmptyCaughtPokemonsPageCard = (props: Props) => {
   const { classes } = props;
@@ -38,9 +27,5 @@ const EmptyCaughtPokemonsPageCard = (props: Props) => {
     </div>
   );
 };
-
-EmptyCaughtPokemonsPageCard.propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
 
 export default withStyles(styles)(EmptyCaughtPokemonsPageCard);

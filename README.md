@@ -84,6 +84,13 @@ Final React application with MUI, Context Providers & typescript
 Final React application with MUI, Context Providers, TS & React Hooks (without useReducer)
 - move TSS/JSS into separate styles.ts file in each of the component's folder
 
-### Tag: #working-mui-context-providers-ts-hooks-usereducer ???
+### Tag: #working-mui-context-providers-ts-hooks-usereducer #fc092d3
 
 Final React application with MUI, Typescript, useContext & useReducer
+
+### Tag: #working-mui-redux-ts-hooks ???
+
+Final React application with MUI, TS, Redux
+- add index.ts for shortcut aliases of import/export (for components, redux slices & pages);
+- remove outdated PropTypes due to using TS;
+- remove explicit Prop type/interface declaration of classes;

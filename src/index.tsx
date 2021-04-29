@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import './polyfills';
 import * as serviceWorker from './serviceWorker';
@@ -8,13 +9,16 @@ import * as serviceWorker from './serviceWorker';
 import App from './components/App/App';
 import './index.css';
 import routes from "./routes";
+import { store } from "./reducer";
 
 ReactDOM.render(
-  <Router>
-    <Switch>
-      <Route path={routes.pokemonsPage} component={App} />
-    </Switch>
-  </Router>,
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Route path={routes.pokemonsPage} component={App} />
+      </Switch>
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
 

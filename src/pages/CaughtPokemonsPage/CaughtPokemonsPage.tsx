@@ -1,15 +1,14 @@
-import React, { useEffect, useContext } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { WithStyles } from "@material-ui/core";
+import { WithStyles, Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 
-import PokemonItem from "../../components/PokemonItem/PokemonItem";
-import Loader from "../../components/Loader/Loader";
+import { PokemonItem, Loader, EmptyCaughtPokemonsPageCard } from "../../components";
+
 import services from "../../services/pokemons";
-import EmptyCaughtPokemonsPageCard from "../../components/EmptyCaughtPokemonsPageCard/EmptyCaughtPokemonsPageCard";
-import { AppContext, ActionType } from "../../reducer";
+import { ActionType } from "../../reducer";
+import { selectCaughtPokemons, selectUserId } from "../../store/slices";
 import styles from "./styles";
 
 export interface ICaughtPokemon {
@@ -19,25 +18,15 @@ export interface ICaughtPokemon {
   caughtDate: string;
 };
 
-interface Props extends WithStyles<typeof styles> {
-  classes: {
-    root: string;
-  };
-  key: string;
-  pokemonId: string;
-  name: string;
-  date: string;
-  cardActions: React.Component;
-  link: boolean;
-};
+interface Props extends WithStyles<typeof styles> {};
 
 const CaughtPokemonsPage = (props: Props) => {
-  const { dispatch, state } = useContext(AppContext);
+  const userId = useSelector(selectUserId);
+  let caughtPokemons = useSelector(selectCaughtPokemons);
+  const dispatch = useDispatch();
   const getCaughtPokemonsList = async () => {
-    let { caughtPokemons } = state;
     if (caughtPokemons) return;
 
-    const { userId } = state;
     caughtPokemons = await services.getCaughtPokemons(userId);
     dispatch({
       type: ActionType.SET_NEW_STATE,
@@ -50,34 +39,30 @@ const CaughtPokemonsPage = (props: Props) => {
     getCaughtPokemonsList();
   }, []);
 
-  const { caughtPokemons } = state;
-
-  if (!caughtPokemons) return <Loader text />;
+  if (!caughtPokemons) return <Loader showText={true} />;
   if (!caughtPokemons.length) return <EmptyCaughtPokemonsPageCard />;
 
-  console.log("CaughtPokemonsPage-Render", state);
+  console.log("CaughtPokemonsPage-Render");
 
   const { classes } = props;
 
   return (
     <div className={classes.root}>
       <Grid container spacing={24} justify="center">
-        {caughtPokemons.map((pokemon: ICaughtPokemon) => (
-          <PokemonItem
-            key={pokemon.id!}
-            pokemonId={pokemon.pokemonId}
-            name={pokemon.name}
-            date={pokemon.caughtDate}
-            link
-          />
-        ))}
+        {
+          caughtPokemons.map(({ id, pokemonId, name, caughtDate}) => (
+            <PokemonItem
+              key={id!}
+              pokemonId={pokemonId}
+              name={name}
+              date={caughtDate}
+              link
+            />
+          ))
+        }
       </Grid>
     </div>
   );
 };
-
-CaughtPokemonsPage.propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
 
 export default withStyles(styles)(CaughtPokemonsPage);

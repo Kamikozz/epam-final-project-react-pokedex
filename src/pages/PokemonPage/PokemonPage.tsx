@@ -1,16 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { WithStyles } from "@material-ui/core";
+import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
 
-import Loader from "../../components/Loader/Loader";
+import {
+  selectPokemons,
+  selectCaughtPokemons,
+  selectCaughtPokemonsIds,
+  selectUserId,
+} from "../../store/slices";
+import { Loader, PokemonItem } from "../../components";
 import services from "../../services/pokemons";
-import { AppContext } from "../../reducer";
-import PokemonItem from "../../components/PokemonItem/PokemonItem";
 import { ICaughtPokemon } from "../CaughtPokemonsPage/CaughtPokemonsPage";
 import styles from "./styles";
 
@@ -26,25 +27,23 @@ export interface IPokemon {
   name: string;
 };
 interface Props extends WithStyles<typeof styles> {
-  classes: {
-    root: string;
-    actions: string;
-  };
   match: any;
 };
 
 const PokemonPage = (props: Props) => {
-  let [data, setData]: [null | IData, Function] = useState(null);
+  const [pokemonData, setPokemonData]: [IData | null, Function] = useState(null);
   const [pokemonId] = useState(Number(props.match.params.id));
-  const { dispatch, state } = useContext(AppContext);
+
+  const userId = useSelector(selectUserId);
+  const pokemons = useSelector(selectPokemons);
+  const caughtPokemons = useSelector(selectCaughtPokemons);
+  const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
+
+  const dispatch = useDispatch();
 
   const getPokemon = async () => {
-    let pokemon;
     // check if already cached
-    const { pokemons } = state;
-    if (pokemons) {
-      pokemon = pokemons.find((item: IPokemon) => item.id === pokemonId);
-    }
+    let pokemon = pokemons.find((item: IPokemon) => item.id === pokemonId) || null;
 
     if (!pokemon) {
       pokemon = await services.getPokemon(pokemonId);
@@ -55,35 +54,30 @@ const PokemonPage = (props: Props) => {
   const getCaughtPokemon = async () => {
     let caughtPokemon;
     // check if already cached
-    const { caughtPokemons } = state;
     if (caughtPokemons) {
       caughtPokemon = caughtPokemons.find((item: ICaughtPokemon) => item.pokemonId === pokemonId);
     }
 
     if (!caughtPokemon) {
-      const { userId } = state;
       caughtPokemon = await services.getCaughtPokemon(userId, pokemonId);
     }
     return caughtPokemon;
   };
 
   const catchPokemon = async () => {
-    const { userId } = state;
     const newData = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
-      name: data ? data.name : ''
+      name: pokemonData ? pokemonData!.name : '',
     });
-    setData(newData);
-
-    const { caughtPokemons, caughtPokemonIds } = state;
+    setPokemonData(newData);
 
     // if already cached caughtPokemons in the application
     if (caughtPokemons && newData) {
       caughtPokemons.push(newData);
     }
-    if (caughtPokemons && caughtPokemonIds) {
-      caughtPokemonIds.add(pokemonId);
+    if (caughtPokemons && caughtPokemonsIds) {
+      caughtPokemonsIds.add(pokemonId);
     }
   };
 
@@ -95,7 +89,7 @@ const PokemonPage = (props: Props) => {
         data = temp;
       }
     }
-    setData(data);
+    setPokemonData(data);
   };
 
   useEffect(() => {
@@ -104,10 +98,10 @@ const PokemonPage = (props: Props) => {
 
   console.log("EXACT POKEMON");
 
-  if (!data) return <Loader text />;
+  if (!pokemonData) return <Loader showText />;
 
   const { classes } = props;
-  const { name: pokemonName, caughtDate } = data;
+  const { name: pokemonName, caughtDate } = pokemonData;
   return (
     <div className={classes.root}>
       <Grid container spacing={24} justify="center">
@@ -135,9 +129,5 @@ const PokemonPage = (props: Props) => {
     </div>
   );
 };
-
-PokemonPage.propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
 
 export default withStyles(styles)(PokemonPage);

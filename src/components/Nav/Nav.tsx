@@ -1,12 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
 
-import { WithStyles } from "@material-ui/core";
+import { WithStyles, Paper, Tabs, Tab } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 
 import pokedexIcon from "../../assets/pokeball.png";
 import caughtPokemonsIcon from "../../assets/pokeball3.png";
@@ -15,11 +11,6 @@ import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
   selected: number;
-  classes: {
-    root: string;
-    tabsRoot: string;
-    tabsIndicator: string;
-  };
 };
 
 const LinkToPokemonsPage = (props: any) => <Link to={routes.pokemonsPage} {...props} />;
@@ -45,13 +36,7 @@ const Nav = (props: Props) => {
           component={LinkToPokemonsPage}
         />
         <Tab
-          icon={
-            <img
-              src={caughtPokemonsIcon}
-              alt="Caught pokemons"
-              width="24px"
-            />
-          }
+          icon={<img src={caughtPokemonsIcon} alt="Caught pokemons" width="24px" />}
           label="GOTCHA!"
           component={LinkToCaughtPokemonsPage}
         />
@@ -59,9 +44,5 @@ const Nav = (props: Props) => {
     </Paper>
   );
 };
-
-Nav.propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
 
 export default withStyles(styles)(Nav);

@@ -1,36 +1,42 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector, useDispatch } from 'react-redux'
 
-import { WithStyles } from "@material-ui/core";
+import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
 
-import PokemonItem from "../../components/PokemonItem/PokemonItem";
-import Loader from "../../components/Loader/Loader";
+import {
+  nextPage,
+  selectCaughtPokemons,
+  selectCaughtPokemonsIds,
+  selectPage,
+  selectPokemons,
+  selectUserId,
+} from '../../store/slices';
+
+import {
+  PokemonItem,
+  Loader,
+} from "../../components";
+
 import services from "../../services/pokemons";
-import { AppContext, ActionType } from "../../reducer";
+import { ActionType } from "../../reducer";
 import { IPokemon } from "../PokemonPage/PokemonPage";
 import styles from "./styles";
 
-interface Props extends WithStyles<typeof styles> {
-  classes: {
-    root: string;
-    actions: string;
-    nextPageButtonWrapper: string;
-    nextPageButton: string;
-    nextPageButtonLoader: string;
-  };
-};
+interface Props extends WithStyles<typeof styles> {};
 
 const PokemonsPage = (props: Props) => {
+  const userId = useSelector(selectUserId);
+  const page = useSelector(selectPage);
+  const pokemons = useSelector(selectPokemons);
+  let caughtPokemons = useSelector(selectCaughtPokemons);
+  const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
+  const dispatch = useDispatch();
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const endOfPageRef = useRef(null);
-  const { dispatch, state } = useContext(AppContext);
 
   const handleNext = () => {
-    dispatch({ type: ActionType.NEXT_PAGE });
+    dispatch(nextPage());
     setIsNextPageLoading(true);
   };
 
@@ -43,16 +49,13 @@ const PokemonsPage = (props: Props) => {
   };
 
   const getPokemonsList = async () => {
-    const { page }: { page: number } = state;
     const newPokemons = await services.getPokemons({ page });
-    const { pokemons } = state;
     return Array().concat(pokemons, newPokemons);
   };
 
   const getCaughtPokemonsList = async () => {
-    let { caughtPokemons } = state;
     if (!caughtPokemons) {
-      const { userId } = state;
+      // TODO: need DISPATCH
       caughtPokemons = await services.getCaughtPokemons(userId);
     }
     return caughtPokemons;
@@ -94,14 +97,14 @@ const PokemonsPage = (props: Props) => {
       getCaughtPokemonsList(),
       getPokemonsList()
     ]);
-    const caughtPokemonIds = new Set(
+    const caughtPokemonsIds = new Set(
       caughtPokemons!.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
     );
     setIsNextPageLoading(false);
     dispatch({
       type: ActionType.SET_NEW_STATE,
       payload: {
-        caughtPokemonIds,
+        caughtPokemonsIds,
         caughtPokemons,
         pokemons
       },
@@ -109,25 +112,22 @@ const PokemonsPage = (props: Props) => {
   };
 
   const catchPokemon = async (pokemonId: number, name: string) => {
-    const { userId } = state;
     const createdCaughtPokemon = await services.postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
-      name
+      name,
     });
-    const { caughtPokemons, caughtPokemonIds } = state;
     dispatch({
       type: ActionType.SET_NEW_STATE,
       payload: {
         caughtPokemons: [...caughtPokemons!, createdCaughtPokemon!],
-        caughtPokemonIds: caughtPokemonIds!.add(pokemonId)
+        caughtPokemonsIds: caughtPokemonsIds!.add(pokemonId)
       }
     });
   };
 
   useEffect(() => {
     console.log("PokemonsPage-ComponentDidMount");
-    const { pokemons } = state;
     if (!pokemons.length) {
       console.log("GlobalState.pokemons is empty! RETRIEVING!");
       getPokemons();
@@ -140,17 +140,16 @@ const PokemonsPage = (props: Props) => {
   }, [isNextPageLoading]);
 
   const { classes } = props;
-  const { caughtPokemonIds, pokemons } = state;
 
-  if (!caughtPokemonIds) return <Loader text />;
+  if (!caughtPokemonsIds) return <Loader showText />;
 
-  console.log("PokemonsPage-Render", state);
+  console.log("PokemonsPage-Render");
 
   return (
     <div className={classes.root}>
       <Grid container spacing={24} justify="center">
         {pokemons.map((pokemon: IPokemon) => {
-          const isAlreadyCaught = caughtPokemonIds.has(pokemon.id);
+          const isAlreadyCaught = caughtPokemonsIds.has(pokemon.id);
           const clickHandler = isAlreadyCaught
             ? undefined
             : () => {
@@ -180,29 +179,20 @@ const PokemonsPage = (props: Props) => {
           );
         })}
       </Grid>
-      <div
-        className={classes.nextPageButtonWrapper}
-        ref={endOfPageRef}
-      >
+      <div className={classes.nextPageButtonWrapper} ref={endOfPageRef}>
         <Button
+          className={classes.nextPageButton}
           disabled={isNextPageLoading}
           variant="contained"
           color="primary"
-          className={classes.nextPageButton}
           onClick={handleNext}
-        >
-          Load more
-        </Button>
-        {isNextPageLoading && (
-          <Loader className={classes.nextPageButtonLoader} size={24} />
-        )}
+        >Load more</Button>
+        {
+          isNextPageLoading && (<Loader className={classes.nextPageButtonLoader} size={24} />)
+        }
       </div>
     </div>
   );
 };
-
-PokemonsPage.propTypes = {
-  classes: PropTypes.object.isRequired
-} as any;
 
 export default withStyles(styles)(PokemonsPage);
