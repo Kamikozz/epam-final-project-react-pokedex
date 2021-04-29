@@ -12,7 +12,7 @@ interface Props extends WithStyles<typeof styles> {
   location?: any;
 };
 
-const App = (props: Props) => {
+const Component = (props: Props) => {
   const { classes } = props;
   const selectedTab = props.location.pathname === routes.pokemonsPage ? 0 : 1;
 
@@ -31,4 +31,6 @@ const App = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(App);
+const App = withStyles(styles)(Component);
+
+export default App;

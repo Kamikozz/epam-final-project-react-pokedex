@@ -9,7 +9,7 @@ import * as serviceWorker from './serviceWorker';
 import App from './components/App/App';
 import './index.css';
 import routes from "./routes";
-import { store } from "./reducer";
+import store from "./store";
 
 ReactDOM.render(
   <Provider store={store}>

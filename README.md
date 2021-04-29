@@ -94,3 +94,10 @@ Final React application with MUI, TS, Redux
 - add index.ts for shortcut aliases of import/export (for components, redux slices & pages);
 - remove outdated PropTypes due to using TS;
 - remove explicit Prop type/interface declaration of classes;
+- restructured store by removing caughtPokemonsIds for top-level and move it into
+```js
+caughtPokemons: {
+  items: [],
+  uniqueIds: Set(),
+}
+```

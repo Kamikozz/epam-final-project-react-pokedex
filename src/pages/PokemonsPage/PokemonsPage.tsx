@@ -6,7 +6,9 @@ import { withStyles } from "@material-ui/core/styles";
 
 import {
   nextPage,
+  addCaughtPokemon,
   selectCaughtPokemons,
+  selectCaughtPokemonsItems,
   selectCaughtPokemonsIds,
   selectPage,
   selectPokemons,
@@ -20,20 +22,19 @@ import {
 
 import services from "../../services/pokemons";
 import { ActionType } from "../../reducer";
-import { IPokemon } from "../PokemonPage/PokemonPage";
 import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {};
 
-const PokemonsPage = (props: Props) => {
+const Component = (props: Props) => {
   const userId = useSelector(selectUserId);
   const page = useSelector(selectPage);
   const pokemons = useSelector(selectPokemons);
-  let caughtPokemons = useSelector(selectCaughtPokemons);
+  let caughtPokemons = useSelector(selectCaughtPokemonsItems);
   const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
-  const dispatch = useDispatch();
   const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const endOfPageRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleNext = () => {
     dispatch(nextPage());
@@ -54,7 +55,7 @@ const PokemonsPage = (props: Props) => {
   };
 
   const getCaughtPokemonsList = async () => {
-    if (!caughtPokemons) {
+    if (!caughtPokemons.length) {
       // TODO: need DISPATCH
       caughtPokemons = await services.getCaughtPokemons(userId);
     }
@@ -95,10 +96,10 @@ const PokemonsPage = (props: Props) => {
   const getPokemons = async () => {
     const [caughtPokemons, pokemons] = await Promise.all([
       getCaughtPokemonsList(),
-      getPokemonsList()
+      getPokemonsList(),
     ]);
     const caughtPokemonsIds = new Set(
-      caughtPokemons!.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
+      caughtPokemons.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
     );
     setIsNextPageLoading(false);
     dispatch({
@@ -117,13 +118,18 @@ const PokemonsPage = (props: Props) => {
       caughtDate: new Date().toLocaleString(),
       name,
     });
-    dispatch({
-      type: ActionType.SET_NEW_STATE,
-      payload: {
-        caughtPokemons: [...caughtPokemons!, createdCaughtPokemon!],
-        caughtPokemonsIds: caughtPokemonsIds!.add(pokemonId)
-      }
-    });
+
+    if (createdCaughtPokemon) {
+      // TODO: add Sage's on addCaughtPokemon automatically add record to ids field
+      dispatch(addCaughtPokemon(createdCaughtPokemon));
+    }
+    // dispatch({
+    //   type: ActionType.SET_NEW_STATE,
+    //   payload: {
+    //     caughtPokemons: [...caughtPokemons, createdCaughtPokemon!],
+    //     caughtPokemonsIds: caughtPokemonsIds!.add(pokemonId)
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -148,11 +154,9 @@ const PokemonsPage = (props: Props) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={24} justify="center">
-        {pokemons.map((pokemon: IPokemon) => {
+        {pokemons.map((pokemon) => {
           const isAlreadyCaught = caughtPokemonsIds.has(pokemon.id);
-          const clickHandler = isAlreadyCaught
-            ? undefined
-            : () => {
+          const handleClick = () => {
             catchPokemon(pokemon.id, pokemon.name);
           };
           const cardActions = (
@@ -162,7 +166,7 @@ const PokemonsPage = (props: Props) => {
                 variant="outlined"
                 size="medium"
                 color="primary"
-                onClick={clickHandler}
+                onClick={ isAlreadyCaught ? handleClick : undefined }
               >
                 Catch
               </Button>
@@ -195,4 +199,4 @@ const PokemonsPage = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(PokemonsPage);
+export const PokemonsPage = withStyles(styles)(Component);

@@ -7,12 +7,13 @@ import { withStyles } from "@material-ui/core/styles";
 import {
   selectPokemons,
   selectCaughtPokemons,
+  selectCaughtPokemonsItems,
   selectCaughtPokemonsIds,
   selectUserId,
 } from "../../store/slices";
 import { Loader, PokemonItem } from "../../components";
 import services from "../../services/pokemons";
-import { ICaughtPokemon } from "../CaughtPokemonsPage/CaughtPokemonsPage";
+import { ICaughtPokemon, IPokemon } from "../../reducer";
 import styles from "./styles";
 
 interface IData {
@@ -22,21 +23,17 @@ interface IData {
   caughtDate?: string;
 };
 
-export interface IPokemon {
-  id: number;
-  name: string;
-};
 interface Props extends WithStyles<typeof styles> {
   match: any;
 };
 
-const PokemonPage = (props: Props) => {
+const Component = (props: Props) => {
   const [pokemonData, setPokemonData]: [IData | null, Function] = useState(null);
   const [pokemonId] = useState(Number(props.match.params.id));
 
   const userId = useSelector(selectUserId);
   const pokemons = useSelector(selectPokemons);
-  const caughtPokemons = useSelector(selectCaughtPokemons);
+  const caughtPokemons = useSelector(selectCaughtPokemonsItems);
   const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
 
   const dispatch = useDispatch();
@@ -54,7 +51,7 @@ const PokemonPage = (props: Props) => {
   const getCaughtPokemon = async () => {
     let caughtPokemon;
     // check if already cached
-    if (caughtPokemons) {
+    if (caughtPokemons.length) {
       caughtPokemon = caughtPokemons.find((item: ICaughtPokemon) => item.pokemonId === pokemonId);
     }
 
@@ -73,10 +70,10 @@ const PokemonPage = (props: Props) => {
     setPokemonData(newData);
 
     // if already cached caughtPokemons in the application
-    if (caughtPokemons && newData) {
+    if (caughtPokemons.length && newData) {
       caughtPokemons.push(newData);
     }
-    if (caughtPokemons && caughtPokemonsIds) {
+    if (caughtPokemons.length && caughtPokemonsIds) {
       caughtPokemonsIds.add(pokemonId);
     }
   };
@@ -130,4 +127,4 @@ const PokemonPage = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(PokemonPage);
+export const PokemonPage = withStyles(styles)(Component);

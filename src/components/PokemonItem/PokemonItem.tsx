@@ -60,9 +60,7 @@ const PokemonItem = (props: Props) => {
                 {name}
               </Typography>
               {
-                date && (
-                <Typography component="p">{`Caught at: ${date}`}</Typography>
-                )
+                date && (<Typography component="p">{`Caught at: ${date}`}</Typography>)
               }
               {/*<Typography component="p">*/}
               {/*{this.getPokemonDescription(pokemon.name)}*/}

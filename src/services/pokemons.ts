@@ -1,6 +1,5 @@
 import config from "../config/config.json";
-import { IPokemon } from "../pages/PokemonPage/PokemonPage";
-import { ICaughtPokemon } from "../pages/CaughtPokemonsPage/CaughtPokemonsPage";
+import { ICaughtPokemon, IPokemon } from "../reducer";
 
 // getPokemonDescription = (name) => {
 // 	fetch(`https://www.pokemon.com/ru/pokedex/${name}`)
@@ -30,9 +29,9 @@ async function postCaughtPokemon(userId: number, data: ICaughtPokemon) {
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
   });
   let createdCaughtPokemon;
   try {
@@ -102,7 +101,7 @@ async function getCaughtPokemons(userId: number, from?: number, to?: number) {
   params = params.length ? `?${params.join('&')}` : '';
   const url = `${config.host}:${config.port}${endpoint}${params}`;
   const response = await fetch(url);
-  let caughtPokemons = null;
+  let caughtPokemons: Array<ICaughtPokemon> = [];
   try {
     caughtPokemons = await response.json() as Array<ICaughtPokemon>;
   } catch (err) {

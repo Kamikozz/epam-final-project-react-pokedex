@@ -1,20 +1,29 @@
-import { createStore, Reducer } from 'redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
+import { combineReducers, Reducer } from 'redux';
 
-import { ICaughtPokemon } from './pages/CaughtPokemonsPage/CaughtPokemonsPage';
-import { IPokemon } from './pages/PokemonPage/PokemonPage';
+import pagesReducer from "./store/slices/pages";
+import usersReducer from "./store/slices/users";
+import pokemonsReducer from "./store/slices/pokemons";
+import caughtPokemonsReducer from './store/slices/caughtPokemons';
 
-interface Action {
-  type: string;
-  payload?: any;
+export interface IPokemon {
+  id: number;
+  name: string;
 };
-
+export interface ICaughtPokemon {
+  id?: number;
+  pokemonId: number;
+  name: string;
+  caughtDate: string;
+};
+export interface ICaughtPokemons {
+  items: ICaughtPokemon[];
+  uniqueIds: null | Set<number>;
+};
 export interface AppState {
   userId: number;
   page: number;
-  caughtPokemons: null | Array<ICaughtPokemon>;
-  caughtPokemonsIds: null | Set<number>;
-  pokemons: Array<IPokemon>;
+  caughtPokemons: ICaughtPokemons;
+  pokemons: IPokemon[];
 };
 
 export enum ActionType {
@@ -23,34 +32,17 @@ export enum ActionType {
   SET_NEW_STATE = 'state/setNewState',
 };
 
-const initialState: AppState = {
-  userId: 1,
-  page: 1,
-  caughtPokemons: null,
-  caughtPokemonsIds: null,
-  pokemons: [],
+export interface Action {
+  type: string;
+  payload?: any;
 };
 
-export const reducer: Reducer<AppState, Action> = (state = initialState, action: Action): AppState =>{
-  switch (action.type) {
-    case ActionType.NEXT_PAGE: {
-      return {
-        ...state,
-        page: state.page + 1,
-      };
-    }
-    case ActionType.SET_NEW_STATE: {
-      return {
-        ...state,
-        ...action.payload
-      }
-    }
-    default:
-      return state;
-  }
-};
+const rootReducer = combineReducers({
+  page: pagesReducer,
+  userId: usersReducer,
+  pokemons: pokemonsReducer,
+  caughtPokemons: caughtPokemonsReducer,
+  // caughtPokemonsIds: caughtPokemonsIdsReducer,
+});
 
-export const store = createStore(
-  reducer,
-  devToolsEnhancer({}),
-);
+export default rootReducer;

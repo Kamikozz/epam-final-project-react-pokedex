@@ -7,31 +7,27 @@ import { withStyles } from "@material-ui/core/styles";
 import { PokemonItem, Loader, EmptyCaughtPokemonsPageCard } from "../../components";
 
 import services from "../../services/pokemons";
-import { ActionType } from "../../reducer";
-import { selectCaughtPokemons, selectUserId } from "../../store/slices";
+import {
+  addCaughtPokemons,
+  selectCaughtPokemons,
+  selectCaughtPokemonsIds,
+  selectCaughtPokemonsItems,
+  selectUserId,
+} from "../../store/slices";
 import styles from "./styles";
-
-export interface ICaughtPokemon {
-  id?: number;
-  pokemonId: number;
-  name: string;
-  caughtDate: string;
-};
 
 interface Props extends WithStyles<typeof styles> {};
 
-const CaughtPokemonsPage = (props: Props) => {
+const Component = (props: Props) => {
   const userId = useSelector(selectUserId);
-  let caughtPokemons = useSelector(selectCaughtPokemons);
+  const caughtPokemons = useSelector(selectCaughtPokemonsItems);
+  // const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
   const dispatch = useDispatch();
   const getCaughtPokemonsList = async () => {
-    if (caughtPokemons) return;
+    if (caughtPokemons.length) return;
 
-    caughtPokemons = await services.getCaughtPokemons(userId);
-    dispatch({
-      type: ActionType.SET_NEW_STATE,
-      payload: { caughtPokemons }
-    });
+    const data = await services.getCaughtPokemons(userId);
+    dispatch(addCaughtPokemons(data));
   };
 
   useEffect(() => {
@@ -39,7 +35,7 @@ const CaughtPokemonsPage = (props: Props) => {
     getCaughtPokemonsList();
   }, []);
 
-  if (!caughtPokemons) return <Loader showText={true} />;
+  if (!caughtPokemons) return <Loader showText />; // TODO: sage's loading state
   if (!caughtPokemons.length) return <EmptyCaughtPokemonsPageCard />;
 
   console.log("CaughtPokemonsPage-Render");
@@ -65,4 +61,4 @@ const CaughtPokemonsPage = (props: Props) => {
   );
 };
 
-export default withStyles(styles)(CaughtPokemonsPage);
+export const CaughtPokemonsPage = withStyles(styles)(Component);
