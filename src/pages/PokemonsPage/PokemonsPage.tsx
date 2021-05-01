@@ -26,7 +26,7 @@ import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {};
 
-const Component = (props: Props) => {
+const Component = ({ classes }: Props) => {
   const userId = useSelector(selectUserId);
   const page = useSelector(selectPage);
   const pokemons = useSelector(selectPokemons);
@@ -144,8 +144,6 @@ const Component = (props: Props) => {
     if (!isNextPageLoading) return;
     getPokemonsAndScroll();
   }, [isNextPageLoading]);
-
-  const { classes } = props;
 
   if (!caughtPokemonsIds) return <Loader showText />;
 

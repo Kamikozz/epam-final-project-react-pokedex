@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { WithStyles, Paper, Tabs, Tab } from "@material-ui/core";
@@ -16,18 +16,15 @@ interface Props extends WithStyles<typeof styles> {
 const LinkToPokemonsPage = (props: any) => <Link to={routes.pokemonsPage} {...props} />;
 const LinkToCaughtPokemonsPage = (props: any) => <Link to={routes.caughtPokemonsPage} {...props} />;
 
-const Nav = (props: Props) => {
-  const [selectedTabIndex, setSelectedTabIndex] = useState(props.selected);
-  const handleChange = (event: any, selectedTabIndex: number) => {
-    setSelectedTabIndex(selectedTabIndex);
-  };
-  const { classes } = props;
+const Nav = ({ classes, selected }: Props) => {
   return (
     <Paper square className={classes.root}>
       <Tabs
-        classes={{ root: classes.tabsRoot, indicator: classes.tabsIndicator }}
-        value={selectedTabIndex}
-        onChange={handleChange}
+        classes={{
+          root: classes.tabsRoot,
+          indicator: classes.tabsIndicator,
+        }}
+        value={selected}
         variant="fullWidth"
       >
         <Tab

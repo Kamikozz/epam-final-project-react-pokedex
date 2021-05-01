@@ -1,4 +1,4 @@
-import { combineReducers, Reducer } from 'redux';
+import { combineReducers } from 'redux';
 
 import pagesReducer from "./store/slices/pages";
 import usersReducer from "./store/slices/users";

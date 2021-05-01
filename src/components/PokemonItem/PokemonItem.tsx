@@ -10,7 +10,6 @@ import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {
-  key: number;
   pokemonId: number;
   name: string;
   date?: string;
@@ -20,23 +19,14 @@ interface Props extends WithStyles<typeof styles> {
 
 const LinkToPokemonsPage = (props: any) => <Link {...props} />;
 
-const PokemonItem = (props: Props) => {
-  const {
-    classes,
-    key,
-    pokemonId,
-    name,
-    date,
-    cardActions,
-    link
-  } = props;
+const PokemonItem = ({ classes, pokemonId, name, date, cardActions, link }: Props) => {
   const pokemonImage = require(`../../assets/pokemons/${pokemonId}.png`);
   const cardActionAreaProps = link ? {
     component: LinkToPokemonsPage,
     to: `/pokemons/${pokemonId}`
   } : {};
   return (
-    <Grid key={key} item xs={12} sm={6} md={4} lg={3}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
       <Badge
         className={classes.badgeWrapper}
         classes={{ badge: classes.badge }}
@@ -46,17 +36,9 @@ const PokemonItem = (props: Props) => {
       >
         <Card className={classes.card}>
           <CardActionArea {...cardActionAreaProps}>
-            <CardMedia
-              className={classes.media}
-              image={pokemonImage}
-              title={name}
-            />
+            <CardMedia className={classes.media} image={pokemonImage} title={name} />
             <CardContent>
-              <Typography
-                className={classes.pokemonName}
-                variant="h4"
-                component="h4"
-              >
+              <Typography className={classes.pokemonName} variant="h4" component="h4">
                 {name}
               </Typography>
               {

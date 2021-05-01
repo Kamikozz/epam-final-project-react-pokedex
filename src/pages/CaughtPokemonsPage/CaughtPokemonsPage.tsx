@@ -18,7 +18,7 @@ import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {};
 
-const Component = (props: Props) => {
+const Component = ({ classes }: Props) => {
   const userId = useSelector(selectUserId);
   const caughtPokemons = useSelector(selectCaughtPokemonsItems);
   // const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
@@ -40,15 +40,13 @@ const Component = (props: Props) => {
 
   console.log("CaughtPokemonsPage-Render");
 
-  const { classes } = props;
-
   return (
     <div className={classes.root}>
       <Grid container spacing={24} justify="center">
         {
           caughtPokemons.map(({ id, pokemonId, name, caughtDate}) => (
             <PokemonItem
-              key={id!}
+              key={pokemonId}
               pokemonId={pokemonId}
               name={name}
               date={caughtDate}

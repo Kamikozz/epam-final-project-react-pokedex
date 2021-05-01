@@ -12,8 +12,7 @@ interface Props extends WithStyles<typeof styles> {};
 
 const LinkToPokemonsPage = (props: any) => <Link to={routes.pokemonsPage} {...props} />;
 
-const NotFound = (props: Props) => {
-  const { classes } = props;
+const NotFound = ({ classes }: Props) => {
   return (
     <div className={classes.root}>
       <Card className={classes.card}>

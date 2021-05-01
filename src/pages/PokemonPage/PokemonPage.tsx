@@ -11,7 +11,7 @@ import {
   selectCaughtPokemonsIds,
   selectUserId,
 } from "../../store/slices";
-import { Loader, PokemonItem } from "../../components";
+import { Loader, PokemonItem, NotFound } from "../../components";
 import services from "../../services/pokemons";
 import { ICaughtPokemon, IPokemon } from "../../reducer";
 import styles from "./styles";
@@ -27,9 +27,9 @@ interface Props extends WithStyles<typeof styles> {
   match: any;
 };
 
-const Component = (props: Props) => {
+const Component = ({ classes, match }: Props) => {
   const [pokemonData, setPokemonData]: [IData | null, Function] = useState(null);
-  const [pokemonId] = useState(Number(props.match.params.id));
+  const pokemonId = Number(match.params.id);
 
   const userId = useSelector(selectUserId);
   const pokemons = useSelector(selectPokemons);
@@ -97,7 +97,6 @@ const Component = (props: Props) => {
 
   if (!pokemonData) return <Loader showText />;
 
-  const { classes } = props;
   const { name: pokemonName, caughtDate } = pokemonData;
   return (
     <div className={classes.root}>
@@ -110,12 +109,7 @@ const Component = (props: Props) => {
           cardActions={
             !caughtDate && (
               <CardActions className={classes.actions}>
-                <Button
-                  variant="outlined"
-                  size="medium"
-                  color="primary"
-                  onClick={catchPokemon}
-                >
+                <Button variant="outlined" size="medium" color="primary" onClick={catchPokemon}>
                   Catch
                 </Button>
               </CardActions>

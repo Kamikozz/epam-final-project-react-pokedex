@@ -11,17 +11,11 @@ interface Props extends WithStyles<typeof styles> {
   size?: number;
 };
 
-const Loader = (props: Props) => {
-  const { classes, className, showText, size = 70 } = props;
+const Loader = ({ classes, className, showText, size = 70}: Props) => {
   return (
     <div className={[classes.progressColor, className].join(" ")}>
       { showText && (<div>LOADING</div>) }
-      <CircularProgress
-        className={classes.progress}
-        color="inherit"
-        size={size}
-        thickness={1}
-      />
+      <CircularProgress className={classes.progress} color="inherit" size={size} thickness={1} />
     </div>
   );
 };

@@ -8,8 +8,7 @@ import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {};
 
-const EmptyCaughtPokemonsPageCard = (props: Props) => {
-  const { classes } = props;
+const EmptyCaughtPokemonsPageCard = ({ classes }: Props) => {
   return (
     <div className={classes.root}>
       <Card>
