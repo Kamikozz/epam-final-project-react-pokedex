@@ -6,7 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 
 import {
   selectCaughtPokemonsItems,
-  selectCaughtPokemonsIds,
   selectUserId,
   selectPokemonsIsLoading,
   selectPokemonsItems,
@@ -38,7 +37,6 @@ const Component = ({ classes, match }: Props) => {
   const pokemons = useSelector(selectPokemonsItems);
   const pokemonsLoading = useSelector(selectPokemonsIsLoading);
   const caughtPokemons = useSelector(selectCaughtPokemonsItems);
-  const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
 
   const dispatch = useDispatch();
 
@@ -72,9 +70,10 @@ const Component = ({ classes, match }: Props) => {
     if (caughtPokemons.length && newData) {
       caughtPokemons.push(newData);
     }
-    if (caughtPokemons.length && caughtPokemonsIds) {
-      caughtPokemonsIds.add(pokemonId);
-    }
+    // TODO: add to cache
+    // if (caughtPokemons.length && caughtPokemonsIds) {
+    //   caughtPokemonsIds.add(pokemonId);
+    // }
   };
 
   const getPokemonData = async () => {

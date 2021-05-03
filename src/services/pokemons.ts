@@ -115,11 +115,3 @@ export async function getCaughtPokemons({ userId, from, to }: IGetCaughtPokemons
   }
   return caughtPokemons;
 };
-
-// export default {
-//   postCaughtPokemon,
-//   getPokemon,
-//   getPokemons,
-//   getCaughtPokemon,
-//   getCaughtPokemons,
-// };

@@ -24,13 +24,11 @@ const constructActionType = (sliceName: string) => {
 export const CaughtPokemonsActionType = constructActionType('caughtPokemons');
 export interface ICaughtPokemonsState {
   items: ICaughtPokemon[];
-  uniqueIds: null | Set<number>;
   isLoading: boolean;
 };
 
 const initialState: ICaughtPokemonsState = {
   items: [],
-  uniqueIds: null,
   isLoading: false,
 };
 
@@ -39,24 +37,17 @@ export default function caughtPokemonsReducer(state = initialState, action: Acti
     // case ActionType.ADD_CAUGHT_POKEMONS:
     //   return { ...state, items: [...state.items, ...action.payload] };
     case CaughtPokemonsActionType.ADD_ONE: {
-      const caughtPokemon: ICaughtPokemon = action.payload;
-      const oldUniqueIds = state.uniqueIds ? state.uniqueIds : new Set<number>();
       return {
         ...state,
-        items: [...state.items, caughtPokemon],
-        uniqueIds: new Set(oldUniqueIds.add(caughtPokemon.pokemonId).values()),
+        items: [...state.items, action.payload as ICaughtPokemon],
       };
     }
     // case SagasActionType.FETCH_CAUGHT_POKEMONS_REQUESTED:
     //   return { ...state };
     case CaughtPokemonsActionType.FETCH_SUCCEEDED: {
-      const newCaughtPokemons: ICaughtPokemon[] = action.payload;
-      const oldUniqueIds = state.uniqueIds ? state.uniqueIds : new Set<number>();
-      newCaughtPokemons.forEach(({ pokemonId }) => oldUniqueIds.add(pokemonId));
       return {
         ...state,
-        items: [...state.items, ...newCaughtPokemons],
-        uniqueIds: new Set(oldUniqueIds.values()),
+        items: [...state.items, ...action.payload as ICaughtPokemon[]],
       };
     }
     case CaughtPokemonsActionType.SET_LOADER:
@@ -95,5 +86,4 @@ export const caughtPokemonsUnsetLoader = () => ({ type: CaughtPokemonsActionType
 
 export const selectCaughtPokemons = (state: AppState) => state.caughtPokemons;
 export const selectCaughtPokemonsItems = (state: AppState) => state.caughtPokemons.items;
-export const selectCaughtPokemonsIds = (state: AppState) => state.caughtPokemons.uniqueIds;
 export const selectCaughtPokemonsIsLoading = (state: AppState) => state.caughtPokemons.isLoading;

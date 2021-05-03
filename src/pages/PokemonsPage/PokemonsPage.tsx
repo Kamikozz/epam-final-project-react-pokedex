@@ -10,11 +10,11 @@ import {
   fetchNextPagePokemons,
   addCaughtPokemon,
   selectCaughtPokemonsItems,
-  selectCaughtPokemonsIds,
   selectPage,
   selectUserId,
   selectPokemonsItems,
   selectPokemonsIsLoading,
+  selectCaughtPokemonsIsLoading,
 } from '../../store/slices';
 
 import {
@@ -33,13 +33,11 @@ const Component = ({ classes }: Props) => {
   const pokemons = useSelector(selectPokemonsItems);
   const pokemonsLoading = useSelector(selectPokemonsIsLoading);
   const caughtPokemons = useSelector(selectCaughtPokemonsItems);
-  const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
+  const caughtPokemonsLoading = useSelector(selectCaughtPokemonsIsLoading);
   const endOfPageRef = useRef(null);
   const dispatch = useDispatch();
 
-  const handleNext = () => {
-    dispatch(fetchNextPagePokemons());
-  };
+  const handleNext = () => dispatch(fetchNextPagePokemons());
 
   const scrollPage = () => {
     const element = endOfPageRef.current as Element | null;
@@ -79,7 +77,7 @@ const Component = ({ classes }: Props) => {
   //   );
   // }
 
-  const getPokemons = async () => {
+  const getPokemons = () => {
     dispatch(fetchPaginatedPokemons({ page }));
     if (!caughtPokemons.length) {
       dispatch(fetchCaughtPokemons());
@@ -110,7 +108,7 @@ const Component = ({ classes }: Props) => {
     scrollPage();
   }, [pokemonsLoading]);
 
-  if (!caughtPokemonsIds) return <Loader showText />;
+  if (caughtPokemonsLoading) return <Loader showText />;
 
   console.log("PokemonsPage-Render");
 
@@ -119,7 +117,7 @@ const Component = ({ classes }: Props) => {
       <Grid container spacing={24} justify="center">
         {
           pokemons.map(({ id, name }) => {
-            const isAlreadyCaught = caughtPokemonsIds.has(id);
+            const isAlreadyCaught = Boolean(caughtPokemons.find(({pokemonId}) => id === pokemonId));
             const handleCatch = () => {
               catchPokemon(id, name);
             };
