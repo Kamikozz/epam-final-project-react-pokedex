@@ -101,3 +101,8 @@ caughtPokemons: {
   uniqueIds: Set(),
 }
 ```
+- add redux-saga;
+- fix Nav bar's selected Tab bug (remove useless useState and rely on App's `location.pathname`
+value that is passed to the Nav component via `selected` prop);
+- add more redux actions, reducers, slices;
+- move business logic on the components to sagas;

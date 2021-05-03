@@ -1,27 +1,68 @@
 import { AppState, Action, IPokemon } from "../../reducer";
+import { IPagination } from '../../services/pokemons';
 
-// enum ActionType {
-//   NEXT_PAGE = 'pagination/nextPage',
-// };
+enum ActionType {
+  FETCH_REQUESTED = 'fetchRequested',
+  FETCH_SUCCEEDED = 'fetchSucceeded',
+  FETCH_FAILED = 'fetchFailed',
+  SET_LOADER = 'setLoader',
+  UNSET_LOADER = 'unsetLoader',
+};
 
-const initialState: IPokemon[] = [];
-// Reducer<typeof initialState, Action>
+const prefixSliceName = (sliceName: string, actionName: string) => `${sliceName}/${actionName}`;
+const constructActionType = (sliceName: string) => {
+  return Object
+    .entries(ActionType)
+    .reduce((acc: any, [key, value]) => {
+      acc[key] = prefixSliceName(sliceName, value);
+      return acc;
+    }, {}) as typeof ActionType;
+};
+
+export const PokemonsActionType = constructActionType('pokemons');
+
+export interface IPokemonsState {
+  items: IPokemon[];
+  isLoading: boolean;
+};
+
+const initialState: IPokemonsState = {
+  items: [],
+  isLoading: false,
+};
+
 export default function pokemonsReducer(state = initialState, action: Action) {
   switch (action.type) {
-    // case ActionType.NEXT_PAGE: {
-    //   return state + 1;
-    // }
-    // case ActionType.SET_NEW_STATE: {
-    //   return {
-    //     ...state,
-    //     ...action.payload
-    //   }
-    // }
+    // case PokemonsActionType.FETCH_REQUESTED:
+    //   return { ...state };
+    case PokemonsActionType.FETCH_SUCCEEDED:
+      return { ...state, items: [...state.items, ...action.payload] };
+    case PokemonsActionType.FETCH_FAILED:
+      return { ...state };
+    case PokemonsActionType.SET_LOADER:
+      return { ...state, isLoading: true };
+    case PokemonsActionType.UNSET_LOADER:
+      return { ...state, isLoading: false };
     default:
       return state;
   }
 };
 
-// export const nextPage = () => ({ type: ActionType.NEXT_PAGE });
+export const fetchPaginatedPokemons = (pagination: IPagination) => ({
+  type: PokemonsActionType.FETCH_REQUESTED,
+  payload: pagination,
+});
+export const fetchPaginatedPokemonsOk = (payload: IPokemon[]) => ({
+  type: PokemonsActionType.FETCH_SUCCEEDED,
+  payload,
+});
+export const fetchPaginatedPokemonsError = (errorMessage: string) => ({
+  type: PokemonsActionType.FETCH_FAILED,
+  payload: errorMessage,
+});
+export const pokemonsSetLoader = () => ({ type: PokemonsActionType.SET_LOADER });
+export const pokemonsUnsetLoader = () => ({ type: PokemonsActionType.UNSET_LOADER });
 
 export const selectPokemons = (state: AppState) => state.pokemons;
+export const selectPokemonsItems = (state: AppState) => state.pokemons.items;
+export const selectPokemonsIsLoading = (state: AppState) => state.pokemons.isLoading;

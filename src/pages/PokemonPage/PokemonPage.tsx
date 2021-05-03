@@ -5,34 +5,38 @@ import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import {
-  selectPokemons,
-  selectCaughtPokemons,
   selectCaughtPokemonsItems,
   selectCaughtPokemonsIds,
   selectUserId,
+  selectPokemonsIsLoading,
+  selectPokemonsItems,
 } from "../../store/slices";
 import { Loader, PokemonItem, NotFound } from "../../components";
-import services from "../../services/pokemons";
-import { ICaughtPokemon, IPokemon } from "../../reducer";
+import {
+  getPokemon as getPokemonService,
+  getCaughtPokemon as getCaughtPokemonService,
+  postCaughtPokemon,
+} from "../../services/pokemons";
 import styles from "./styles";
 
-interface IData {
-  id: number;
+type IPokemonData = {
+  id?: number;
   pokemonId?: number;
   name: string;
   caughtDate?: string;
-};
+} | null | undefined;
 
 interface Props extends WithStyles<typeof styles> {
   match: any;
 };
 
 const Component = ({ classes, match }: Props) => {
-  const [pokemonData, setPokemonData]: [IData | null, Function] = useState(null);
+  const [pokemonData, setPokemonData]: [IPokemonData, Function] = useState();
   const pokemonId = Number(match.params.id);
 
   const userId = useSelector(selectUserId);
-  const pokemons = useSelector(selectPokemons);
+  const pokemons = useSelector(selectPokemonsItems);
+  const pokemonsLoading = useSelector(selectPokemonsIsLoading);
   const caughtPokemons = useSelector(selectCaughtPokemonsItems);
   const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
 
@@ -40,29 +44,24 @@ const Component = ({ classes, match }: Props) => {
 
   const getPokemon = async () => {
     // check if already cached
-    let pokemon = pokemons.find((item: IPokemon) => item.id === pokemonId) || null;
-
+    let pokemon = pokemons.find((item) => item.id === pokemonId) || null;
     if (!pokemon) {
-      pokemon = await services.getPokemon(pokemonId);
+      pokemon = await getPokemonService(pokemonId);
     }
     return pokemon;
   };
 
   const getCaughtPokemon = async () => {
-    let caughtPokemon;
     // check if already cached
-    if (caughtPokemons.length) {
-      caughtPokemon = caughtPokemons.find((item: ICaughtPokemon) => item.pokemonId === pokemonId);
-    }
-
+    let caughtPokemon = caughtPokemons.find((item) => item.pokemonId === pokemonId) || null;
     if (!caughtPokemon) {
-      caughtPokemon = await services.getCaughtPokemon(userId, pokemonId);
+      caughtPokemon = await getCaughtPokemonService(userId, pokemonId);
     }
     return caughtPokemon;
   };
 
   const catchPokemon = async () => {
-    const newData = await services.postCaughtPokemon(userId, {
+    const newData = await postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
       name: pokemonData ? pokemonData!.name : '',
@@ -79,12 +78,9 @@ const Component = ({ classes, match }: Props) => {
   };
 
   const getPokemonData = async () => {
-    let data = await getCaughtPokemon() as IData;
+    let data: IPokemonData = await getCaughtPokemon();
     if (!data) {
-      const temp = await getPokemon();
-      if (temp) {
-        data = temp;
-      }
+      data = await getPokemon();
     }
     setPokemonData(data);
   };
@@ -95,7 +91,8 @@ const Component = ({ classes, match }: Props) => {
 
   console.log("EXACT POKEMON");
 
-  if (!pokemonData) return <Loader showText />;
+  if (pokemonData === undefined) return <Loader showText />;
+  if (pokemonData === null) return <NotFound />;
 
   const { name: pokemonName, caughtDate } = pokemonData;
   return (

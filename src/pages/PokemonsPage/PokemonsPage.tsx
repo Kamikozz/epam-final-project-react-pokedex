@@ -5,14 +5,16 @@ import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import {
-  nextPage,
+  fetchPaginatedPokemons,
+  fetchCaughtPokemons,
+  fetchNextPagePokemons,
   addCaughtPokemon,
-  selectCaughtPokemons,
   selectCaughtPokemonsItems,
   selectCaughtPokemonsIds,
   selectPage,
-  selectPokemons,
   selectUserId,
+  selectPokemonsItems,
+  selectPokemonsIsLoading,
 } from '../../store/slices';
 
 import {
@@ -20,8 +22,7 @@ import {
   Loader,
 } from "../../components";
 
-import services from "../../services/pokemons";
-import { ActionType } from "../../reducer";
+import { postCaughtPokemon } from "../../services/pokemons";
 import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {};
@@ -29,37 +30,22 @@ interface Props extends WithStyles<typeof styles> {};
 const Component = ({ classes }: Props) => {
   const userId = useSelector(selectUserId);
   const page = useSelector(selectPage);
-  const pokemons = useSelector(selectPokemons);
-  let caughtPokemons = useSelector(selectCaughtPokemonsItems);
+  const pokemons = useSelector(selectPokemonsItems);
+  const pokemonsLoading = useSelector(selectPokemonsIsLoading);
+  const caughtPokemons = useSelector(selectCaughtPokemonsItems);
   const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
-  const [isNextPageLoading, setIsNextPageLoading] = useState(false);
   const endOfPageRef = useRef(null);
   const dispatch = useDispatch();
 
   const handleNext = () => {
-    dispatch(nextPage());
-    setIsNextPageLoading(true);
+    dispatch(fetchNextPagePokemons());
   };
 
-  const getPokemonsAndScroll = async () => {
-    await getPokemons();
+  const scrollPage = () => {
     const element = endOfPageRef.current as Element | null;
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const getPokemonsList = async () => {
-    const newPokemons = await services.getPokemons({ page });
-    return Array().concat(pokemons, newPokemons);
-  };
-
-  const getCaughtPokemonsList = async () => {
-    if (!caughtPokemons.length) {
-      // TODO: need DISPATCH
-      caughtPokemons = await services.getCaughtPokemons(userId);
-    }
-    return caughtPokemons;
   };
 
   // async getCaughtPokemonsList() {
@@ -94,56 +80,35 @@ const Component = ({ classes }: Props) => {
   // }
 
   const getPokemons = async () => {
-    const [caughtPokemons, pokemons] = await Promise.all([
-      getCaughtPokemonsList(),
-      getPokemonsList(),
-    ]);
-    const caughtPokemonsIds = new Set(
-      caughtPokemons.map(({ pokemonId }: { pokemonId: number }) => pokemonId)
-    );
-    setIsNextPageLoading(false);
-    dispatch({
-      type: ActionType.SET_NEW_STATE,
-      payload: {
-        caughtPokemonsIds,
-        caughtPokemons,
-        pokemons
-      },
-    });
+    dispatch(fetchPaginatedPokemons({ page }));
+    if (!caughtPokemons.length) {
+      dispatch(fetchCaughtPokemons());
+    }
   };
 
   const catchPokemon = async (pokemonId: number, name: string) => {
-    const createdCaughtPokemon = await services.postCaughtPokemon(userId, {
+    const createdCaughtPokemon = await postCaughtPokemon(userId, {
       pokemonId,
       caughtDate: new Date().toLocaleString(),
       name,
     });
-
     if (createdCaughtPokemon) {
-      // TODO: add Sage's on addCaughtPokemon automatically add record to ids field
       dispatch(addCaughtPokemon(createdCaughtPokemon));
     }
-    // dispatch({
-    //   type: ActionType.SET_NEW_STATE,
-    //   payload: {
-    //     caughtPokemons: [...caughtPokemons, createdCaughtPokemon!],
-    //     caughtPokemonsIds: caughtPokemonsIds!.add(pokemonId)
-    //   }
-    // });
   };
 
   useEffect(() => {
     console.log("PokemonsPage-ComponentDidMount");
     if (!pokemons.length) {
-      console.log("GlobalState.pokemons is empty! RETRIEVING!");
+      console.log("PokemonsPage-PokemonsEmpty-RETRIEVING!");
       getPokemons();
     }
   }, []);
 
   useEffect(() => {
-    if (!isNextPageLoading) return;
-    getPokemonsAndScroll();
-  }, [isNextPageLoading]);
+    if (pokemonsLoading) return;
+    scrollPage();
+  }, [pokemonsLoading]);
 
   if (!caughtPokemonsIds) return <Loader showText />;
 
@@ -152,45 +117,41 @@ const Component = ({ classes }: Props) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={24} justify="center">
-        {pokemons.map((pokemon) => {
-          const isAlreadyCaught = caughtPokemonsIds.has(pokemon.id);
-          const handleClick = () => {
-            catchPokemon(pokemon.id, pokemon.name);
-          };
-          const cardActions = (
-            <CardActions className={classes.actions}>
-              <Button
-                disabled={isAlreadyCaught}
-                variant="outlined"
-                size="medium"
-                color="primary"
-                onClick={ isAlreadyCaught ? handleClick : undefined }
-              >
-                Catch
-              </Button>
-            </CardActions>
-          );
-          return (
-            <PokemonItem
-              key={pokemon.id}
-              pokemonId={pokemon.id}
-              name={pokemon.name}
-              cardActions={cardActions}
-              link
-            />
-          );
-        })}
+        {
+          pokemons.map(({ id, name }) => {
+            const isAlreadyCaught = caughtPokemonsIds.has(id);
+            const handleCatch = () => {
+              catchPokemon(id, name);
+            };
+            const cardActions = (
+              <CardActions className={classes.actions}>
+                <Button
+                  disabled={isAlreadyCaught}
+                  variant="outlined"
+                  size="medium"
+                  color="primary"
+                  onClick={ isAlreadyCaught ? undefined : handleCatch }
+                >
+                  Catch
+                </Button>
+              </CardActions>
+            );
+            return (
+              <PokemonItem key={id} pokemonId={id} name={name} cardActions={cardActions} link />
+            );
+          })
+        }
       </Grid>
       <div className={classes.nextPageButtonWrapper} ref={endOfPageRef}>
         <Button
           className={classes.nextPageButton}
-          disabled={isNextPageLoading}
+          disabled={pokemonsLoading}
           variant="contained"
           color="primary"
           onClick={handleNext}
         >Load more</Button>
         {
-          isNextPageLoading && (<Loader className={classes.nextPageButtonLoader} size={24} />)
+          pokemonsLoading && (<Loader className={classes.nextPageButtonLoader} size={24} />)
         }
       </div>
     </div>

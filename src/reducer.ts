@@ -2,8 +2,8 @@ import { combineReducers } from 'redux';
 
 import pagesReducer from "./store/slices/pages";
 import usersReducer from "./store/slices/users";
-import pokemonsReducer from "./store/slices/pokemons";
-import caughtPokemonsReducer from './store/slices/caughtPokemons';
+import pokemonsReducer, { IPokemonsState } from "./store/slices/pokemons";
+import caughtPokemonsReducer, { ICaughtPokemonsState } from './store/slices/caughtPokemons';
 
 export interface IPokemon {
   id: number;
@@ -15,15 +15,11 @@ export interface ICaughtPokemon {
   name: string;
   caughtDate: string;
 };
-export interface ICaughtPokemons {
-  items: ICaughtPokemon[];
-  uniqueIds: null | Set<number>;
-};
 export interface AppState {
   userId: number;
   page: number;
-  caughtPokemons: ICaughtPokemons;
-  pokemons: IPokemon[];
+  caughtPokemons: ICaughtPokemonsState;
+  pokemons: IPokemonsState;
 };
 
 export enum ActionType {

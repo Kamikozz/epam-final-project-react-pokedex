@@ -6,12 +6,12 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { PokemonItem, Loader, EmptyCaughtPokemonsPageCard } from "../../components";
 
-import services from "../../services/pokemons";
+import { getCaughtPokemons } from "../../services/pokemons";
 import {
   addCaughtPokemons,
-  selectCaughtPokemons,
-  selectCaughtPokemonsIds,
+  fetchCaughtPokemons,
   selectCaughtPokemonsItems,
+  selectCaughtPokemonsIsLoading,
   selectUserId,
 } from "../../store/slices";
 import styles from "./styles";
@@ -19,23 +19,21 @@ import styles from "./styles";
 interface Props extends WithStyles<typeof styles> {};
 
 const Component = ({ classes }: Props) => {
-  const userId = useSelector(selectUserId);
   const caughtPokemons = useSelector(selectCaughtPokemonsItems);
-  // const caughtPokemonsIds = useSelector(selectCaughtPokemonsIds);
+  const caughtPokemonsLoading = useSelector(selectCaughtPokemonsIsLoading);
   const dispatch = useDispatch();
-  const getCaughtPokemonsList = async () => {
-    if (caughtPokemons.length) return;
 
-    const data = await services.getCaughtPokemons(userId);
-    dispatch(addCaughtPokemons(data));
+  const getCaughtPokemons = () => {
+    if (caughtPokemons.length) return; // check for cache
+    dispatch(fetchCaughtPokemons());
   };
 
   useEffect(() => {
     console.log("CaughtPokemonsPage-ComponentDidMount");
-    getCaughtPokemonsList();
+    getCaughtPokemons();
   }, []);
 
-  if (!caughtPokemons) return <Loader showText />; // TODO: sage's loading state
+  if (caughtPokemonsLoading) return <Loader showText />;
   if (!caughtPokemons.length) return <EmptyCaughtPokemonsPageCard />;
 
   console.log("CaughtPokemonsPage-Render");
@@ -46,11 +44,7 @@ const Component = ({ classes }: Props) => {
         {
           caughtPokemons.map(({ id, pokemonId, name, caughtDate}) => (
             <PokemonItem
-              key={pokemonId}
-              pokemonId={pokemonId}
-              name={name}
-              date={caughtDate}
-              link
+              key={pokemonId} pokemonId={pokemonId} name={name} date={caughtDate} link
             />
           ))
         }
