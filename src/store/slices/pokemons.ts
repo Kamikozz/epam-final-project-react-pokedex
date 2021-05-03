@@ -1,5 +1,6 @@
-import { AppState, Action, IPokemon } from "../../reducer";
+import { AppState, Action, IPokemon } from '../../reducer';
 import { IPagination } from '../../services/pokemons';
+import { constructActionType } from './utils';
 
 enum ActionType {
   FETCH_REQUESTED = 'fetchRequested',
@@ -8,18 +9,7 @@ enum ActionType {
   SET_LOADER = 'setLoader',
   UNSET_LOADER = 'unsetLoader',
 };
-
-const prefixSliceName = (sliceName: string, actionName: string) => `${sliceName}/${actionName}`;
-const constructActionType = (sliceName: string) => {
-  return Object
-    .entries(ActionType)
-    .reduce((acc: any, [key, value]) => {
-      acc[key] = prefixSliceName(sliceName, value);
-      return acc;
-    }, {}) as typeof ActionType;
-};
-
-export const PokemonsActionType = constructActionType('pokemons');
+export const PokemonsActionType = constructActionType<typeof ActionType>('pokemons', ActionType);
 
 export interface IPokemonsState {
   items: IPokemon[];

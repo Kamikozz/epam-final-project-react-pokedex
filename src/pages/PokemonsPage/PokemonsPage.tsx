@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 
 import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
@@ -8,10 +8,9 @@ import {
   fetchPaginatedPokemons,
   fetchCaughtPokemons,
   fetchNextPagePokemons,
-  addCaughtPokemon,
+  postAndAddCaughtPokemon,
   selectCaughtPokemonsItems,
   selectPage,
-  selectUserId,
   selectPokemonsItems,
   selectPokemonsIsLoading,
   selectCaughtPokemonsIsLoading,
@@ -22,13 +21,11 @@ import {
   Loader,
 } from "../../components";
 
-import { postCaughtPokemon } from "../../services/pokemons";
 import styles from "./styles";
 
 interface Props extends WithStyles<typeof styles> {};
 
 const Component = ({ classes }: Props) => {
-  const userId = useSelector(selectUserId);
   const page = useSelector(selectPage);
   const pokemons = useSelector(selectPokemonsItems);
   const pokemonsLoading = useSelector(selectPokemonsIsLoading);
@@ -46,52 +43,10 @@ const Component = ({ classes }: Props) => {
     }
   };
 
-  // async getCaughtPokemonsList() {
-  //   const { page } = this.context;
-  //   const limit = 20;
-  //   const from = 1 + (page - 1) * limit;
-  //   const to = page * limit;
-
-  //   const { caughtPokemons, setCaughtPokemons } = this.context;
-
-  //   // Make sure that we are not loading more items, if we are already have 100 caught pokemons, but page on the Pokemon's Page is still equals to "1"
-  //   if (caughtPokemons && caughtPokemons.length) {
-  //     const pokemonIds = caughtPokemons.map(({ pokemonId }) => pokemonId);
-  //     const maxPokemonId = Math.max(...pokemonIds);
-  //     const maxPage = Math.ceil(maxPokemonId / limit);
-  //     const isTheSamePage = maxPage === page;
-  //     const isDataUpdated = to <= maxPokemonId;
-  //     if (isTheSamePage || isDataUpdated) {
-  //       return;
-  //     }
-  //   }
-
-  //   const { userId } = this.context;
-  //   const newCaughtPokemons = await services.getCaughtPokemons(
-  //     userId,
-  //     from,
-  //     to
-  //   );
-  //   setCaughtPokemons(
-  //     [].concat(caughtPokemons ? caughtPokemons : [], newCaughtPokemons)
-  //   );
-  // }
-
   const getPokemons = () => {
     dispatch(fetchPaginatedPokemons({ page }));
     if (!caughtPokemons.length) {
       dispatch(fetchCaughtPokemons());
-    }
-  };
-
-  const catchPokemon = async (pokemonId: number, name: string) => {
-    const createdCaughtPokemon = await postCaughtPokemon(userId, {
-      pokemonId,
-      caughtDate: new Date().toLocaleString(),
-      name,
-    });
-    if (createdCaughtPokemon) {
-      dispatch(addCaughtPokemon(createdCaughtPokemon));
     }
   };
 
@@ -118,9 +73,7 @@ const Component = ({ classes }: Props) => {
         {
           pokemons.map(({ id, name }) => {
             const isAlreadyCaught = Boolean(caughtPokemons.find(({pokemonId}) => id === pokemonId));
-            const handleCatch = () => {
-              catchPokemon(id, name);
-            };
+            const handleCatch = () => dispatch(postAndAddCaughtPokemon(id, name));
             const cardActions = (
               <CardActions className={classes.actions}>
                 <Button

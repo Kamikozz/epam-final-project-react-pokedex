@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
@@ -7,7 +7,6 @@ import { withStyles } from "@material-ui/core/styles";
 import {
   selectCaughtPokemonsItems,
   selectUserId,
-  selectPokemonsIsLoading,
   selectPokemonsItems,
 } from "../../store/slices";
 import { Loader, PokemonItem, NotFound } from "../../components";
@@ -35,10 +34,7 @@ const Component = ({ classes, match }: Props) => {
 
   const userId = useSelector(selectUserId);
   const pokemons = useSelector(selectPokemonsItems);
-  const pokemonsLoading = useSelector(selectPokemonsIsLoading);
   const caughtPokemons = useSelector(selectCaughtPokemonsItems);
-
-  const dispatch = useDispatch();
 
   const getPokemon = async () => {
     // check if already cached
@@ -65,15 +61,6 @@ const Component = ({ classes, match }: Props) => {
       name: pokemonData ? pokemonData!.name : '',
     });
     setPokemonData(newData);
-
-    // if already cached caughtPokemons in the application
-    if (caughtPokemons.length && newData) {
-      caughtPokemons.push(newData);
-    }
-    // TODO: add to cache
-    // if (caughtPokemons.length && caughtPokemonsIds) {
-    //   caughtPokemonsIds.add(pokemonId);
-    // }
   };
 
   const getPokemonData = async () => {

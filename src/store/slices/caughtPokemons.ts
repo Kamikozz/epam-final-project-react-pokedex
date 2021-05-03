@@ -1,5 +1,6 @@
-import { AppState, Action, ICaughtPokemon } from "../../reducer";
+import { AppState, Action, ICaughtPokemon } from '../../reducer';
 import { IGetCaughtPokemonsParams } from '../../services/pokemons';
+import { constructActionType } from './utils';
 
 enum ActionType {
   ADD_MANY = 'addMany',
@@ -9,19 +10,10 @@ enum ActionType {
   FETCH_FAILED = 'fetchFailed',
   SET_LOADER = 'setLoader',
   UNSET_LOADER = 'unsetLoader',
+  POST_AND_ADD_ONE_REQUESTED = 'postAndAddOneRequested',
 };
+export const CaughtPokemonsActionType = constructActionType<typeof ActionType>('caughtPokemons', ActionType);
 
-const prefixSliceName = (sliceName: string, actionName: string) => `${sliceName}/${actionName}`;
-const constructActionType = (sliceName: string) => {
-  return Object
-    .entries(ActionType)
-    .reduce((acc: any, [key, value]) => {
-      acc[key] = prefixSliceName(sliceName, value);
-      return acc;
-    }, {}) as typeof ActionType;
-};
-
-export const CaughtPokemonsActionType = constructActionType('caughtPokemons');
 export interface ICaughtPokemonsState {
   items: ICaughtPokemon[];
   isLoading: boolean;
@@ -37,18 +29,12 @@ export default function caughtPokemonsReducer(state = initialState, action: Acti
     // case ActionType.ADD_CAUGHT_POKEMONS:
     //   return { ...state, items: [...state.items, ...action.payload] };
     case CaughtPokemonsActionType.ADD_ONE: {
-      return {
-        ...state,
-        items: [...state.items, action.payload as ICaughtPokemon],
-      };
+      return { ...state, items: [...state.items, action.payload as ICaughtPokemon] };
     }
     // case SagasActionType.FETCH_CAUGHT_POKEMONS_REQUESTED:
     //   return { ...state };
     case CaughtPokemonsActionType.FETCH_SUCCEEDED: {
-      return {
-        ...state,
-        items: [...state.items, ...action.payload as ICaughtPokemon[]],
-      };
+      return { ...state, items: [...state.items, ...action.payload as ICaughtPokemon[]] };
     }
     case CaughtPokemonsActionType.SET_LOADER:
       return { ...state, isLoading: true };
@@ -83,6 +69,10 @@ export const fetchCaughtPokemonsError = (errorMessage: string) => ({
 });
 export const caughtPokemonsSetLoader = () => ({ type: CaughtPokemonsActionType.SET_LOADER });
 export const caughtPokemonsUnsetLoader = () => ({ type: CaughtPokemonsActionType.UNSET_LOADER });
+export const postAndAddCaughtPokemon = (pokemonId: number, name: string) => ({
+  type: CaughtPokemonsActionType.POST_AND_ADD_ONE_REQUESTED,
+  payload: { pokemonId, name },
+});
 
 export const selectCaughtPokemons = (state: AppState) => state.caughtPokemons;
 export const selectCaughtPokemonsItems = (state: AppState) => state.caughtPokemons.items;

@@ -10,13 +10,6 @@ import {
   selectUserId,
 } from '../slices';
 
-// export enum ActionType {
-//   FETCH_CAUGHT_POKEMONS_SUCCEEDED = 'FETCH_CAUGHT_POKEMONS_SUCCEEDED',
-//   FETCH_CAUGHT_POKEMONS_FAILED = 'FETCH_CAUGHT_POKEMONS_FAILED',
-//   FETCH_CAUGHT_POKEMONS_SET_LOADER = 'FETCH_CAUGHT_POKEMONS_SET_LOADER',
-//   FETCH_CAUGHT_POKEMONS_UNSET_LOADER = 'FETCH_CAUGHT_POKEMONS_UNSET_LOADER',
-// };
-
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 export function* fetchCaughtPokemons(action: Action) {
   yield put(caughtPokemonsSetLoader());

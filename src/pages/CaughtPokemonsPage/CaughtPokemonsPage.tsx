@@ -5,14 +5,10 @@ import { WithStyles, Grid } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 
 import { PokemonItem, Loader, EmptyCaughtPokemonsPageCard } from "../../components";
-
-import { getCaughtPokemons } from "../../services/pokemons";
 import {
-  addCaughtPokemons,
   fetchCaughtPokemons,
   selectCaughtPokemonsItems,
   selectCaughtPokemonsIsLoading,
-  selectUserId,
 } from "../../store/slices";
 import styles from "./styles";
 

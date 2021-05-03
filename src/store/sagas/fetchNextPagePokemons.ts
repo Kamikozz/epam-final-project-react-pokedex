@@ -1,7 +1,6 @@
-import { call, put, select } from 'redux-saga/effects';
+import { put, select } from 'redux-saga/effects';
 
-import { IPokemon, Action } from '../../reducer';
-import { getPokemons } from '../../services/pokemons';
+import { Action } from '../../reducer';
 import {
   nextPage,
   fetchPaginatedPokemons,

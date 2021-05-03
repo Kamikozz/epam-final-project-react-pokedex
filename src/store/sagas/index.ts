@@ -3,16 +3,10 @@ import { takeEvery, takeLatest } from 'redux-saga/effects';
 import { fetchPokemons } from './fetchPokemons';
 import { fetchCaughtPokemons } from './fetchCaughtPokemons';
 import { fetchNextPagePokemons } from './fetchNextPagePokemons';
+import { postAndAddCaughtPokemon } from './postAndAddCaughtPokemon';
 import {
   CaughtPokemonsActionType, PokemonsActionType, PaginatedPokemonsActionType,
 } from '../slices';
-
-// export const SagasActionType = {
-//   ...ActionType,
-//   ...fetchPokemonsSaga.ActionType,
-//   ...fetchCaughtPokemonsSaga.ActionType,
-// };
-// export type SagasActionType = typeof SagasActionType;
 
 /*
   Starts fetchUser on each dispatched `USER_FETCH_REQUESTED` action.
@@ -24,6 +18,7 @@ function* rootSaga() {
   yield takeEvery(
     PaginatedPokemonsActionType.FETCH_NEXT_PAGE_POKEMONS_REQUESTED, fetchNextPagePokemons,
   );
+  yield takeEvery(CaughtPokemonsActionType.POST_AND_ADD_ONE_REQUESTED, postAndAddCaughtPokemon);
 }
 
 // /*
