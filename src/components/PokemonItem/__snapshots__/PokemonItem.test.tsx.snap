@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  class="MuiGrid-item-196 MuiGrid-grid-xs-12-235 MuiGrid-grid-sm-6-243 MuiGrid-grid-md-4-255 MuiGrid-grid-lg-3-268"
+>
+  <span
+    class="MuiBadge-root-292 PokemonItem-badgeWrapper-190"
+  >
+    <div
+      class="MuiPaper-root-300 MuiPaper-elevation1-303 MuiPaper-rounded-301 MuiCard-root-299 PokemonItem-card-192"
+    >
+      <button
+        class="MuiButtonBase-root-330 MuiCardActionArea-root-327"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="MuiCardMedia-root-333 PokemonItem-media-193"
+          style="background-image: url(1.png);"
+          title="some name"
+        />
+        <div
+          class="MuiCardContent-root-335"
+        >
+          <h4
+            class="MuiTypography-root-336 MuiTypography-h4-351 PokemonItem-pokemonName-194"
+          >
+            some name
+          </h4>
+        </div>
+        <span
+          class="MuiCardActionArea-focusHighlight-329"
+        />
+        <span
+          class="MuiTouchRipple-root-372"
+        />
+      </button>
+    </div>
+    <span
+      class="MuiBadge-badge-293 PokemonItem-badge-191 MuiBadge-colorPrimary-294"
+    >
+      1
+    </span>
+  </span>
+</div>
+`;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 
 import { WithStyles, Grid, CardActions, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";

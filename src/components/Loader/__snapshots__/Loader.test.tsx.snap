@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  class="Loader-progressColor-14 "
+>
+  <div
+    class="MuiCircularProgress-root-15 MuiCircularProgress-indeterminate-17 Loader-progress-13"
+    role="progressbar"
+    style="width: 70px; height: 70px;"
+  >
+    <svg
+      class="MuiCircularProgress-svg-20"
+      viewBox="22 22 44 44"
+    >
+      <circle
+        class="MuiCircularProgress-circle-21 MuiCircularProgress-circleIndeterminate-23"
+        cx="44"
+        cy="44"
+        fill="none"
+        r="21.5"
+        stroke-width="1"
+      />
+    </svg>
+  </div>
+</div>
+`;

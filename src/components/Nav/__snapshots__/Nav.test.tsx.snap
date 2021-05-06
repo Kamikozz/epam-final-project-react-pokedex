@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot with selected more than number of tabs 1`] = `
+<div
+  class="MuiPaper-root-196 MuiPaper-elevation2-200 Nav-root-193"
+>
+  <div
+    class="MuiTabs-root-223 Nav-tabsRoot-195"
+  >
+    <div
+      class="MuiTabs-flexContainer-224"
+    >
+      <div
+        class="MuiTabs-scroller-226 MuiTabs-fixed-227"
+        role="tablist"
+        style="margin-bottom: 0px;"
+      >
+        <div
+          class="MuiTabs-flexContainer-224"
+        >
+          <a
+            aria-selected="false"
+            class="MuiButtonBase-root-244 MuiTab-root-232 MuiTab-textColorInherit-234 MuiTab-labelIcon-233 MuiTab-fullWidth-239"
+            href="/"
+            role="tab"
+            tabindex="0"
+          >
+            <span
+              class="MuiTab-wrapper-240"
+            >
+              <img
+                alt="Home pokedex"
+                src="pokeball.png"
+                width="24px"
+              />
+              <span
+                class="MuiTab-labelContainer-241"
+              >
+                <span
+                  class="MuiTab-label-242"
+                >
+                  POKEDEX
+                </span>
+              </span>
+            </span>
+            <span
+              class="MuiTouchRipple-root-247"
+            />
+          </a>
+          <a
+            aria-selected="false"
+            class="MuiButtonBase-root-244 MuiTab-root-232 MuiTab-textColorInherit-234 MuiTab-labelIcon-233 MuiTab-fullWidth-239"
+            href="/caught_pokemons/"
+            role="tab"
+            tabindex="0"
+          >
+            <span
+              class="MuiTab-wrapper-240"
+            >
+              <img
+                alt="Caught pokemons"
+                src="pokeball3.png"
+                width="24px"
+              />
+              <span
+                class="MuiTab-labelContainer-241"
+              >
+                <span
+                  class="MuiTab-label-242"
+                >
+                  GOTCHA!
+                </span>
+              </span>
+            </span>
+            <span
+              class="MuiTouchRipple-root-247"
+            />
+          </a>
+        </div>
+        <span
+          class="MuiPrivateTabIndicator-root-254 MuiPrivateTabIndicator-colorSecondary-256 MuiTabs-indicator-231 Nav-tabsIndicator-194"
+          style="left: 0px; width: 0px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`matches snapshot with selected=0 1`] = `
+<div
+  class="MuiPaper-root-68 MuiPaper-elevation2-72 Nav-root-65"
+>
+  <div
+    class="MuiTabs-root-95 Nav-tabsRoot-67"
+  >
+    <div
+      class="MuiTabs-flexContainer-96"
+    >
+      <div
+        class="MuiTabs-scroller-98 MuiTabs-fixed-99"
+        role="tablist"
+        style="margin-bottom: 0px;"
+      >
+        <div
+          class="MuiTabs-flexContainer-96"
+        >
+          <a
+            aria-selected="true"
+            class="MuiButtonBase-root-116 MuiTab-root-104 MuiTab-textColorInherit-106 MuiTab-selected-109 MuiTab-labelIcon-105 MuiTab-fullWidth-111"
+            href="/"
+            role="tab"
+            tabindex="0"
+          >
+            <span
+              class="MuiTab-wrapper-112"
+            >
+              <img
+                alt="Home pokedex"
+                src="pokeball.png"
+                width="24px"
+              />
+              <span
+                class="MuiTab-labelContainer-113"
+              >
+                <span
+                  class="MuiTab-label-114"
+                >
+                  POKEDEX
+                </span>
+              </span>
+            </span>
+            <span
+              class="MuiTouchRipple-root-122"
+            />
+          </a>
+          <a
+            aria-selected="false"
+            class="MuiButtonBase-root-116 MuiTab-root-104 MuiTab-textColorInherit-106 MuiTab-labelIcon-105 MuiTab-fullWidth-111"
+            href="/caught_pokemons/"
+            role="tab"
+            tabindex="0"
+          >
+            <span
+              class="MuiTab-wrapper-112"
+            >
+              <img
+                alt="Caught pokemons"
+                src="pokeball3.png"
+                width="24px"
+              />
+              <span
+                class="MuiTab-labelContainer-113"
+              >
+                <span
+                  class="MuiTab-label-114"
+                >
+                  GOTCHA!
+                </span>
+              </span>
+            </span>
+            <span
+              class="MuiTouchRipple-root-122"
+            />
+          </a>
+        </div>
+        <span
+          class="MuiPrivateTabIndicator-root-119 MuiPrivateTabIndicator-colorSecondary-121 MuiTabs-indicator-103 Nav-tabsIndicator-66"
+          style="left: 0px; width: 0px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`matches snapshot with selected=1 1`] = `
+<div
+  class="MuiPaper-root-132 MuiPaper-elevation2-136 Nav-root-129"
+>
+  <div
+    class="MuiTabs-root-159 Nav-tabsRoot-131"
+  >
+    <div
+      class="MuiTabs-flexContainer-160"
+    >
+      <div
+        class="MuiTabs-scroller-162 MuiTabs-fixed-163"
+        role="tablist"
+        style="margin-bottom: 0px;"
+      >
+        <div
+          class="MuiTabs-flexContainer-160"
+        >
+          <a
+            aria-selected="false"
+            class="MuiButtonBase-root-180 MuiTab-root-168 MuiTab-textColorInherit-170 MuiTab-labelIcon-169 MuiTab-fullWidth-175"
+            href="/"
+            role="tab"
+            tabindex="0"
+          >
+            <span
+              class="MuiTab-wrapper-176"
+            >
+              <img
+                alt="Home pokedex"
+                src="pokeball.png"
+                width="24px"
+              />
+              <span
+                class="MuiTab-labelContainer-177"
+              >
+                <span
+                  class="MuiTab-label-178"
+                >
+                  POKEDEX
+                </span>
+              </span>
+            </span>
+            <span
+              class="MuiTouchRipple-root-186"
+            />
+          </a>
+          <a
+            aria-selected="true"
+            class="MuiButtonBase-root-180 MuiTab-root-168 MuiTab-textColorInherit-170 MuiTab-selected-173 MuiTab-labelIcon-169 MuiTab-fullWidth-175"
+            href="/caught_pokemons/"
+            role="tab"
+            tabindex="0"
+          >
+            <span
+              class="MuiTab-wrapper-176"
+            >
+              <img
+                alt="Caught pokemons"
+                src="pokeball3.png"
+                width="24px"
+              />
+              <span
+                class="MuiTab-labelContainer-177"
+              >
+                <span
+                  class="MuiTab-label-178"
+                >
+                  GOTCHA!
+                </span>
+              </span>
+            </span>
+            <span
+              class="MuiTouchRipple-root-186"
+            />
+          </a>
+        </div>
+        <span
+          class="MuiPrivateTabIndicator-root-183 MuiPrivateTabIndicator-colorSecondary-185 MuiTabs-indicator-167 Nav-tabsIndicator-130"
+          style="left: 0px; width: 0px;"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

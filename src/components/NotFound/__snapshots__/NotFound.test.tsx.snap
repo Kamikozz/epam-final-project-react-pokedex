@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  class="NotFound-root-108"
+>
+  <div
+    class="MuiPaper-root-115 MuiPaper-elevation1-118 MuiPaper-rounded-116 MuiCard-root-114 NotFound-card-109"
+  >
+    <div
+      class="MuiCardContent-root-142 NotFound-cardContent-110"
+    >
+      <h2
+        class="MuiTypography-root-143 MuiTypography-h2-156 NotFound-errorStatus-111"
+      >
+        404
+      </h2>
+      <p
+        class="MuiTypography-root-143 MuiTypography-body1-152"
+      >
+        Who's that Pokemon? 😅
+      </p>
+      <img
+        alt="who is that pokemon meme"
+        class="NotFound-notFoundImage-112"
+        src="pokemon-meme.gif"
+      />
+      <a
+        class="MuiButtonBase-root-205 MuiButton-root-179 MuiButton-contained-190 MuiButton-containedPrimary-191 MuiButton-raised-193 MuiButton-raisedPrimary-194 NotFound-button-113"
+        href="/"
+        role="button"
+        tabindex="0"
+      >
+        <span
+          class="MuiButton-label-180"
+        >
+          Go to home page
+        </span>
+        <span
+          class="MuiTouchRipple-root-208"
+        />
+      </a>
+    </div>
+  </div>
+</div>
+`;

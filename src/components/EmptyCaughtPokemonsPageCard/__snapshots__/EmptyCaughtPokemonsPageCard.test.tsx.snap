@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<div
+  class="EmptyCaughtPokemonsPageCard-root-70"
+>
+  <div
+    class="MuiPaper-root-75 MuiPaper-elevation1-78 MuiPaper-rounded-76 MuiCard-root-74"
+  >
+    <div
+      class="MuiCardContent-root-102 EmptyCaughtPokemonsPageCard-cardContent-71"
+    >
+      <h5
+        class="MuiTypography-root-103 MuiTypography-h5-119 EmptyCaughtPokemonsPageCard-text-72"
+      >
+        Need to catch more pokemons
+      </h5>
+      <img
+        alt="pokeball catches wild pokemon"
+        class="EmptyCaughtPokemonsPageCard-caughtPokemonImage-73"
+        src="pokemon-catching.gif"
+      />
+    </div>
+  </div>
+</div>
+`;

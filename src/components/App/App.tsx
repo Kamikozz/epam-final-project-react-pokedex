@@ -13,11 +13,11 @@ interface Props extends WithStyles<typeof styles> {
 };
 
 const Component = ({ classes, location }: Props) => {
-  const selectedTab = location.pathname === routes.pokemonsPage ? 0 : 1;
+  const selectedTabIndex = location.pathname === routes.pokemonsPage ? 0 : 1;
 
   return (
     <div className={classes.root}>
-      <Nav selected={selectedTab} />
+      <Nav selected={selectedTabIndex} />
       <section className={classes.main}>
         <Switch>
           <Route exact path={routes.pokemonsPage} component={PokemonsPage} />

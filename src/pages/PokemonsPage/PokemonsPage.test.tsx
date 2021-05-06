@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { render } from '@testing-library/react';
 
-import App from './App';
+import { PokemonsPage } from './PokemonsPage';
 import routes from '../../routes';
 import store from "../../store";
 
@@ -17,9 +16,23 @@ it('renders without crashing', () => {
     <Provider store={store}>
       <Router>
         <Switch>
-          <Route path={routes.pokemonsPage} component={App} />
+          <Route path={routes.pokemonsPage} component={PokemonsPage} />
         </Switch>
       </Router>
     </Provider>
   );
 });
+
+it('matches snapshot', () => {
+  const { container } = render(
+    <Provider store={store}>
+      <Router>
+        <Switch>
+          <Route path={routes.pokemonsPage} component={PokemonsPage} />
+        </Switch>
+      </Router>
+    </Provider>
+  );
+  expect(container.firstChild).toMatchSnapshot()
+});
+
